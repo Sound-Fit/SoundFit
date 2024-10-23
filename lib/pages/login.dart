@@ -54,9 +54,9 @@ class Login extends StatelessWidget {
                       backgroundColor: MaterialStateProperty.all(Colors.black),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0)))),
-                  onPressed: () => Navigator.pushNamed(context, '/welcome'),
+                  onPressed: () => Navigator.pushNamed(context, '/home'),
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(15.0),
                     child: Text(
                       'LOGIN',
                       style: TextStyle(

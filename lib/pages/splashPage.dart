@@ -48,13 +48,12 @@ class SplashPage extends StatelessWidget {
                 child: SizedBox(
                   height: screenHeight * 0.67,
                   child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Image.asset('images/first-page.jpg'),
                         ),
-                        Gap(10),
                         TextButton(
                             style: ButtonStyle(
                                 backgroundColor:
@@ -62,7 +61,7 @@ class SplashPage extends StatelessWidget {
                             onPressed: () =>
                                 Navigator.pushNamed(context, '/welcome'),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(15.0),
                               child: Text(
                                 'Fit Your Playlist Now!',
                                 style: TextStyle(

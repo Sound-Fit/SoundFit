@@ -46,7 +46,7 @@ class WelcomePage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Image.asset('images/first-page.jpg'),
-                          Gap(80),
+                          Gap(20.0),
                           SizedBox(
                             height: 50.0,
                             child: TextButton(
@@ -68,7 +68,7 @@ class WelcomePage extends StatelessWidget {
                                   ),
                                 )),
                           ),
-                          Gap(20),
+                          Gap(20.0),
                           SizedBox(
                             height: 50.0,
                             child: OutlinedButton(
