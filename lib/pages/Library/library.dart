@@ -83,21 +83,7 @@ class Library extends StatelessWidget {
                             // This next line does the trick.
                             scrollDirection: Axis.horizontal,
                             children: <Widget>[
-                              for (int i = 0; i < 5; i++)
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        color: Colors.grey,
-                                        width: 140,
-                                        height: 160,
-                                      ),
-                                      Text('Title Song'),
-                                      Text('Artist')
-                                    ],
-                                  ),
-                                )
+                              for (int i = 0; i < 5; i++) SongCard(context),
                             ],
                           ),
                         ),
@@ -119,21 +105,7 @@ class Library extends StatelessWidget {
                             // This next line does the trick.
                             scrollDirection: Axis.horizontal,
                             children: <Widget>[
-                              for (int i = 0; i < 5; i++)
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        color: Colors.grey,
-                                        width: 140,
-                                        height: 160,
-                                      ),
-                                      Text('Title Song'),
-                                      Text('Artist')
-                                    ],
-                                  ),
-                                )
+                              for (int i = 0; i < 5; i++) SongCard(context),
                             ],
                           ),
                         ),
@@ -145,6 +117,32 @@ class Library extends StatelessWidget {
             ),
           ),
           // Submenu buttons
+        ],
+      ),
+    );
+  }
+
+  Widget SongCard(BuildContext context) {
+    return TextButton(
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.all(8),
+      ),
+      onPressed: () => Navigator.pushNamed(context, '/playMusic'),
+      child: Column(
+        children: [
+          Container(
+            color: Colors.grey,
+            width: 140,
+            height: 160,
+          ),
+          Text(
+            'Title Song',
+            style: TextStyle(color: Colors.black),
+          ),
+          Text(
+            'Artist',
+            style: TextStyle(color: Colors.black),
+          )
         ],
       ),
     );

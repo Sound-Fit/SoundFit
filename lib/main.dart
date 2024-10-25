@@ -10,6 +10,7 @@ import 'package:soundfit/pages/Library/playlist.dart';
 import 'package:soundfit/pages/Explore/genre.dart';
 import 'package:soundfit/pages/Explore/search.dart';
 import 'package:soundfit/pages/Profile/editProfile.dart';
+import 'package:soundfit/pages/playMusic.dart';
 
 void main() {
   runApp(MyApp());
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         '/library/playlist': (context) => Playlist(),
         '/profile': (context) => CustomNavBar(),
         '/profile/edit': (context) => EditProfile(),
+        '/playMusic': (context) => PlayMusic(),
       },
     );
   }
