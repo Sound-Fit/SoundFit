@@ -2,7 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class EditProfile extends StatelessWidget {
+class EditProfile extends StatefulWidget {
+  @override
+  _EditProfileState createState() => _EditProfileState();
+}
+
+class _EditProfileState extends State<EditProfile> {
+  final TextEditingController _nameController =
+      TextEditingController(text: 'User');
+  final TextEditingController _emailController =
+      TextEditingController(text: 'example@gmail.com');
+  final TextEditingController _passwordController =
+      TextEditingController(text: '123456');
+
+  bool _isPasswordHidden = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +31,10 @@ class EditProfile extends StatelessWidget {
             centerTitle: true,
             actions: [
               TextButton(
-                onPressed: () => Navigator.pushNamed(context, '/profile'),
+                onPressed: () {
+                  // Save logic goes here, e.g., update user profile in database
+                  Navigator.pushNamed(context, '/profile');
+                },
                 child: Text(
                   'Save',
                   style: GoogleFonts.poppins(
@@ -72,10 +89,57 @@ class EditProfile extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   TextFormField(
-                    initialValue: 'User', // Example initial value
+                    controller: _nameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Enter your name',
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Email',
+                    style: GoogleFonts.lexendDeca(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'example@gmail.com',
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Password',
+                    style: GoogleFonts.lexendDeca(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: _isPasswordHidden,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter your password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordHidden
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordHidden = !_isPasswordHidden;
+                          });
+                        },
+                      ),
                     ),
                   ),
                   SizedBox(height: 16),
@@ -84,19 +148,6 @@ class EditProfile extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget TextStyled(
-      {required String text, FontWeight? fontWeight = FontWeight.normal}) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: fontWeight,
-        fontFamily: GoogleFonts.poppins().fontFamily,
-        color: Colors.black,
       ),
     );
   }
