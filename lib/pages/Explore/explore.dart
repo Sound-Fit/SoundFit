@@ -55,21 +55,7 @@ class ExplorePage extends StatelessWidget {
                       // This next line does the trick.
                       scrollDirection: Axis.horizontal,
                       children: <Widget>[
-                        for (int i = 0; i < 5; i++)
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Container(
-                                  color: Colors.grey,
-                                  width: 140,
-                                  height: 160,
-                                ),
-                                Text('Title Song'),
-                                Text('Artist')
-                              ],
-                            ),
-                          )
+                        for (int i = 0; i < 5; i++) SongCard(context)
                       ],
                     ),
                   ),
@@ -85,7 +71,7 @@ class ExplorePage extends StatelessWidget {
                   Gap(5.0), // Reduced gap
                   TitleText(
                       text: 'Explore by Genre', textAlign: TextAlign.left),
-                  Gap(10.0),
+                  Gap(20.0),
                   // Explore by Genre Grid
                   Container(
                     height: 300, // Adjust this height based on the grid
@@ -94,8 +80,8 @@ class ExplorePage extends StatelessWidget {
                       physics: NeverScrollableScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 4, // 4 genres per row
-                        crossAxisSpacing: 10.0,
-                        mainAxisSpacing: 10.0,
+                        crossAxisSpacing: 1.0,
+                        mainAxisSpacing: 3.0,
                         childAspectRatio: 1,
                       ),
                       itemCount: 8, // Number of genres
@@ -108,17 +94,14 @@ class ExplorePage extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Container(
+                                  height: 100,
+                                  width: 100,
                                   decoration: BoxDecoration(
                                     color:
                                         Colors.grey[300], // Placeholder color
                                   ),
                                 ),
                               ),
-                              Gap(5),
-                              Text('Genre ${index + 1}', // Placeholder text
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  )),
                             ],
                           ),
                         );
@@ -130,6 +113,32 @@ class ExplorePage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget SongCard(BuildContext context) {
+    return TextButton(
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.all(8),
+      ),
+      onPressed: () => Navigator.pushNamed(context, '/playMusic'),
+      child: Column(
+        children: [
+          Container(
+            color: Colors.grey,
+            width: 140,
+            height: 160,
+          ),
+          Text(
+            'Title Song',
+            style: TextStyle(color: Colors.black),
+          ),
+          Text(
+            'Artist',
+            style: TextStyle(color: Colors.black),
+          )
+        ],
       ),
     );
   }
