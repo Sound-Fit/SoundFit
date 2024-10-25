@@ -3,6 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ExplorePage extends StatelessWidget {
+  const ExplorePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +51,7 @@ class ExplorePage extends StatelessWidget {
                   TitleText(
                       text: 'Recommend For You', textAlign: TextAlign.left),
                   Gap(10.0),
-                  Container(
+                  SizedBox(
                     height: 220,
                     child: ListView(
                       // This next line does the trick.
@@ -73,7 +75,7 @@ class ExplorePage extends StatelessWidget {
                       text: 'Explore by Genre', textAlign: TextAlign.left),
                   Gap(20.0),
                   // Explore by Genre Grid
-                  Container(
+                  SizedBox(
                     height: 300, // Adjust this height based on the grid
                     child: GridView.builder(
                       shrinkWrap: true,

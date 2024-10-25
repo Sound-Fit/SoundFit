@@ -3,6 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +38,7 @@ class HomePage extends StatelessWidget {
                                 text: 'Followed Artist',
                                 textAlign: TextAlign.left),
                             Gap(20.0),
-                            Container(
+                            SizedBox(
                               height: 130,
                               child: ListView(
                                 // This next line does the trick.
@@ -92,7 +94,7 @@ class HomePage extends StatelessWidget {
                             TitleText(
                                 text: 'Recent', textAlign: TextAlign.left),
                             Gap(20.0),
-                            Container(
+                            SizedBox(
                               height: 170,
                               child: ListView(
                                 scrollDirection: Axis.horizontal,
@@ -106,7 +108,7 @@ class HomePage extends StatelessWidget {
                                                 horizontal: 5),
                                           ),
                                           onPressed: () {},
-                                          child: Container(
+                                          child: SizedBox(
                                             width: 250,
                                             height: 140,
                                             // color: Colors.grey,
@@ -131,7 +133,7 @@ class HomePage extends StatelessWidget {
                                 text: 'Recommend For You',
                                 textAlign: TextAlign.left),
                             Gap(20.0),
-                            Container(
+                            SizedBox(
                               height: 150,
                               child: ListView(
                                 // This next line does the trick.

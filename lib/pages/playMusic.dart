@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class PlayMusic extends StatefulWidget {
+  const PlayMusic({super.key});
+
   @override
   _PlayMusicState createState() => _PlayMusicState();
 }
 
 class _PlayMusicState extends State<PlayMusic> {
-  AudioPlayer _audioPlayer = AudioPlayer();
+  final AudioPlayer _audioPlayer = AudioPlayer();
   bool isPlaying = false;
   String currentSong =
       "https://soundcloud.com/billieeilish/birds-of-a-feather?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing";

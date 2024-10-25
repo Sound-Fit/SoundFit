@@ -3,6 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Profile extends StatelessWidget {
+  const Profile({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,14 +37,14 @@ class Profile extends StatelessWidget {
                   TextButton(
                     onPressed: () =>
                         Navigator.pushNamed(context, '/profile/edit'),
-                    child: Text('Edit',
-                        style: TextStyle(fontSize: 16, color: Colors.black)),
                     style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
                         side: BorderSide(color: Colors.black),
                       ),
                     ),
+                    child: Text('Edit',
+                        style: TextStyle(fontSize: 16, color: Colors.black)),
                   ),
                   SizedBox(height: 20),
                   // Daftar playlist
@@ -67,7 +69,7 @@ class Profile extends StatelessWidget {
                                   children: [
                                     Row(
                                       children: [
-                                        Container(
+                                        SizedBox(
                                           width: 50,
                                           height: 50,
                                           child: ClipRRect(

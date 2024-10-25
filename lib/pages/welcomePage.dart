@@ -3,6 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WelcomePage extends StatelessWidget {
+  const WelcomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -51,7 +53,7 @@ class WelcomePage extends StatelessWidget {
                             height: 50.0,
                             child: TextButton(
                                 style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
+                                    backgroundColor: WidgetStateProperty.all(
                                         Colors.white)),
                                 onPressed: () =>
                                     Navigator.pushNamed(context, '/login'),

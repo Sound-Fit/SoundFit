@@ -3,6 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Library extends StatelessWidget {
+  const Library({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +79,7 @@ class Library extends StatelessWidget {
                         TitleText(
                             text: 'Liked Song', textAlign: TextAlign.left),
                         Gap(10.0),
-                        Container(
+                        SizedBox(
                           height: 220,
                           child: ListView(
                             // This next line does the trick.
@@ -99,7 +101,7 @@ class Library extends StatelessWidget {
                             text: 'Recently Added Song',
                             textAlign: TextAlign.left),
                         Gap(10.0),
-                        Container(
+                        SizedBox(
                           height: 220,
                           child: ListView(
                             // This next line does the trick.

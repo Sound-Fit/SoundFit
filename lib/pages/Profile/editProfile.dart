@@ -3,6 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EditProfile extends StatelessWidget {
+  const EditProfile({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

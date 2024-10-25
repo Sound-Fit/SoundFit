@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 class Search extends StatelessWidget {
   final List<String> recentSearches = ["Rock", "Day6", "Pop", "Sad"];
 
+  const Search({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

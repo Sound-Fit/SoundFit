@@ -6,6 +6,8 @@ import 'package:soundfit/pages/Library/library.dart';
 import 'package:soundfit/pages/Profile/profile.dart';
 
 class CustomNavBar extends StatefulWidget {
+  const CustomNavBar({super.key});
+
   @override
   _CustomNavBarState createState() => _CustomNavBarState();
 }

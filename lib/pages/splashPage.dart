@@ -3,6 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SplashPage extends StatelessWidget {
+  const SplashPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -57,7 +59,7 @@ class SplashPage extends StatelessWidget {
                         TextButton(
                             style: ButtonStyle(
                                 backgroundColor:
-                                    MaterialStateProperty.all(Colors.white)),
+                                    WidgetStateProperty.all(Colors.white)),
                             onPressed: () =>
                                 Navigator.pushNamed(context, '/welcome'),
                             child: Padding(

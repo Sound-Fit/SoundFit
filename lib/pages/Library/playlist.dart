@@ -3,6 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Playlist extends StatelessWidget {
+  const Playlist({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +47,7 @@ class Playlist extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(children: [
-                                    Container(
+                                    SizedBox(
                                       width: 50,
                                       height: 50,
                                       child: ClipRRect(

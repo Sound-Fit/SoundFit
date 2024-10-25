@@ -3,6 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Register extends StatelessWidget {
+  const Register({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,8 +44,8 @@ class Register extends StatelessWidget {
               Gap(36.0),
               TextButton(
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.black),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      backgroundColor: WidgetStateProperty.all(Colors.black),
+                      shape: WidgetStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0)))),
                   onPressed: () => Navigator.pushNamed(context, '/login'),
                   child: Padding(
