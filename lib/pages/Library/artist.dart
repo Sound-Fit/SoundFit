@@ -49,7 +49,18 @@ class Artist extends StatelessWidget {
                                       width: 50,
                                       height: 50,
                                       decoration: BoxDecoration(
-                                          border: Border.all(width: 0.1),
+                                          color: Colors
+                                              .white, // Warna latar belakang untuk kontras
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black.withOpacity(
+                                                  0.1), // Warna bayangan
+                                              spreadRadius:
+                                                  2, // Seberapa jauh bayangan menyebar
+                                              blurRadius:
+                                                  3, // Ketajaman bayangan
+                                            ),
+                                          ],
                                           borderRadius:
                                               BorderRadius.circular(25.0)),
                                       child: ClipRRect(
