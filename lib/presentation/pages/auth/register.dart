@@ -54,14 +54,15 @@ class Register extends StatelessWidget {
                   controller: _name,
                   autofocus: true,
                   decoration: InputDecoration(
+                      filled: true,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0)),
-                          
                       labelText: 'Username')),
               Gap(30.0),
               TextField(
                   controller: _email,
                   decoration: InputDecoration(
+                      filled: true,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0)),
                       labelText: 'Email')),
@@ -70,6 +71,7 @@ class Register extends StatelessWidget {
                   controller: _password,
                   obscureText: true,
                   decoration: InputDecoration(
+                      filled: true,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0)),
                       labelText: 'Password')),

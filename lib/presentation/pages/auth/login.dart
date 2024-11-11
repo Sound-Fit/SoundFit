@@ -55,6 +55,7 @@ class Login extends StatelessWidget {
                   controller: _email,
                   autofocus: true,
                   decoration: InputDecoration(
+                      filled: true,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0)),
                       labelText: 'Email')),
@@ -63,6 +64,7 @@ class Login extends StatelessWidget {
                   controller: _password,
                   obscureText: true,
                   decoration: InputDecoration(
+                      filled: true,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0)),
                       labelText: 'Password')),
