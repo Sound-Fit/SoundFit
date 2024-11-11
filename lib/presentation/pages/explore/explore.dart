@@ -8,18 +8,17 @@ class ExplorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: TitleText(text: 'Explore', textAlign: TextAlign.center),
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        actions: [],
+      ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Gap(31),
-            AppBar(
-              title: TitleText(text: 'Explore', textAlign: TextAlign.center),
-              backgroundColor: Colors.white,
-              automaticallyImplyLeading: false,
-              centerTitle: true,
-              actions: [],
-            ),
             Gap(20),
             // Search bar
             Padding(

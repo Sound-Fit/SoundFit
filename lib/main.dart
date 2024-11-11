@@ -1,18 +1,30 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:soundfit/pages/Camera/camera.dart';
-import 'package:soundfit/pages/splashPage.dart';
-import 'package:soundfit/pages/welcomePage.dart';
-import 'package:soundfit/pages/login.dart';
-import 'package:soundfit/pages/register.dart';
-import 'package:soundfit/widgets/navBar.dart';
-import 'package:soundfit/pages/Library/artist.dart';
-import 'package:soundfit/pages/Library/playlist.dart';
-import 'package:soundfit/pages/Explore/genre.dart';
-import 'package:soundfit/pages/Explore/search.dart';
-import 'package:soundfit/pages/Profile/editProfile.dart';
-import 'package:soundfit/pages/playMusic.dart';
+import 'package:soundfit/core/configs/theme/app_theme.dart';
+import 'package:soundfit/firebase_options.dart';
+import 'package:soundfit/presentation/pages/splashPage.dart';
+import 'package:soundfit/service_locator.dart';
+// import 'package:soundfit/presentation/pages/camera/camera.dart';
+// import 'package:soundfit/presentation/pages/welcomePage.dart';
+// import 'package:soundfit/presentation/pages/login.dart';
+// import 'package:soundfit/presentation/pages/register.dart';
+// import 'package:soundfit/presentation/widgets/navBar.dart';
+// import 'package:soundfit/presentation/pages/library/artist.dart';
+// import 'package:soundfit/presentation/pages/library/playlist.dart';
+// import 'package:soundfit/presentation/pages/explore/genre.dart';
+// import 'package:soundfit/presentation/pages/explore/search.dart';
+// import 'package:soundfit/presentation/pages/profile/editProfile.dart';
+// import 'package:soundfit/presentation/pages/playMusic.dart';
 
-void main() {
+Future <void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  await initializeDependencies();
+
   runApp(MyApp());
 }
 
@@ -23,24 +35,26 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'SoundFit',
-      initialRoute: '/',
-      routes: {
-        '/': (context) => SplashPage(),
-        '/welcome': (context) => WelcomePage(),
-        '/login': (context) => Login(),
-        '/register': (context) => Register(),
-        '/camera': (context) => CameraScreen(),
-        '/home': (context) => CustomNavBar(),
-        '/explore': (context) => CustomNavBar(),
-        '/explore/genre': (context) => Genre(),
-        '/explore/search': (context) => Search(),
-        '/library': (context) => CustomNavBar(),
-        '/library/artist': (context) => Artist(),
-        '/library/playlist': (context) => Playlist(),
-        '/profile': (context) => CustomNavBar(),
-        '/profile/edit': (context) => EditProfile(),
-        '/playMusic': (context) => PlayMusic(),
-      },
+      theme: AppTheme.lightTheme,
+      home: SplashPage(),
+      // initialRoute: '/',
+      // routes: {
+      //   '/': (context) => SplashPage(),
+      //   // '/welcome': (context) => WelcomePage(),
+      //   // '/login': (context) => Login(),
+      //   // '/register': (context) => Register(),
+      //   '/camera': (context) => CameraScreen(),
+      //   '/home': (context) => CustomNavBar(),
+      //   '/explore': (context) => CustomNavBar(),
+      //   '/explore/genre': (context) => Genre(),
+      //   '/explore/search': (context) => Search(),
+      //   '/library': (context) => CustomNavBar(),
+      //   '/library/artist': (context) => Artist(),
+      //   '/library/playlist': (context) => Playlist(),
+      //   '/profile': (context) => CustomNavBar(),
+      //   '/profile/edit': (context) => EditProfile(),
+      //   '/playMusic': (context) => PlayMusic(),
+      // },
     );
   }
 }

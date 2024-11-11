@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:soundfit/presentation/pages/playMusic.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -8,24 +9,20 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Hi, User',
+          style: TextStyle(fontSize: 17, color: Colors.grey),
+        ),
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+      ),
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          Gap(31),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: AppBar(
-              title: Text(
-                'Hi, User',
-                style: TextStyle(fontSize: 17, color: Colors.grey),
-              ),
-              backgroundColor: Colors.white,
-              automaticallyImplyLeading: false,
-            ),
-          ),
           Expanded(
             child: SingleChildScrollView(
-              child: Column(
+              child: Column(    
                 children: [
                   Column(
                     children: [
@@ -113,7 +110,7 @@ class HomePage extends StatelessWidget {
                                             height: 140,
                                             // color: Colors.grey,
                                             child: Image.asset(
-                                                'images/Artist.jpg'),
+                                                'assets/images/Artist.jpg'),
                                           ),
                                         )
                                       ],
@@ -147,8 +144,13 @@ class HomePage extends StatelessWidget {
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 5),
                                           ),
-                                          onPressed: () => Navigator.pushNamed(
-                                              context, '/playMusic'),
+                                          onPressed: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        PlayMusic()),
+                                          ),
                                           child: Container(
                                             width: 140,
                                             height: 140,

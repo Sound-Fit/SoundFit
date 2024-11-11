@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:soundfit/pages/home.dart';
-import 'package:soundfit/pages/Explore/explore.dart';
-import 'package:soundfit/pages/Camera/camera.dart';
-import 'package:soundfit/pages/Library/library.dart';
-import 'package:soundfit/pages/Profile/profile.dart';
+import 'package:soundfit/presentation/pages/home.dart';
+import 'package:soundfit/presentation/pages/explore/explore.dart';
+import 'package:soundfit/presentation/pages/camera/camera.dart';
+import 'package:soundfit/presentation/pages/library/library.dart';
+import 'package:soundfit/presentation/pages/profile/profile.dart';
 
 class CustomNavBar extends StatefulWidget {
   const CustomNavBar({super.key});
