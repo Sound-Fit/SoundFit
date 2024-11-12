@@ -7,6 +7,8 @@ abstract class AuthFirebaseService {
   Future<Either> signup(CreateUserReq createUserReq);
 
   Future<Either> signin(SignInUserReq signInUserReq);
+
+  // Future<Either<String, void>> signout();
 }
 
 class AuthFirebaseServiceImpl extends AuthFirebaseService {
@@ -57,4 +59,14 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
       return Left(message);
     }
   }
+
+  // @override
+  // Future<Either<String, String>> signout() async {
+  //   try {
+  //     await FirebaseAuth.instance.signOut();
+  //     return const Right("Signout Success");
+  //   } catch (e) {
+  //     return Left("Failed to sign out. Please try again.");
+  //   }
+  // }
 }

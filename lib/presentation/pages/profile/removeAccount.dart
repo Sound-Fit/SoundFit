@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:soundfit/common/widgets/button/basic_button.dart';
+import 'package:soundfit/common/widgets/text/based_text.dart';
+import 'package:soundfit/common/widgets/text/poin_text.dart';
+import 'package:soundfit/common/widgets/text/title_text.dart';
 import 'package:soundfit/core/configs/theme/app_colors.dart';
 
 class RemoveAccount extends StatelessWidget {
@@ -30,15 +32,16 @@ class RemoveAccount extends StatelessWidget {
                     // About Soundfit
                     Column(
                       children: [
-                        TextStyled(
+                        BasedText(
                             text:
                                 "Are you sure you want to delete your account? Deleting your account will permanently remove your profile, playlists, and all saved preferences. This action cannot be undone.",
                             fontSize: 14,
+                            fontFamily: "Poppins",
                             fontWeight: FontWeight.normal),
-                        pointText(
+                        PoinText(
                             text:
                                 "To confirm, please enter your account password and tap Delete Account."),
-                        pointText(
+                        PoinText(
                             text:
                                 "If you’re not sure, you can go back and keep your account active."),
                       ],
@@ -57,46 +60,6 @@ class RemoveAccount extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Widget TitleText({required String text, TextAlign? textAlign}) {
-    return Text(
-      text,
-      textAlign: textAlign,
-    );
-  }
-
-  Widget TextStyled(
-      {required String text,
-      required double fontSize,
-      FontWeight fontWeight = FontWeight.bold}) {
-    return Text(
-      text,
-      textAlign: TextAlign.justify,
-      style: TextStyle(
-        fontSize: fontSize,
-        fontWeight: fontWeight,
-        color: AppColors.black,
-        fontFamily: 'Poppins',
-      ),
-    );
-  }
-
-  Widget pointText({required String text}) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text("•"),
-        Gap(10),
-        Expanded(
-          child: TextStyled(
-            text: text,
-            fontSize: 14,
-            fontWeight: FontWeight.normal,
-          ),
-        ),
-      ],
     );
   }
 }

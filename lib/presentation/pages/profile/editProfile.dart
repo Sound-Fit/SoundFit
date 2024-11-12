@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:soundfit/core/configs/theme/app_colors.dart';
+import 'package:soundfit/common/widgets/text/based_text.dart';
+import 'package:soundfit/common/widgets/text/title_text.dart';
 
 class EditProfile extends StatefulWidget {
   @override
@@ -77,8 +78,10 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ),
                   SizedBox(height: 30),
+
                   // Name field
-                  TextStyled(text: "Name", fontSize: 16),
+                  BasedText(
+                      text: "Name", fontWeight: FontWeight.bold, fontSize: 16),
                   SizedBox(height: 8),
                   TextField(
                     controller: _nameController,
@@ -92,7 +95,8 @@ class _EditProfileState extends State<EditProfile> {
                   Gap(16),
 
                   // Email field
-                  TextStyled(text: "Email", fontSize: 16),
+                  BasedText(
+                      text: "Email", fontWeight: FontWeight.bold, fontSize: 16),
                   SizedBox(height: 8),
                   TextField(
                     controller: _emailController,
@@ -106,7 +110,10 @@ class _EditProfileState extends State<EditProfile> {
                   Gap(16),
 
                   // Password field
-                  TextStyled(text: "Password", fontSize: 16),
+                  BasedText(
+                      text: "Password",
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
                   SizedBox(height: 8),
                   TextField(
                     controller: _passwordController,
@@ -136,27 +143,6 @@ class _EditProfileState extends State<EditProfile> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget TitleText({required String text, TextAlign? textAlign}) {
-    return Text(
-      text,
-      textAlign: textAlign,
-    );
-  }
-
-  Widget TextStyled(
-      {required String text,
-      required double fontSize,
-      FontWeight fontWeight = FontWeight.bold}) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: fontSize,
-        fontWeight: fontWeight,
-        color: AppColors.black,
       ),
     );
   }

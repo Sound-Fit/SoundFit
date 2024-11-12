@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:soundfit/common/widgets/button/menu_button.dart';
+import 'package:soundfit/common/widgets/text/based_text.dart';
+import 'package:soundfit/common/widgets/text/title_text.dart';
 import 'package:soundfit/core/configs/theme/app_colors.dart';
 import 'package:soundfit/presentation/pages/auth/login.dart';
 import 'package:soundfit/presentation/pages/profile/changePassword.dart';
@@ -42,7 +44,7 @@ class Profile extends StatelessWidget {
                               Icon(Icons.person, size: 50, color: Colors.grey),
                         ),
                         Gap(8),
-                        TextStyled(
+                        BasedText(
                             text: '[Username] ', fontWeight: FontWeight.bold),
                       ],
                     ),
@@ -55,7 +57,7 @@ class Profile extends StatelessWidget {
                             alignment: Alignment.centerLeft,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 15.0),
-                              child: TextStyled(
+                              child: BasedText(
                                   text: 'Account', fontWeight: FontWeight.bold),
                             )),
                         Gap(10),
@@ -79,8 +81,8 @@ class Profile extends StatelessWidget {
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
                               children: [
-                                menuButton(
-                                  text: 'Edit Profile',
+                                MenuButton(
+                                  title: 'Edit Profile',
                                   icon: Icons.person,
                                   onPressed: () {
                                     Navigator.push(
@@ -92,8 +94,8 @@ class Profile extends StatelessWidget {
                                   },
                                 ),
                                 Gap(10),
-                                menuButton(
-                                  text: 'Change Password',
+                                MenuButton(
+                                  title: 'Change Password',
                                   icon: Icons.lock,
                                   onPressed: () {
                                     Navigator.push(
@@ -105,8 +107,8 @@ class Profile extends StatelessWidget {
                                   },
                                 ),
                                 Gap(10),
-                                menuButton(
-                                  text: 'Remove Account',
+                                MenuButton(
+                                  title: 'Remove Account',
                                   icon: Icons.delete,
                                   onPressed: () {
                                     Navigator.push(
@@ -132,7 +134,7 @@ class Profile extends StatelessWidget {
                             alignment: Alignment.centerLeft,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 15.0),
-                              child: TextStyled(
+                              child: BasedText(
                                   text: 'Information',
                                   fontWeight: FontWeight.bold),
                             )),
@@ -157,8 +159,8 @@ class Profile extends StatelessWidget {
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
                               children: [
-                                menuButton(
-                                  text: 'Information',
+                                MenuButton(
+                                  title: 'Information',
                                   icon: Icons.info,
                                   onPressed: () {
                                     Navigator.push(
@@ -170,8 +172,8 @@ class Profile extends StatelessWidget {
                                   },
                                 ),
                                 Gap(10),
-                                menuButton(
-                                  text: 'Logout',
+                                MenuButton(
+                                  title: 'Logout',
                                   icon: Icons.logout,
                                   onPressed: () {
                                     Navigator.push(
@@ -182,6 +184,53 @@ class Profile extends StatelessWidget {
                                     );
                                   },
                                 ),
+                                // MenuButton(
+                                //   title: 'Logout',
+                                //   icon: Icons.logout,
+                                //   onPressed: () async {
+                                //     // Show a confirmation dialog before logging out
+                                //     bool confirmLogout = await showDialog(
+                                //           context: context,
+                                //           builder: (BuildContext context) {
+                                //             return AlertDialog(
+                                //               title: Text("Logout"),
+                                //               content: Text(
+                                //                   "Are you sure you want to logout?"),
+                                //               actions: [
+                                //                 TextButton(
+                                //                   child: Text("Cancel"),
+                                //                   onPressed: () =>
+                                //                       Navigator.of(context)
+                                //                           .pop(false),
+                                //                 ),
+                                //                 TextButton(
+                                //                   child: Text("Logout"),
+                                //                   onPressed: () =>
+                                //                       Navigator.of(context)
+                                //                           .pop(true),
+                                //                 ),
+                                //               ],
+                                //             );
+                                //           },
+                                //         ) ??
+                                //         false;
+
+                                //     if (confirmLogout) {
+                                //       // Perform logout logic
+                                //       await sl<SignoutUseCase>()
+                                //           .call(); // Call the logout use case
+
+                                //       // Navigate to the login page and clear the navigation stack
+                                //       Navigator.pushAndRemoveUntil(
+                                //         context,
+                                //         MaterialPageRoute(
+                                //             builder: (BuildContext context) =>
+                                //                 Login()),
+                                //         (route) => false,
+                                //       );
+                                //     }
+                                //   },
+                                // )
                               ],
                             ),
                           ),
@@ -193,65 +242,6 @@ class Profile extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget TextStyled(
-      {required String text, FontWeight? fontWeight = FontWeight.normal}) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: fontWeight,
-        fontFamily: GoogleFonts.poppins().fontFamily,
-        color: Colors.black,
-      ),
-    );
-  }
-
-  Widget TitleText({required String text, TextAlign? textAlign}) {
-    return Text(
-      text,
-      textAlign: textAlign,
-      style: GoogleFonts.lexendDeca(fontSize: 24, fontWeight: FontWeight.w900),
-    );
-  }
-
-  Widget menuButton(
-      {required String text,
-      required IconData icon,
-      required VoidCallback onPressed}) {
-    Color color = text == 'Logout' || text == 'Remove Account'
-        ? AppColors.red
-        : Colors.black;
-    return TextButton(
-      onPressed: onPressed,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Icon(
-                icon,
-                color: color,
-              ),
-              Gap(10),
-              Text(
-                text,
-                style: TextStyle(
-                  color: color,
-                ),
-              ),
-            ],
-          ),
-          if (text != 'Logout')
-            Icon(
-              Icons.arrow_forward_ios,
-              color: color,
-              size: 16,
-            ),
         ],
       ),
     );

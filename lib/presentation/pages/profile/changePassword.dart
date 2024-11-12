@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:soundfit/core/configs/theme/app_colors.dart';
+import 'package:soundfit/common/widgets/text/based_text.dart';
+import 'package:soundfit/common/widgets/text/title_text.dart';
 
 class ChangePassword extends StatelessWidget {
   ChangePassword({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class ChangePassword extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: TitleText(text: 'Change Password', textAlign: TextAlign.center),
+        title: TitleText(text: 'Password', textAlign: TextAlign.center),
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
@@ -44,7 +45,10 @@ class ChangePassword extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // New Password field
-                  TextStyled(text: "New Password", fontSize: 16),
+                  BasedText(
+                      text: "New Password",
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
                   SizedBox(height: 8),
                   TextField(
                     controller: _newPassword,
@@ -59,7 +63,10 @@ class ChangePassword extends StatelessWidget {
                   Gap(16),
 
                   // New Password field
-                  TextStyled(text: "Confirm New Password", fontSize: 16),
+                  BasedText(
+                      text: "Confirm New Password",
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
                   SizedBox(height: 8),
                   TextField(
                     controller: _newPasswordConfirm,
@@ -76,29 +83,6 @@ class ChangePassword extends StatelessWidget {
             ))
           ],
         ),
-      ),
-    );
-  }
-
-  Widget TitleText({required String text, TextAlign? textAlign}) {
-    return Text(
-      text,
-      textAlign: textAlign,
-    );
-  }
-
-  Widget TextStyled(
-      {required String text,
-      required double fontSize,
-      FontWeight fontWeight = FontWeight.bold}) {
-    return Text(
-      text,
-      textAlign: TextAlign.justify,
-      style: TextStyle(
-        fontSize: fontSize,
-        fontWeight: fontWeight,
-        color: AppColors.black,
-        fontFamily: 'Poppins',
       ),
     );
   }

@@ -93,7 +93,7 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ),
-              
+
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Text('forgot password?', style: TextStyle(color: Colors.grey)),
                 TextButton(
