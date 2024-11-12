@@ -60,32 +60,36 @@ class Library extends StatelessWidget {
                               SongCard(
                                   songTitle: "Young and Beautiful",
                                   artistName: "Lana Del Ray",
+                                  image: Image.asset("assets/images/YnB.jpg"),
+                                  onPressed: () {}),
+                              SongCard(
+                                  songTitle: "Paradise",
+                                  artistName: "Young Man",
                                   image: Image.asset(
                                       "assets/images/SongCover.jpg"),
                                   onPressed: () {}),
                               SongCard(
-                                  songTitle: "Young and Beautiful",
+                                  songTitle: "Born To Die",
                                   artistName: "Lana Del Ray",
-                                  image: Image.asset(
-                                      "assets/images/SongCover.jpg"),
+                                  image:
+                                      Image.asset("assets/images/Artist.jpg"),
                                   onPressed: () {}),
                               SongCard(
                                   songTitle: "Young and Beautiful",
                                   artistName: "Lana Del Ray",
+                                  image: Image.asset("assets/images/YnB.jpg"),
+                                  onPressed: () {}),
+                              SongCard(
+                                  songTitle: "Paradise",
+                                  artistName: "Young Man",
                                   image: Image.asset(
                                       "assets/images/SongCover.jpg"),
                                   onPressed: () {}),
                               SongCard(
-                                  songTitle: "Young and Beautiful",
+                                  songTitle: "Born To Die",
                                   artistName: "Lana Del Ray",
-                                  image: Image.asset(
-                                      "assets/images/SongCover.jpg"),
-                                  onPressed: () {}),
-                              SongCard(
-                                  songTitle: "Young and Beautiful",
-                                  artistName: "Lana Del Ray",
-                                  image: Image.asset(
-                                      "assets/images/SongCover.jpg"),
+                                  image:
+                                      Image.asset("assets/images/Artist.jpg"),
                                   onPressed: () {}),
                             ],
                           ),
@@ -110,28 +114,21 @@ class Library extends StatelessWidget {
                             scrollDirection: Axis.horizontal,
                             children: <Widget>[
                               SongCard(
-                                  songTitle: "Young and Beautiful",
-                                  artistName: "Lana Del Ray",
+                                  songTitle: "Paradise",
+                                  artistName: "Young Man",
                                   image: Image.asset(
                                       "assets/images/SongCover.jpg"),
                                   onPressed: () {}),
                               SongCard(
                                   songTitle: "Young and Beautiful",
                                   artistName: "Lana Del Ray",
-                                  image: Image.asset(
-                                      "assets/images/SongCover.jpg"),
+                                  image: Image.asset("assets/images/YnB.jpg"),
                                   onPressed: () {}),
                               SongCard(
-                                  songTitle: "Young and Beautiful",
+                                  songTitle: "Born To Die",
                                   artistName: "Lana Del Ray",
-                                  image: Image.asset(
-                                      "assets/images/SongCover.jpg"),
-                                  onPressed: () {}),
-                              SongCard(
-                                  songTitle: "Young and Beautiful",
-                                  artistName: "Lana Del Ray",
-                                  image: Image.asset(
-                                      "assets/images/SongCover.jpg"),
+                                  image:
+                                      Image.asset("assets/images/Artist.jpg"),
                                   onPressed: () {}),
                             ],
                           ),

@@ -11,7 +11,7 @@ class BasedText extends StatelessWidget {
       {required this.text,
       this.fontSize = 18,
       this.fontWeight = FontWeight.normal,
-      this.fontFamily = "LexendGiga", 
+      this.fontFamily = "LexendGiga",
       this.textAlign = TextAlign.justify,
       Key? key})
       : super(key: key);

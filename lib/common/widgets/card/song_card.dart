@@ -28,7 +28,14 @@ class SongCard extends StatelessWidget {
             // color: AppColors.grey,
             width: 140,
             height: 160,
-            child: image,
+            // child: image,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              image: DecorationImage(
+                image: image.image,
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
           SizedBox(
             width: 140,

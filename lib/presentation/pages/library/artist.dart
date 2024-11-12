@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:soundfit/common/widgets/card/artist_card.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
+import 'package:soundfit/presentation/pages/profileArtist/profileArtist.dart';
 
 class Artist extends StatelessWidget {
   const Artist({super.key});
@@ -40,17 +41,41 @@ class Artist extends StatelessWidget {
                         child: Column(
                           children: [
                             ArtistCard(
-                                title: "Lana Del Rey",
-                                image: Image.asset("assets/images/Artist.jpg"),
-                                onPressed: () {}),
+                              title: "Lana Del Rey",
+                              image: Image.asset("assets/images/Artist.jpg"),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ProfileArtist()),
+                                );
+                              },
+                            ),
                             ArtistCard(
-                                title: "Lana Del Rey",
-                                image: Image.asset("assets/images/Artist.jpg"),
-                                onPressed: () {}),
+                              title: "Lana Del Rey",
+                              image: Image.asset("assets/images/Artist.jpg"),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ProfileArtist()),
+                                );
+                              },
+                            ),
                             ArtistCard(
-                                title: "Lana Del Rey",
-                                image: Image.asset("assets/images/Artist.jpg"),
-                                onPressed: () {})
+                              title: "Lana Del Rey",
+                              image: Image.asset("assets/images/Artist.jpg"),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ProfileArtist()),
+                                );
+                              },
+                            )
                           ],
                         ),
                       ),
