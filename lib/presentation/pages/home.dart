@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:soundfit/presentation/pages/playMusic.dart';
+import 'package:soundfit/common/widgets/card/song_card.dart';
+import 'package:soundfit/common/widgets/text/based_text.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -18,182 +18,179 @@ class HomePage extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(    
-                children: [
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Column(
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Column(
+                      children: [
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            TitleText(
-                                text: 'Followed Artist',
-                                textAlign: TextAlign.left),
-                            Gap(20.0),
+                            BasedText(
+                              text: 'Followed Artist',
+                              fontWeight: FontWeight.bold,
+                            ),
                             SizedBox(
                               height: 130,
                               child: ListView(
                                 // This next line does the trick.
                                 scrollDirection: Axis.horizontal,
                                 children: <Widget>[
-                                  for (int i = 0; i < 5; i++)
-                                    Column(
-                                      children: [
-                                        TextButton(
-                                          style: TextButton.styleFrom(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 1),
-                                          ),
-                                          onPressed: () {},
-                                          child: Container(
-                                              width: 100,
-                                              height: 100,
-                                              decoration: BoxDecoration(
-                                                color: Colors
-                                                    .white, // Warna latar belakang untuk kontras
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.black
-                                                        .withOpacity(
-                                                            0.1), // Warna bayangan
-                                                    spreadRadius:
-                                                        2, // Seberapa jauh bayangan menyebar
-                                                    blurRadius:
-                                                        3, // Ketajaman bayangan
-                                                  ),
-                                                ],
-                                              ),
-                                              child: Container(
-                                                color: Colors.white,
-                                              )
-                                              // Image.asset(
-                                              //     'images/Artist.jpg'),
-                                              ),
-                                        )
-                                      ],
-                                    )
+                                  _buildArtistCard(
+                                      image: Image.asset(
+                                          "assets/images/Artist.jpg")),
+                                  _buildArtistCard(
+                                      image:
+                                          Image.asset("assets/images/YnB.jpg")),
+                                  _buildArtistCard(
+                                      image: Image.asset(
+                                          "assets/images/SongCover.jpg")),
+                                  _buildArtistCard(
+                                      image: Image.asset(
+                                          "assets/images/Artist.jpg")),
+                                  _buildArtistCard(
+                                      image:
+                                          Image.asset("assets/images/YnB.jpg")),
+                                  _buildArtistCard(
+                                      image: Image.asset(
+                                          "assets/images/SongCover.jpg")),
                                 ],
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            TitleText(
-                                text: 'Recent', textAlign: TextAlign.left),
-                            Gap(20.0),
+                            BasedText(
+                              text: 'Recent',
+                              fontWeight: FontWeight.bold,
+                            ),
                             SizedBox(
                               height: 170,
                               child: ListView(
                                 scrollDirection: Axis.horizontal,
                                 children: <Widget>[
-                                  for (int i = 0; i < 5; i++)
-                                    Column(
-                                      children: [
-                                        TextButton(
-                                          style: TextButton.styleFrom(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 5),
-                                          ),
-                                          onPressed: () {},
-                                          child: SizedBox(
-                                            width: 250,
-                                            height: 140,
-                                            // color: Colors.grey,
-                                            child: Image.asset(
-                                                'assets/images/Artist.jpg'),
-                                          ),
-                                        )
-                                      ],
-                                    )
+                                  _buildRecentCard(),
+                                  _buildRecentCard(),
+                                  _buildRecentCard(),
+                                  _buildRecentCard(),
                                 ],
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Column(
+                        Gap(20),
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            TitleText(
-                                text: 'Recommend For You',
-                                textAlign: TextAlign.left),
-                            Gap(20.0),
+                            BasedText(
+                              text: 'Recommend For You',
+                              fontWeight: FontWeight.bold,
+                            ),
                             SizedBox(
-                              height: 150,
+                              height: 220,
                               child: ListView(
                                 // This next line does the trick.
                                 scrollDirection: Axis.horizontal,
                                 children: <Widget>[
-                                  for (int i = 0; i < 5; i++)
-                                    Column(
-                                      children: [
-                                        TextButton(
-                                          style: TextButton.styleFrom(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 5),
-                                          ),
-                                          onPressed: () => Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        PlayMusic()),
-                                          ),
-                                          child: Container(
-                                            width: 140,
-                                            height: 140,
-                                            color: Colors.grey,
-                                          ),
-                                        )
-                                      ],
-                                    )
+                                  SongCard(
+                                      songTitle: "Young and Beautiful",
+                                      artistName: "Lana Del Ray",
+                                      image:
+                                          Image.asset("assets/images/YnB.jpg"),
+                                      onPressed: () {}),
+                                  SongCard(
+                                      songTitle: "Paradise",
+                                      artistName: "Young Man",
+                                      image: Image.asset(
+                                          "assets/images/SongCover.jpg"),
+                                      onPressed: () {}),
+                                  SongCard(
+                                      songTitle: "Born To Die",
+                                      artistName: "Lana Del Ray",
+                                      image: Image.asset(
+                                          "assets/images/Artist.jpg"),
+                                      onPressed: () {}),
+                                  SongCard(
+                                      songTitle: "Young and Beautiful",
+                                      artistName: "Lana Del Ray",
+                                      image:
+                                          Image.asset("assets/images/YnB.jpg"),
+                                      onPressed: () {}),
+                                  SongCard(
+                                      songTitle: "Paradise",
+                                      artistName: "Young Man",
+                                      image: Image.asset(
+                                          "assets/images/SongCover.jpg"),
+                                      onPressed: () {}),
+                                  SongCard(
+                                      songTitle: "Born To Die",
+                                      artistName: "Lana Del Ray",
+                                      image: Image.asset(
+                                          "assets/images/Artist.jpg"),
+                                      onPressed: () {}),
                                 ],
                               ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildArtistCard({required Image image}) {
+    return TextButton(
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.symmetric(horizontal: 1),
+      ),
+      onPressed: () {},
+      child: Container(
+        width: 100,
+        height: 100,
+        decoration: BoxDecoration(
+          color: Colors.white, // Warna latar belakang untuk kontras
+          image: DecorationImage(
+            image: image.image,
+            fit: BoxFit.cover,
           ),
-        ],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1), // Warna bayangan
+              spreadRadius: 2, // Seberapa jauh bayangan menyebar
+              blurRadius: 3, // Ketajaman bayangan
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget TextStyled(
-      {required String text, FontWeight? fontWeight = FontWeight.normal}) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: fontWeight,
-        fontFamily: GoogleFonts.poppins().fontFamily,
-        color: Colors.black,
+  Widget _buildRecentCard() {
+    return TextButton(
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.symmetric(horizontal: 5),
       ),
-    );
-  }
-
-  Widget TitleText({required String text, TextAlign? textAlign}) {
-    return Text(
-      text,
-      textAlign: textAlign,
-      style: GoogleFonts.lexendDeca(fontSize: 24, fontWeight: FontWeight.w900),
+      onPressed: () {},
+      child: SizedBox(
+        width: 250,
+        height: 140,
+        // color: Colors.grey,
+        child: Image.asset('assets/images/Artist.jpg'),
+      ),
     );
   }
 }

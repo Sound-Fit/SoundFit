@@ -1,13 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:soundfit/core/configs/theme/app_theme.dart';
 import 'package:soundfit/firebase_options.dart';
-import 'package:soundfit/presentation/pages/home.dart';
-import 'package:soundfit/presentation/pages/library/artist.dart';
-import 'package:soundfit/presentation/pages/library/playlist.dart';
+// import 'package:soundfit/presentation/pages/home.dart';
+// import 'package:soundfit/presentation/pages/library/artist.dart';
+// import 'package:soundfit/presentation/pages/library/playlist.dart';
 import 'package:soundfit/presentation/pages/splashPage.dart';
-import 'package:soundfit/presentation/widgets/navBar.dart';
+// import 'package:soundfit/presentation/widgets/navBar.dart';
 import 'package:soundfit/service_locator.dart';
 // import 'package:soundfit/presentation/pages/camera/camera.dart';
 // import 'package:soundfit/presentation/pages/welcomePage.dart';
