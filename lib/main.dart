@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:soundfit/core/configs/theme/app_theme.dart';
@@ -16,9 +17,9 @@ import 'package:soundfit/service_locator.dart';
 // import 'package:soundfit/presentation/pages/profile/editProfile.dart';
 // import 'package:soundfit/presentation/pages/playMusic.dart';
 
-Future <void> main() async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -29,13 +30,15 @@ Future <void> main() async{
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+  User? user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'SoundFit',
       theme: AppTheme.lightTheme,
+      initialRoute: user != null ? '/home' : '/',
       home: SplashPage(),
       // initialRoute: '/',
       // routes: {

@@ -22,7 +22,7 @@ class Genre extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20.0),
             child: Image.asset(
-              'images/genre.jpg',
+              'assets/images/genre.jpg',
               width: 300,
               height: 300,
               fit: BoxFit.cover,
@@ -39,7 +39,7 @@ class Genre extends StatelessWidget {
                     album: 'Get Weird',
                     year: '2015',
                     songTitle: 'Black Magic',
-                    albumImage: 'images/SongCover.jpg',
+                    albumImage: 'assets/images/SongCover.jpg',
                     textStyle:
                         GoogleFonts.poppins(fontSize: 16, color: Colors.black),
                     songTitleStyle: GoogleFonts.poppins(

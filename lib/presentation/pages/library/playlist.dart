@@ -53,7 +53,7 @@ class Playlist extends StatelessWidget {
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(8),
                                         child:
-                                            Image.asset('images/SongCover.jpg'),
+                                            Image.asset('assets/images/SongCover.jpg'),
                                       ),
                                     ),
                                     Gap(15),

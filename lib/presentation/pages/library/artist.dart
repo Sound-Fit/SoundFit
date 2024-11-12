@@ -68,7 +68,7 @@ class Artist extends StatelessWidget {
                                       child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(25.0),
-                                        child: Image.asset('images/Artist.jpg'),
+                                        child: Image.asset('assets/images/Artist.jpg'),
                                       ),
                                     ),
                                     Gap(15),

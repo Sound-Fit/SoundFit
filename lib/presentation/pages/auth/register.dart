@@ -8,12 +8,18 @@ import 'package:soundfit/domain/usecases/auth/signup.dart';
 import 'package:soundfit/presentation/pages/auth/login.dart';
 import 'package:soundfit/service_locator.dart';
 
-class Register extends StatelessWidget {
+class Register extends StatefulWidget {
   Register({super.key});
 
+  @override
+  _RegisterState createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
   final TextEditingController _name = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
+  bool _isPasswordHidden = true;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +56,8 @@ class Register extends StatelessWidget {
                     fontFamily: GoogleFonts.lexendGiga().fontFamily)),
             Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               Gap(30.0),
+
+              // Username text field
               TextField(
                   controller: _name,
                   autofocus: true,
@@ -59,6 +67,8 @@ class Register extends StatelessWidget {
                           borderRadius: BorderRadius.circular(15.0)),
                       labelText: 'Username')),
               Gap(30.0),
+
+              // Email text field
               TextField(
                   controller: _email,
                   decoration: InputDecoration(
@@ -67,15 +77,35 @@ class Register extends StatelessWidget {
                           borderRadius: BorderRadius.circular(15.0)),
                       labelText: 'Email')),
               Gap(30.0),
+
+              // Password text field
               TextField(
-                  controller: _password,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                      filled: true,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0)),
-                      labelText: 'Password')),
+                controller: _password,
+                obscureText:
+                    _isPasswordHidden, // Hide/show password based on _isPasswordHidden
+                decoration: InputDecoration(
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  labelText: 'Password',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isPasswordHidden
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordHidden = !_isPasswordHidden;
+                      });
+                    },
+                  ),
+                ),
+              ),
               Gap(30.0),
+
+
               BasicButton(
                   onPressed: () async {
                     var result = await sl<SignupUseCase>().call(
