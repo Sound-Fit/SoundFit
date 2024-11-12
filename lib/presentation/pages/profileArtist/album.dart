@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:soundfit/common/widgets/button/song_button.dart';
-import 'package:soundfit/common/widgets/card/song_card.dart';
-import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
 
 class Album extends StatelessWidget {

@@ -49,7 +49,7 @@ class Playlist extends StatelessWidget {
                                     Image.asset('assets/images/SongCover.jpg'),
                                 onPressed: () {}),
                             PlaylistCard(
-                                title: "Reccomendations",
+                                title: "Recomendations",
                                 image:
                                     Image.asset('assets/images/SongCover.jpg'),
                                 onPressed: () {}),

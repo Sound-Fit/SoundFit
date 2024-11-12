@@ -35,20 +35,20 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
-  User? user = FirebaseAuth.instance.currentUser;
+  // User? user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'SoundFit',
       theme: AppTheme.lightTheme,
-      initialRoute: user != null ? '/home' : '/',
+      // initialRoute: user != null ? '/home' : '/',
       home: SplashPage(),
-      routes: {
-        '/home': (context) => CustomNavBar(),
-        '/library/artist': (context) => Artist(),
-        '/library/playlist': (context) => Playlist(),
-      },
+      // routes: {
+      //   '/home': (context) => CustomNavBar(),
+      //   '/library/artist': (context) => Artist(),
+      //   '/library/playlist': (context) => Playlist(),
+      // },
       // initialRoute: '/',
       // routes: {
       //   '/': (context) => SplashPage(),

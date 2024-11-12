@@ -4,6 +4,8 @@ import 'package:soundfit/common/widgets/button/menu_button.dart';
 import 'package:soundfit/common/widgets/card/song_card.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
+import 'package:soundfit/presentation/pages/Library/artist.dart';
+import 'package:soundfit/presentation/pages/library/playlist.dart';
 
 class Library extends StatelessWidget {
   Library({super.key});
@@ -29,14 +31,26 @@ class Library extends StatelessWidget {
                     child: Column(
                       children: [
                         MenuButton(
-                            onPressed: () => Navigator.pushNamed(
-                                context, '/library/playlist'),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        Playlist()),
+                              );
+                            },
                             title: "Playlist",
                             icon: Icons.playlist_play,
                             iconSize: 20),
                         MenuButton(
-                            onPressed: () =>
-                                Navigator.pushNamed(context, '/library/artist'),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        Artist()),
+                              );
+                            },
                             title: "Artist",
                             icon: Icons.mic,
                             iconSize: 20),
