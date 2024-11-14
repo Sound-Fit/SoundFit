@@ -1,27 +1,40 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:soundfit/presentation/pages/home.dart';
 import 'package:soundfit/presentation/pages/explore/explore.dart';
 import 'package:soundfit/presentation/pages/camera/camera.dart';
 import 'package:soundfit/presentation/pages/library/library.dart';
+import 'package:soundfit/presentation/pages/playlist/recommendation.dart';
 import 'package:soundfit/presentation/pages/profile/profile.dart';
 
 class CustomNavBar extends StatefulWidget {
-  const CustomNavBar({super.key});
+  final CameraDescription camera;
+  final int selectedIndex;
+
+  const CustomNavBar({Key? key, required this.camera, this.selectedIndex = 0})
+      : super(key: key);
 
   @override
   _CustomNavBarState createState() => _CustomNavBarState();
 }
 
 class _CustomNavBarState extends State<CustomNavBar> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget
+        .selectedIndex; // Gunakan `selectedIndex` dari widget sebagai nilai awal
+  }
 
   // List of pages to navigate
   final List<Widget> _pages = [
     HomePage(),
     ExplorePage(),
-    CameraScreen(),
     Library(),
     Profile(),
+    RecommendationPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -86,7 +99,12 @@ class _CustomNavBarState extends State<CustomNavBar> {
                     icon: Icon(Icons.camera,
                         size: 50,
                         color: Colors.black), // Bigger size for the camera icon
-                    onPressed: () => Navigator.pushNamed(context, '/camera'),
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              CameraScreen(camera: widget.camera)),
+                    ),
                     padding: EdgeInsets.zero, // Remove default padding
                     constraints:
                         BoxConstraints(), // Remove constraints for better centering
@@ -96,13 +114,13 @@ class _CustomNavBarState extends State<CustomNavBar> {
                 IconButton(
                   icon: Icon(Icons.playlist_add, size: 30),
                   onPressed: () {
-                    _onItemTapped(3);
+                    _onItemTapped(2);
                   },
                 ),
                 IconButton(
                   icon: Icon(Icons.account_circle, size: 30),
                   onPressed: () {
-                    _onItemTapped(4);
+                    _onItemTapped(3);
                   },
                 ),
               ],

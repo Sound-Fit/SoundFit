@@ -6,8 +6,6 @@ import 'package:soundfit/core/configs/theme/app_colors.dart';
 import 'package:soundfit/data/models/auth/signin_user_req.dart';
 import 'package:soundfit/domain/usecases/auth/signin.dart';
 import 'package:soundfit/presentation/pages/forgetPassword/forgetPassword.dart';
-// import 'package:soundfit/presentation/pages/home.dart';
-import 'package:soundfit/presentation/widgets/navBar.dart';
 import 'package:soundfit/service_locator.dart';
 
 class Login extends StatefulWidget {
@@ -143,11 +141,9 @@ class _LoginState extends State<Login> {
                           );
                         },
                         (r) {
-                          Navigator.pushAndRemoveUntil(
+                          Navigator.pushNamedAndRemoveUntil(
                             context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    CustomNavBar()),
+                            '/home',
                             (route) => false,
                           );
                         },

@@ -1,22 +1,27 @@
-import 'dart:io';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:camera/camera.dart';
+import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
+import 'package:soundfit/common/widgets/text/title_text.dart';
+import 'displaypicture_screen.dart';
 
 class CameraScreen extends StatefulWidget {
-  const CameraScreen({super.key});
+  const CameraScreen({
+    super.key,
+    required this.camera,
+  });
+
+  final CameraDescription camera;
 
   @override
-  _CameraScreenState createState() => _CameraScreenState();
+  CameraScreenState createState() => CameraScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> {
-  CameraController? _cameraController;
+class CameraScreenState extends State<CameraScreen> {
+  late CameraController _controller;
   Future<void>? _initializeControllerFuture;
-  File? _image;
-  CameraLensDirection _cameraLensDirection = CameraLensDirection.back;
+  List<CameraDescription> _cameras = [];
+  int _selectedCameraIndex = 0;
 
   @override
   void initState() {
@@ -25,131 +30,135 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   Future<void> _initializeCamera() async {
-    try {
-      final cameras = await availableCameras();
-      final camera = cameras.firstWhere(
-        (camera) => camera.lensDirection == _cameraLensDirection,
+    // Get the list of available cameras.
+    _cameras = await availableCameras();
+
+    if (_cameras.isNotEmpty) {
+      // Initialize the camera controller with the selected camera.
+      _controller = CameraController(
+        _cameras[_selectedCameraIndex],
+        ResolutionPreset.medium,
       );
 
-      _cameraController = CameraController(
-        camera,
-        ResolutionPreset.high,
-      );
-
-      _initializeControllerFuture = _cameraController!.initialize();
+      // Initialize the controller and store it in a Future.
+      _initializeControllerFuture = _controller.initialize();
       setState(() {});
-    } catch (e) {
-      print("Error initializing camera: $e");
+    }
+  }
+
+  void _switchCamera() {
+    if (_cameras.isNotEmpty) {
+      setState(() {
+        _selectedCameraIndex = (_selectedCameraIndex + 1) % _cameras.length;
+      });
+      _initializeCamera();
     }
   }
 
   @override
   void dispose() {
-    _cameraController?.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
-  Future<void> _flipCamera() async {
-    setState(() {
-      _cameraLensDirection = _cameraLensDirection == CameraLensDirection.back
-          ? CameraLensDirection.front
-          : CameraLensDirection.back;
-    });
-    await _initializeCamera();
-  }
-
-  Future<void> _takePicture() async {
+  Future<void> _capturePicture() async {
     try {
       await _initializeControllerFuture;
-      final path = join(
-        (await getApplicationDocumentsDirectory()).path,
-        '${DateTime.now()}.png',
+      final image = await _controller.takePicture();
+      if (!mounted) return;
+
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => DisplayPictureScreen(
+            imagePath: image.path,
+          ),
+        ),
       );
-      await _cameraController!.takePicture().then((XFile file) {
-        file.saveTo(path);
-      });
-      setState(() {
-        _image = File(path);
-      });
     } catch (e) {
-      print("Error taking picture: $e");
+      print(e);
     }
   }
 
-  Future<void> _uploadImage() async {
+  Future<void> _uploadPicture() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = pickedFile != null ? File(pickedFile.path) : null;
-    });
+
+    if (pickedFile != null && mounted) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => DisplayPictureScreen(
+            imagePath: pickedFile.path,
+          ),
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
-      body: _initializeControllerFuture == null
-          ? const Center(child: CircularProgressIndicator())
-          : FutureBuilder<void>(
-              future: _initializeControllerFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return Stack(
-                    children: [
-                      SizedBox.expand(
-                        child: CameraPreview(_cameraController!),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          height: 100,
-                          decoration: const BoxDecoration(
-                            color: Colors.black54,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.flip_camera_ios,
-                                    color: Colors.white),
-                                onPressed: _flipCamera,
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.camera,
-                                    color: Colors.white),
-                                onPressed: _takePicture,
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.image,
-                                    color: Colors.white),
-                                onPressed: _uploadImage,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      if (_image != null)
-                        Positioned.fill(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: FileImage(_image!),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
-                    ],
-                  );
-                } else if (snapshot.connectionState ==
-                    ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  return const Center(child: Text("Error initializing camera"));
-                }
-              },
+      appBar: AppBar(
+        title: TitleText(text: 'Fit My Playlist', textAlign: TextAlign.center),
+        backgroundColor: Colors.white,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Camera Screen
+            if (_initializeControllerFuture != null)
+              FutureBuilder<void>(
+                future: _initializeControllerFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return SizedBox(
+                        height: screenHeight * 0.68,
+                        child: CameraPreview(_controller));
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
+              )
+            else
+              const Center(child: CircularProgressIndicator()),
+
+            Gap(30),
+
+            // Buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.flip_camera_android,
+                    size: 40,
+                    color: Colors.grey,
+                  ),
+                  onPressed: _switchCamera,
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.circle,
+                    size: 70,
+                  ),
+                  onPressed: _capturePicture,
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.add_circle_outline,
+                    size: 40,
+                    color: Colors.grey,
+                  ),
+                  onPressed: _uploadPicture,
+                ),
+              ],
             ),
+          ],
+        ),
+      ),
     );
   }
 }
