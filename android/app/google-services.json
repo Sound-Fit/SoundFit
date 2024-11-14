@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1065763588085",
+    "firebase_url": "https://soundfit-bfedd-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "soundfit-bfedd",
     "storage_bucket": "soundfit-bfedd.firebasestorage.app"
   },
@@ -12,7 +13,12 @@
           "package_name": "com.example.soundfit"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1065763588085-04oj51a3lbs3ktgudqrreq7sh5flol67.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD1mBFvb4DUDkV-fEdJmLNXuvQKShfeME8"
@@ -20,7 +26,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1065763588085-04oj51a3lbs3ktgudqrreq7sh5flol67.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1065763588085-6a6qu987o5qc81r6b52nhlbqmo18a0om.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.soundfit"
+              }
+            }
+          ]
         }
       }
     }
