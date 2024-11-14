@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:soundfit/common/widgets/card/genre_card.dart';
+import 'package:soundfit/common/widgets/card/song_card.dart';
+import 'package:soundfit/common/widgets/text/based_text.dart';
+import 'package:soundfit/common/widgets/text/title_text.dart';
+import 'package:soundfit/core/configs/theme/app_colors.dart';
+import 'package:soundfit/presentation/pages/explore/genre.dart';
+import 'package:soundfit/presentation/pages/explore/search.dart';
 
 class ExplorePage extends StatelessWidget {
   const ExplorePage({super.key});
@@ -17,38 +23,41 @@ class ExplorePage extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Gap(20),
-            // Search bar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: TextField(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              // Search bar
+              TextField(
                 onTap: () {
-                  // Navigate to search page when tapped
-                  Navigator.pushNamed(context, '/explore/search');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => Search()),
+                  );
                 },
                 readOnly: true, // Prevent manual text input
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search, color: Colors.grey),
+                  prefixIcon: Icon(Icons.search, color: AppColors.grey),
                   hintText: 'Tap to Search',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(15),
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
                   fillColor: Colors.grey[200],
                 ),
               ),
-            ),
-            Gap(10),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
+              Gap(20.0),
+
+              // Recommend For You
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TitleText(
-                      text: 'Recommend For You', textAlign: TextAlign.left),
+                  BasedText(
+                    text: 'Recommend For You',
+                    fontWeight: FontWeight.bold,
+                  ),
                   Gap(10.0),
                   SizedBox(
                     height: 220,
@@ -56,111 +65,84 @@ class ExplorePage extends StatelessWidget {
                       // This next line does the trick.
                       scrollDirection: Axis.horizontal,
                       children: <Widget>[
-                        for (int i = 0; i < 5; i++) SongCard(context)
+                        SongCard(
+                            songTitle: "Young and Beautiful",
+                            artistName: "Lana Del Ray",
+                            image: Image.asset("assets/images/YnB.jpg"),
+                            onPressed: () {}),
+                        SongCard(
+                            songTitle: "Paradise",
+                            artistName: "Young Man",
+                            image: Image.asset("assets/images/SongCover.jpg"),
+                            onPressed: () {}),
+                        SongCard(
+                            songTitle: "Born To Die",
+                            artistName: "Lana Del Ray",
+                            image: Image.asset("assets/images/Artist.jpg"),
+                            onPressed: () {}),
+                        SongCard(
+                            songTitle: "Young and Beautiful",
+                            artistName: "Lana Del Ray",
+                            image: Image.asset("assets/images/YnB.jpg"),
+                            onPressed: () {}),
+                        SongCard(
+                            songTitle: "Paradise",
+                            artistName: "Young Man",
+                            image: Image.asset("assets/images/SongCover.jpg"),
+                            onPressed: () {}),
+                        SongCard(
+                            songTitle: "Born To Die",
+                            artistName: "Lana Del Ray",
+                            image: Image.asset("assets/images/Artist.jpg"),
+                            onPressed: () {}),
                       ],
                     ),
                   ),
                 ],
               ),
-            ),
-            // Reduced space between Recommend For You and Explore by Genre
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
+              Gap(20),
+
+              // Explore by Genre
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Gap(5.0), // Reduced gap
-                  TitleText(
-                      text: 'Explore by Genre', textAlign: TextAlign.left),
+                  BasedText(
+                    text: 'Explore by Genre',
+                    fontWeight: FontWeight.bold,
+                  ),
                   Gap(20.0),
-                  // Explore by Genre Grid
                   SizedBox(
-                    height: 300, // Adjust this height based on the grid
+                    height: 300,
                     child: GridView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4, // 4 genres per row
+                        crossAxisCount: 4,
                         crossAxisSpacing: 1.0,
                         mainAxisSpacing: 3.0,
                         childAspectRatio: 1,
                       ),
-                      itemCount: 8, // Number of genres
+                      itemCount: 8,
                       itemBuilder: (context, index) {
-                        return GestureDetector(
+                        return GenreCard(
+                          image: Image.asset('assets/images/genre.jpg'),
                           onTap: () {
-                            Navigator.pushNamed(context, '/explore/genre');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) => Genre()),
+                            );
                           },
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  height: 100,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    color:
-                                        Colors.grey[300], // Placeholder color
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
                         );
                       },
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    );
-  }
-
-  Widget SongCard(BuildContext context) {
-    return TextButton(
-      style: TextButton.styleFrom(
-        padding: EdgeInsets.all(8),
-      ),
-      onPressed: () => Navigator.pushNamed(context, '/playMusic'),
-      child: Column(
-        children: [
-          Container(
-            color: Colors.grey,
-            width: 140,
-            height: 160,
-          ),
-          Text(
-            'Title Song',
-            style: TextStyle(color: Colors.black),
-          ),
-          Text(
-            'Artist',
-            style: TextStyle(color: Colors.black),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget TextStyled({required String text}) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        fontFamily: GoogleFonts.poppins().fontFamily,
-        color: Colors.black,
-      ),
-    );
-  }
-
-  Widget TitleText({required String text, TextAlign? textAlign}) {
-    return Text(
-      text,
-      textAlign: textAlign,
-      style: GoogleFonts.lexendDeca(fontSize: 24, fontWeight: FontWeight.w900),
     );
   }
 }

@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:soundfit/common/widgets/button/menu_button.dart';
+import 'package:soundfit/common/widgets/card/song_card.dart';
+import 'package:soundfit/common/widgets/text/based_text.dart';
+import 'package:soundfit/common/widgets/text/title_text.dart';
+import 'package:soundfit/presentation/pages/Library/artist.dart';
+import 'package:soundfit/presentation/pages/library/playlist.dart';
 
 class Library extends StatelessWidget {
-  const Library({super.key});
+  Library({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Center(
+            child: TitleText(text: 'Library', textAlign: TextAlign.center)),
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+      ),
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          Gap(31),
-          AppBar(
-            title: Center(
-                child: TitleText(text: 'Library', textAlign: TextAlign.center)),
-            backgroundColor: Colors.white,
-            automaticallyImplyLeading: false,
-          ),
-          Gap(20),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -27,47 +30,30 @@ class Library extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Column(
                       children: [
-                        TextButton(
-                            onPressed: () => Navigator.pushNamed(
-                                context, '/library/playlist'),
-                            child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.playlist_play,
-                                        color: Colors.black,
-                                        size: 30,
-                                      ),
-                                      SizedBox(width: 8.0),
-                                      TextStyled(text: 'Playlist'),
-                                    ],
-                                  ),
-                                  TextStyled(text: '>'),
-                                ])),
-                        Gap(20.0),
-                        TextButton(
-                            onPressed: () =>
-                                Navigator.pushNamed(context, '/library/artist'),
-                            child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.mic,
-                                        color: Colors.black,
-                                        size: 30,
-                                      ),
-                                      SizedBox(width: 8.0),
-                                      TextStyled(text: 'Artist'),
-                                    ],
-                                  ),
-                                  TextStyled(text: '>'),
-                                ])),
+                        MenuButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        Playlist()),
+                              );
+                            },
+                            title: "Playlist",
+                            icon: Icons.playlist_play,
+                            iconSize: 20),
+                        MenuButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        Artist()),
+                              );
+                            },
+                            title: "Artist",
+                            icon: Icons.mic,
+                            iconSize: 20),
                       ],
                     ),
                   ),
@@ -76,8 +62,8 @@ class Library extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TitleText(
-                            text: 'Liked Song', textAlign: TextAlign.left),
+                        BasedText(
+                            text: 'Liked Song', fontWeight: FontWeight.bold),
                         Gap(10.0),
                         SizedBox(
                           height: 220,
@@ -85,7 +71,40 @@ class Library extends StatelessWidget {
                             // This next line does the trick.
                             scrollDirection: Axis.horizontal,
                             children: <Widget>[
-                              for (int i = 0; i < 5; i++) SongCard(context),
+                              SongCard(
+                                  songTitle: "Young and Beautiful",
+                                  artistName: "Lana Del Ray",
+                                  image: Image.asset("assets/images/YnB.jpg"),
+                                  onPressed: () {}),
+                              SongCard(
+                                  songTitle: "Paradise",
+                                  artistName: "Young Man",
+                                  image: Image.asset(
+                                      "assets/images/SongCover.jpg"),
+                                  onPressed: () {}),
+                              SongCard(
+                                  songTitle: "Born To Die",
+                                  artistName: "Lana Del Ray",
+                                  image:
+                                      Image.asset("assets/images/Artist.jpg"),
+                                  onPressed: () {}),
+                              SongCard(
+                                  songTitle: "Young and Beautiful",
+                                  artistName: "Lana Del Ray",
+                                  image: Image.asset("assets/images/YnB.jpg"),
+                                  onPressed: () {}),
+                              SongCard(
+                                  songTitle: "Paradise",
+                                  artistName: "Young Man",
+                                  image: Image.asset(
+                                      "assets/images/SongCover.jpg"),
+                                  onPressed: () {}),
+                              SongCard(
+                                  songTitle: "Born To Die",
+                                  artistName: "Lana Del Ray",
+                                  image:
+                                      Image.asset("assets/images/Artist.jpg"),
+                                  onPressed: () {}),
                             ],
                           ),
                         ),
@@ -97,9 +116,10 @@ class Library extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TitleText(
-                            text: 'Recently Added Song',
-                            textAlign: TextAlign.left),
+                        BasedText(
+                          text: 'Recently Added Song',
+                          fontWeight: FontWeight.bold,
+                        ),
                         Gap(10.0),
                         SizedBox(
                           height: 220,
@@ -107,7 +127,23 @@ class Library extends StatelessWidget {
                             // This next line does the trick.
                             scrollDirection: Axis.horizontal,
                             children: <Widget>[
-                              for (int i = 0; i < 5; i++) SongCard(context),
+                              SongCard(
+                                  songTitle: "Paradise",
+                                  artistName: "Young Man",
+                                  image: Image.asset(
+                                      "assets/images/SongCover.jpg"),
+                                  onPressed: () {}),
+                              SongCard(
+                                  songTitle: "Young and Beautiful",
+                                  artistName: "Lana Del Ray",
+                                  image: Image.asset("assets/images/YnB.jpg"),
+                                  onPressed: () {}),
+                              SongCard(
+                                  songTitle: "Born To Die",
+                                  artistName: "Lana Del Ray",
+                                  image:
+                                      Image.asset("assets/images/Artist.jpg"),
+                                  onPressed: () {}),
                             ],
                           ),
                         ),
@@ -121,52 +157,6 @@ class Library extends StatelessWidget {
           // Submenu buttons
         ],
       ),
-    );
-  }
-
-  Widget SongCard(BuildContext context) {
-    return TextButton(
-      style: TextButton.styleFrom(
-        padding: EdgeInsets.all(8),
-      ),
-      onPressed: () => Navigator.pushNamed(context, '/playMusic'),
-      child: Column(
-        children: [
-          Container(
-            color: Colors.grey,
-            width: 140,
-            height: 160,
-          ),
-          Text(
-            'Title Song',
-            style: TextStyle(color: Colors.black),
-          ),
-          Text(
-            'Artist',
-            style: TextStyle(color: Colors.black),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget TextStyled({required String text}) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        fontFamily: GoogleFonts.poppins().fontFamily,
-        color: Colors.black,
-      ),
-    );
-  }
-
-  Widget TitleText({required String text, TextAlign? textAlign}) {
-    return Text(
-      text,
-      textAlign: textAlign,
-      style: GoogleFonts.lexendDeca(fontSize: 24, fontWeight: FontWeight.w900),
     );
   }
 }

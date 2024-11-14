@@ -15,4 +15,14 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<Either> signin(SignInUserReq signInUserReq) async {
     return await sl<AuthFirebaseService>().signin(signInUserReq);
   }
+
+  // @override
+  // Future<Either<String, void>> signout() async {
+  //   try {
+  //     await sl<AuthFirebaseService>().signout();
+  //     return Right(null); // Sign-out successful
+  //   } catch (error) {
+  //     return Left("Failed to sign out. Please try again."); // Error message
+  //   }
+  // }
 }

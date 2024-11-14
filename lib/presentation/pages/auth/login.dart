@@ -6,15 +6,19 @@ import 'package:soundfit/core/configs/theme/app_colors.dart';
 import 'package:soundfit/data/models/auth/signin_user_req.dart';
 import 'package:soundfit/domain/usecases/auth/signin.dart';
 import 'package:soundfit/presentation/pages/forgetPassword/forgetPassword.dart';
-// import 'package:soundfit/presentation/pages/home.dart';
-import 'package:soundfit/presentation/widgets/navBar.dart';
 import 'package:soundfit/service_locator.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   Login({super.key});
 
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
+  bool _isPasswordHidden = true;
 
   @override
   Widget build(BuildContext context) {
@@ -51,21 +55,43 @@ class Login extends StatelessWidget {
                     fontFamily: GoogleFonts.lexendGiga().fontFamily)),
             Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               Gap(30.0),
+              // Email text field
               TextField(
                   controller: _email,
                   autofocus: true,
                   decoration: InputDecoration(
+                      filled: true,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0)),
                       labelText: 'Email')),
               Gap(30.0),
+
+              // Password text field
               TextField(
-                  controller: _password,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0)),
-                      labelText: 'Password')),
+                controller: _password,
+                obscureText:
+                    _isPasswordHidden, // Hide/show password based on _isPasswordHidden
+                decoration: InputDecoration(
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  labelText: 'Password',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isPasswordHidden
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordHidden = !_isPasswordHidden;
+                      });
+                    },
+                  ),
+                ),
+              ),
+
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Text('forgot password?', style: TextStyle(color: Colors.grey)),
                 TextButton(
@@ -113,17 +139,11 @@ class Login extends StatelessWidget {
                               );
                             },
                           );
-                          // var snackBar = SnackBar(
-                          //     content: Text(l),
-                          //     behavior: SnackBarBehavior.floating);
-                          // ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         },
                         (r) {
-                          Navigator.pushAndRemoveUntil(
+                          Navigator.pushNamedAndRemoveUntil(
                             context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    CustomNavBar()),
+                            '/home',
                             (route) => false,
                           );
                         },

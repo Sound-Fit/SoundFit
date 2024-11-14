@@ -1,35 +1,40 @@
+import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:soundfit/core/configs/theme/app_theme.dart';
 import 'package:soundfit/firebase_options.dart';
+import 'package:soundfit/presentation/pages/auth/login.dart';
+import 'package:soundfit/presentation/pages/auth/register.dart';
+import 'package:soundfit/presentation/pages/auth/welcomePage.dart';
 import 'package:soundfit/presentation/pages/splashPage.dart';
+import 'package:soundfit/presentation/widgets/navBar.dart';
 import 'package:soundfit/service_locator.dart';
-// import 'package:soundfit/presentation/pages/camera/camera.dart';
-// import 'package:soundfit/presentation/pages/welcomePage.dart';
-// import 'package:soundfit/presentation/pages/login.dart';
-// import 'package:soundfit/presentation/pages/register.dart';
-// import 'package:soundfit/presentation/widgets/navBar.dart';
-// import 'package:soundfit/presentation/pages/library/artist.dart';
-// import 'package:soundfit/presentation/pages/library/playlist.dart';
-// import 'package:soundfit/presentation/pages/explore/genre.dart';
-// import 'package:soundfit/presentation/pages/explore/search.dart';
-// import 'package:soundfit/presentation/pages/profile/editProfile.dart';
-// import 'package:soundfit/presentation/pages/playMusic.dart';
+import 'package:soundfit/presentation/pages/explore/genre.dart';
+import 'package:soundfit/presentation/pages/explore/search.dart';
+import 'package:soundfit/presentation/pages/profile/editProfile.dart';
+import 'package:soundfit/presentation/pages/playMusic.dart';
 
-Future <void> main() async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
+  // Obtain a list of the available cameras on the device.
+  final cameras = await availableCameras();
+  final firstCamera = cameras.first;
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
   await initializeDependencies();
 
-  runApp(MyApp());
+  runApp(MyApp(firstCamera: firstCamera));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final CameraDescription firstCamera;
+
+  MyApp({Key? key, required this.firstCamera}) : super(key: key);
+  // User? user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -37,24 +42,19 @@ class MyApp extends StatelessWidget {
       title: 'SoundFit',
       theme: AppTheme.lightTheme,
       home: SplashPage(),
-      // initialRoute: '/',
-      // routes: {
-      //   '/': (context) => SplashPage(),
-      //   // '/welcome': (context) => WelcomePage(),
-      //   // '/login': (context) => Login(),
-      //   // '/register': (context) => Register(),
-      //   '/camera': (context) => CameraScreen(),
-      //   '/home': (context) => CustomNavBar(),
-      //   '/explore': (context) => CustomNavBar(),
-      //   '/explore/genre': (context) => Genre(),
-      //   '/explore/search': (context) => Search(),
-      //   '/library': (context) => CustomNavBar(),
-      //   '/library/artist': (context) => Artist(),
-      //   '/library/playlist': (context) => Playlist(),
-      //   '/profile': (context) => CustomNavBar(),
-      //   '/profile/edit': (context) => EditProfile(),
-      //   '/playMusic': (context) => PlayMusic(),
-      // },
+      // initialRoute: user != null ? '/home' : '/',
+      routes: {
+        // '/': (context) => SplashPage(),
+        '/welcome': (context) => WelcomePage(),
+        '/login': (context) => Login(),
+        '/register': (context) => Register(),
+        '/home': (context) => CustomNavBar(camera: firstCamera),
+        '/explore/genre': (context) => Genre(),
+        '/explore/search': (context) => Search(),
+        '/profile/edit': (context) => EditProfile(),
+        '/playMusic': (context) => PlayMusic(),
+        '/recommendation': (context) => CustomNavBar(camera: firstCamera, selectedIndex: 4),
+      },
     );
   }
 }

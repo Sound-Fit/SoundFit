@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:soundfit/common/widgets/text/based_text.dart';
+import 'package:soundfit/common/widgets/text/title_text.dart';
 
 class EditProfile extends StatefulWidget {
   @override
@@ -20,33 +22,31 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: TitleText(text: 'Edit Profile', textAlign: TextAlign.center),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        actions: [
+          TextButton(
+            onPressed: () {
+              // Save logic goes here, e.g., update user profile in database
+              Navigator.pushNamed(context, '/profile');
+            },
+            child: Text(
+              'Save',
+              style: GoogleFonts.poppins(
+                color: Colors.grey,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          Gap(31),
-          AppBar(
-            title: TitleText(text: 'Edit Profile', textAlign: TextAlign.center),
-            backgroundColor: Colors.white,
-            elevation: 0,
-            centerTitle: true,
-            actions: [
-              TextButton(
-                onPressed: () {
-                  // Save logic goes here, e.g., update user profile in database
-                  Navigator.pushNamed(context, '/profile');
-                },
-                child: Text(
-                  'Save',
-                  style: GoogleFonts.poppins(
-                    color: Colors.grey,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Gap(20),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
@@ -61,7 +61,7 @@ class _EditProfileState extends State<EditProfile> {
                       child: Icon(Icons.person, size: 50, color: Colors.grey),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  Gap(16),
                   Center(
                     child: TextButton(
                       onPressed: () {
@@ -78,56 +78,51 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ),
                   SizedBox(height: 30),
+
                   // Name field
-                  Text(
-                    'Name',
-                    style: GoogleFonts.lexendDeca(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
+                  BasedText(
+                      text: "Name", fontWeight: FontWeight.bold, fontSize: 16),
                   SizedBox(height: 8),
-                  TextFormField(
+                  TextField(
                     controller: _nameController,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter your name',
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Text(
-                    'Email',
-                    style: GoogleFonts.lexendDeca(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
+                  Gap(16),
+
+                  // Email field
+                  BasedText(
+                      text: "Email", fontWeight: FontWeight.bold, fontSize: 16),
                   SizedBox(height: 8),
-                  TextFormField(
+                  TextField(
                     controller: _emailController,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'example@gmail.com',
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Text(
-                    'Password',
-                    style: GoogleFonts.lexendDeca(
-                      fontSize: 16,
+                  Gap(16),
+
+                  // Password field
+                  BasedText(
+                      text: "Password",
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
+                      fontSize: 16),
                   SizedBox(height: 8),
-                  TextFormField(
+                  TextField(
                     controller: _passwordController,
                     obscureText: _isPasswordHidden,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter your password',
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
                       suffixIcon: IconButton(
                         icon: Icon(
                           _isPasswordHidden
@@ -142,21 +137,13 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  Gap(16),
                 ],
               ),
             ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget TitleText({required String text, TextAlign? textAlign}) {
-    return Text(
-      text,
-      textAlign: textAlign,
-      style: GoogleFonts.lexendDeca(fontSize: 24, fontWeight: FontWeight.w900),
     );
   }
 }
