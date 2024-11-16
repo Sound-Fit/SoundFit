@@ -1,12 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:soundfit/common/widgets/button/basic_button.dart';
+import 'package:soundfit/common/widgets/text/title_text.dart';
 import 'package:soundfit/core/configs/theme/app_colors.dart';
-import 'package:soundfit/data/models/auth/create_user_req.dart';
-import 'package:soundfit/domain/usecases/auth/signup.dart';
 import 'package:soundfit/presentation/pages/auth/login.dart';
-import 'package:soundfit/service_locator.dart';
 
 class Register extends StatefulWidget {
   Register({super.key});
@@ -15,7 +13,22 @@ class Register extends StatefulWidget {
   _RegisterState createState() => _RegisterState();
 }
 
+Future<void> registerUser(String email, String password) async {
+  try {
+    UserCredential userCredential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+    print('User registered: ${userCredential.user?.email}');
+  } on FirebaseAuthException catch (e) {
+    print('Firebase Auth Exception: ${e.message}');
+    throw e;
+  } catch (e) {
+    print('Unknown Exception: $e');
+    throw e;
+  }
+}
+
 class _RegisterState extends State<Register> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _name = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
@@ -26,117 +39,153 @@ class _RegisterState extends State<Register> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back), // Set the back icon here
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Navigates back when pressed
+            Navigator.pop(context);
           },
         ),
-        backgroundColor:
-            Colors.transparent, // Optional: make the app bar transparent
-        elevation: 0, // Optional: remove shadow
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Hey!👋',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: GoogleFonts.lexendGiga().fontFamily),
-            ),
-            Text('Register Now!',
-                style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: GoogleFonts.lexendGiga().fontFamily)),
-            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              Gap(30.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  reverse: true,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TitleText(
+                          text: 'Hey!👋',
+                          textAlign: TextAlign.left,
+                          fontWeight: FontWeight.bold),
+                      TitleText(
+                          text: 'Register Now!',
+                          textAlign: TextAlign.left,
+                          fontWeight: FontWeight.bold),
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Gap(30.0),
 
-              // Username text field
-              TextField(
-                  controller: _name,
-                  autofocus: true,
-                  decoration: InputDecoration(
-                      filled: true,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0)),
-                      labelText: 'Username')),
-              Gap(30.0),
+                            // Username text field
+                            TextFormField(
+                                controller: _name,
+                                autofocus: true,
+                                decoration: InputDecoration(
+                                    filled: true,
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15.0)),
+                                    labelText: 'Username'),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your username';
+                                  }
+                                  return null;
+                                }),
+                            Gap(30.0),
 
-              // Email text field
-              TextField(
-                  controller: _email,
-                  decoration: InputDecoration(
-                      filled: true,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0)),
-                      labelText: 'Email')),
-              Gap(30.0),
+                            // Email text field
+                            TextFormField(
+                              controller: _email,
+                              decoration: InputDecoration(
+                                filled: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                labelText: 'Email',
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your email';
+                                }
+                                // Email regex for validation
+                                final emailRegex =
+                                    RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+                                if (!emailRegex.hasMatch(value)) {
+                                  return 'Please enter a valid email';
+                                }
+                                return null;
+                              },
+                            ),
+                            Gap(30.0),
 
-              // Password text field
-              TextField(
-                controller: _password,
-                obscureText:
-                    _isPasswordHidden, // Hide/show password based on _isPasswordHidden
-                decoration: InputDecoration(
-                  filled: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  labelText: 'Password',
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _isPasswordHidden
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordHidden = !_isPasswordHidden;
-                      });
-                    },
+                            // Password text field
+                            TextFormField(
+                              controller: _password,
+                              obscureText:
+                                  _isPasswordHidden,
+                              decoration: InputDecoration(
+                                filled: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                labelText: 'Password',
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _isPasswordHidden
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isPasswordHidden = !_isPasswordHidden;
+                                    });
+                                  },
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your password';
+                                }
+                                if (value.length < 6) {
+                                  return 'Password must be at least 6 characters';
+                                }
+                                return null;
+                              },
+                            ),
+                            Gap(30.0),
+
+                            BasicButton(
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  try {
+                                    await registerUser(
+                                        _email.text, _password.text);
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            Login(),
+                                      ),
+                                      (route) => false,
+                                    );
+                                  } catch (e) {
+                                    var snackBar = SnackBar(
+                                      content: Text(e.toString()),
+                                      behavior: SnackBarBehavior.floating,
+                                    );
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                  }
+                                }
+                              },
+                              title: "REGISTER",
+                              bgColor: AppColors.black,
+                              textColor: AppColors.white,
+                            )
+
+                          ]),
+                    ],
                   ),
                 ),
               ),
-              Gap(30.0),
-
-
-              BasicButton(
-                  onPressed: () async {
-                    var result = await sl<SignupUseCase>().call(
-                        params: CreateUserReq(
-                            name: _name.text.toString(),
-                            email: _email.text.toString(),
-                            password: _password.text.toString()));
-                    result.fold(
-                      (l) {
-                        var snackBar = SnackBar(
-                          content: Text(l),
-                          behavior: SnackBarBehavior.floating,
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      },
-                      (r) {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => Login(),
-                          ),
-                          (route) => false,
-                        );
-                      },
-                    );
-                  },
-                  title: "REGISTER",
-                  bgColor: AppColors.black,
-                  textColor: AppColors.white)
-            ]),
-          ],
+            ],
+          ),
         ),
       ),
     );

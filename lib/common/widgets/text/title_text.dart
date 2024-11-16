@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class TitleText extends StatelessWidget {
   final String text;
   final TextAlign textAlign;
-  const TitleText({required this.text, required this.textAlign, Key? key})
+  final FontWeight fontWeight;
+  const TitleText({required this.text, required this.textAlign, this.fontWeight = FontWeight.w900, Key? key})
       : super(key: key);
 
   @override
@@ -14,7 +15,7 @@ class TitleText extends StatelessWidget {
       style: TextStyle(
         fontFamily: "LexendGiga",
         fontSize: 24,
-        fontWeight: FontWeight.w900,
+        fontWeight: fontWeight,
         color: Colors.black,
       ),
     );
