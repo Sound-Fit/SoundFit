@@ -1,18 +1,55 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:soundfit/common/widgets/card/song_card.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<String?> _fetchUserName() async {
+    try {
+      final User? user = _auth.currentUser;
+      if (user != null) {
+        final DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
+
+        return userDoc['name'] as String?;
+      }
+    } catch (e) {
+      print("Error fetching user name: $e");
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Hi, User',
-          style: TextStyle(fontSize: 17, color: Colors.grey),
+        title: FutureBuilder<String?>(
+          future: _fetchUserName(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text(
+                'Hi...',
+                style: TextStyle(fontSize: 17, color: Colors.grey),
+              );
+            } else if (snapshot.hasError || !snapshot.hasData) {
+              return Text(
+                'Hi, User',
+                style: TextStyle(fontSize: 17, color: Colors.grey),
+              );
+            }
+            return Text(
+              'Hai, ${snapshot.data}',
+              style: TextStyle(fontSize: 17, color: Colors.grey),
+            );
+          },
         ),
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
@@ -38,7 +75,6 @@ class HomePage extends StatelessWidget {
                             SizedBox(
                               height: 130,
                               child: ListView(
-                                // This next line does the trick.
                                 scrollDirection: Axis.horizontal,
                                 children: <Widget>[
                                   _buildArtistCard(
@@ -96,7 +132,6 @@ class HomePage extends StatelessWidget {
                             SizedBox(
                               height: 220,
                               child: ListView(
-                                // This next line does the trick.
                                 scrollDirection: Axis.horizontal,
                                 children: <Widget>[
                                   SongCard(
@@ -162,16 +197,16 @@ class HomePage extends StatelessWidget {
         width: 100,
         height: 100,
         decoration: BoxDecoration(
-          color: Colors.white, // Warna latar belakang untuk kontras
+          color: Colors.white,
           image: DecorationImage(
             image: image.image,
             fit: BoxFit.cover,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1), // Warna bayangan
-              spreadRadius: 2, // Seberapa jauh bayangan menyebar
-              blurRadius: 3, // Ketajaman bayangan
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 3,
             ),
           ],
         ),
@@ -188,7 +223,6 @@ class HomePage extends StatelessWidget {
       child: SizedBox(
         width: 250,
         height: 140,
-        // color: Colors.grey,
         child: Image.asset('assets/images/Artist.jpg'),
       ),
     );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:soundfit/common/widgets/button/basic_button.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
