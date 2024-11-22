@@ -1,4 +1,6 @@
 import 'package:camera/camera.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:soundfit/core/configs/theme/app_theme.dart';
@@ -27,6 +29,12 @@ Future<void> main() async {
 
   await initializeDependencies();
 
+  await FirebaseAppCheck.instance.activate(
+    webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+    androidProvider: AndroidProvider.debug,
+    appleProvider: AppleProvider.appAttest,
+  );
+
   runApp(MyApp(firstCamera: firstCamera));
 }
 
@@ -34,7 +42,7 @@ class MyApp extends StatelessWidget {
   final CameraDescription firstCamera;
 
   MyApp({Key? key, required this.firstCamera}) : super(key: key);
-  // User? user = FirebaseAuth.instance.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +61,8 @@ class MyApp extends StatelessWidget {
         '/explore/search': (context) => Search(),
         '/profile/edit': (context) => EditProfile(),
         '/playMusic': (context) => PlayMusic(),
-        '/recommendation': (context) => CustomNavBar(camera: firstCamera, selectedIndex: 4),
+        '/recommendation': (context) =>
+            CustomNavBar(camera: firstCamera, selectedIndex: 4),
       },
     );
   }

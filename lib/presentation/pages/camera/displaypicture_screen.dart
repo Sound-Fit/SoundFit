@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'dart:io';
@@ -5,6 +7,7 @@ import 'package:soundfit/common/widgets/text/title_text.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart' as http;
 
 class DisplayPictureScreen extends StatefulWidget {
   final String imagePath;
@@ -47,7 +50,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
       }
 
       final ref = _storage.ref().child(
-          'images/${userNameOrUid}_${DateTime.now().millisecondsSinceEpoch}.jpg');
+          'recognition_images/${userNameOrUid}_${DateTime.now().millisecondsSinceEpoch}.jpg');
 
       final uploadTask = await ref.putFile(imageFile);
       return await uploadTask.ref.getDownloadURL();
@@ -74,66 +77,141 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
     }
   }
 
+  // Future<void> _processAndUploadImage(BuildContext context) async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+
+  //   try {
+  //     // Check if the user is authenticated
+  //     FirebaseAuth auth = FirebaseAuth.instance;
+  //     User? user = auth.currentUser;
+
+  //     if (user == null) {
+  //       // Show error dialog if not authenticated
+  //       showDialog(
+  //         context: context,
+  //         builder: (_) => AlertDialog(
+  //           title: Text('Error'),
+  //           content: Text('Please log in to upload images.'),
+  //           actions: [
+  //             TextButton(
+  //               onPressed: () => Navigator.pop(context),
+  //               child: Text('OK'),
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //       return; // Return early as the user is not authenticated
+  //     }
+
+  //     // User is authenticated, proceed with the image upload
+  //     final imageFile = File(widget.imagePath);
+
+  //     // Upload to Firebase Storage
+  //     final firebaseUrl = await _uploadToFirebaseStorage(imageFile);
+
+  //     if (firebaseUrl != null) {
+  //       // Save URL to Firestore
+  //       await _savePathToFirestore(firebaseUrl);
+
+  //       // Navigate to the recommendation screen
+  //       Navigator.pushNamed(context, '/recommendation');
+  //     }
+  //   } catch (e) {
+  //     // Handle errors appropriately
+  //     showDialog(
+  //       context: context,
+  //       builder: (_) => AlertDialog(
+  //         title: Text('Error'),
+  //         content: Text('Failed to process image: $e'),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () => Navigator.pop(context),
+  //             child: Text('OK'),
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //   } finally {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   }
+  // }
+
   Future<void> _processAndUploadImage(BuildContext context) async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      // Check if the user is authenticated
-      FirebaseAuth auth = FirebaseAuth.instance;
-      User? user = auth.currentUser;
-
-      if (user == null) {
-        // Show error dialog if not authenticated
-        showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-            title: Text('Error'),
-            content: Text('Please log in to upload images.'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-        return; // Return early as the user is not authenticated
-      }
-
-      // User is authenticated, proceed with the image upload
       final imageFile = File(widget.imagePath);
-
-      // Upload to Firebase Storage
       final firebaseUrl = await _uploadToFirebaseStorage(imageFile);
 
       if (firebaseUrl != null) {
-        // Save URL to Firestore
         await _savePathToFirestore(firebaseUrl);
 
-        // Navigate to the recommendation screen
-        Navigator.pushNamed(context, '/recommendation');
+        // Dapatkan prediksi usia dari API Flask
+        final agePrediction = await _getAgePredictionFromAPI(firebaseUrl);
+
+        if (agePrediction != null) {
+          // Perbarui kunci `age` di Firestore
+          final user = FirebaseAuth.instance.currentUser;
+          if (user != null) {
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(user.uid)
+                .update({'age': agePrediction});
+          }
+
+          // Tampilkan hasil prediksi
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: Text('Age Prediction'),
+              content: Text('Predicted Age: $agePrediction'),
+              actions: [
+                TextButton(
+                  onPressed: () => // Close the dialog
+                      Navigator.pushNamed(context, '/recommendation'),
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
       }
     } catch (e) {
-      // Handle errors appropriately
-      showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: Text('Error'),
-          content: Text('Failed to process image: $e'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
+      print('Error: $e');
     } finally {
       setState(() {
         _isLoading = false;
       });
+    }
+  }
+
+  Future<String?> _getAgePredictionFromAPI(String imageUrl) async {
+    try {
+      final response = await http.post(
+        Uri.parse(
+            'http://192.168.1.3:5000/age_detection'), // Ganti dengan URL Flask Anda
+        body: {'recognition_path': imageUrl},
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['predicted_age'] != null) {
+          return data['predicted_age'].toString();
+        } else {
+          throw Exception(data['error'] ?? 'Prediction error');
+        }
+      } else {
+        throw Exception('Failed to fetch prediction');
+      }
+    } catch (e) {
+      print('Error fetching age prediction: $e');
+      return null;
     }
   }
 

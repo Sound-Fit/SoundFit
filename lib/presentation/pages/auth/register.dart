@@ -181,7 +181,7 @@ class _RegisterState extends State<Register> {
                                               .collection('users')
                                               .doc(user.uid)
                                               .set({
-                                            'name': _name.text,
+                                            'username': _name.text,
                                             'email': _email.text,
                                           });
 

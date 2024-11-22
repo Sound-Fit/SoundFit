@@ -97,6 +97,7 @@ class CameraScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
@@ -108,15 +109,30 @@ class CameraScreenState extends State<CameraScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Camera Screen
+            // Camera Screen with zoom and mirroring applied
             if (_initializeControllerFuture != null)
               FutureBuilder<void>(
                 future: _initializeControllerFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     return SizedBox(
-                        height: screenHeight * 0.68,
-                        child: CameraPreview(_controller));
+                      height: screenHeight * 0.68,
+                      width: screenWidth * 0.8, // Adjust width to match border
+                      child: ClipRect(
+                        child: Transform.scale(
+                          scale: 1.1, // Apply zoom effect
+                          child: _selectedCameraIndex == 0
+                              // Apply mirroring for front camera (index 0)
+                              ? Transform(
+                                  alignment: Alignment.center,
+                                  transform: Matrix4.rotationY(
+                                      3.14159), // Mirror the image horizontally
+                                  child: CameraPreview(_controller),
+                                )
+                              : CameraPreview(_controller),
+                        ),
+                      ),
+                    );
                   } else {
                     return const Center(child: CircularProgressIndicator());
                   }
@@ -127,7 +143,7 @@ class CameraScreenState extends State<CameraScreen> {
 
             Gap(30),
 
-            // Buttons
+            // Buttons for camera control
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [

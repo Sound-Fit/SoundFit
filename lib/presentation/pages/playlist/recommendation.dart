@@ -9,7 +9,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 class RecommendationPage extends StatelessWidget {
   const RecommendationPage({Key? key}) : super(key: key);
 
-  Future<String?> _getRecognitionPath() async {
+  // Method to fetch recognition path and age from Firestore
+  Future<Map<String, String?>> _getUserData() async {
     try {
       final user = FirebaseAuth.instance.currentUser;
 
@@ -20,13 +21,51 @@ class RecommendationPage extends StatelessWidget {
             .doc(user.uid)
             .get();
 
-        // Kembalikan recognition_path
-        return userDoc.data()?['recognition_path'];
+        // Ambil recognition_path dan age
+        final recognitionPath = userDoc.data()?['recognition_path'];
+        final age = userDoc.data()?['age'];
+
+        return {
+          'recognitionPath': recognitionPath,
+          'age': age?.toString(),
+        };
       }
     } catch (e) {
-      print('Error getting recognition_path: $e');
+      print('Error getting user data: $e');
     }
-    return null; // Fallback jika data tidak ditemukan
+    return {'recognitionPath': null, 'age': null}; // Fallback jika data tidak ditemukan
+  }
+
+  // Method to determine age range based on the age value
+  String getAgeRange(String? ageStr) {
+    if (ageStr == null) return '[Unknown Age]';
+
+    final age = int.tryParse(ageStr);
+    if (age == null) return '[Invalid Age]';
+
+    if (age >= 0 && age <= 5) {
+      return '0-5 Years';
+    } else if (age >= 6 && age <= 10) {
+      return '6-10 Years';
+    } else if (age >= 11 && age <= 15) {
+      return '11-15 Years';
+    } else if (age >= 16 && age <= 20) {
+      return '16-20 Years';
+    } else if (age >= 21 && age <= 30) {
+      return '21-30 Years';
+    } else if (age >= 31 && age <= 40) {
+      return '31-40 Years';
+    } else if (age >= 41 && age <= 50) {
+      return '41-50 Years';
+    } else if (age >= 51 && age <= 60) {
+      return '51-60 Years';
+    } else if (age >= 61 && age <= 70) {
+      return '61-70 Years';
+    } else if (age >= 71) {
+      return '71+ Years';
+    } else {
+      return '[Invalid Age]';
+    }
   }
 
   @override
@@ -39,8 +78,8 @@ class RecommendationPage extends StatelessWidget {
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
-      body: FutureBuilder<String?>(
-        future: _getRecognitionPath(),
+      body: FutureBuilder<Map<String, String?>>(
+        future: _getUserData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Loading state
@@ -52,14 +91,16 @@ class RecommendationPage extends StatelessWidget {
             return Center(
               child: Text('Failed to load data: ${snapshot.error}'),
             );
-          } else if (!snapshot.hasData || snapshot.data == null) {
+          } else if (!snapshot.hasData || snapshot.data?['recognitionPath'] == null) {
             // No data state
             return const Center(
               child: Text('No recognition path found.'),
             );
           } else {
             // Success state
-            final recognitionPath = snapshot.data!;
+            final recognitionPath = snapshot.data?['recognitionPath'];
+            final age = snapshot.data?['age'];
+            final ageRange = getAgeRange(age);
 
             return Padding(
               padding: const EdgeInsets.all(30.0),
@@ -82,13 +123,13 @@ class RecommendationPage extends StatelessWidget {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
                                 image: DecorationImage(
-                                  image: NetworkImage(recognitionPath),
+                                  image: NetworkImage(recognitionPath!),
                                   fit: BoxFit.cover,
                                 ),
                               ),
                             ),
                             BasedText(
-                                text: "[50-60] Years") // Example classification
+                                text: "$ageRange") // Show the age range
                           ],
                         ),
                         Gap(30),

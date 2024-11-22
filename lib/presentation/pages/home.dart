@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:soundfit/common/widgets/card/song_card.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
+import 'package:soundfit/core/configs/theme/app_colors.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -19,7 +20,7 @@ class HomePage extends StatelessWidget {
             .doc(user.uid)
             .get();
 
-        return userDoc['name'] as String?;
+        return userDoc['username'] as String?;
       }
     } catch (e) {
       print("Error fetching user name: $e");
@@ -29,35 +30,36 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: FutureBuilder<String?>(
-          future: _fetchUserName(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Scaffold(
+        appBar: AppBar(
+          title: FutureBuilder<String?>(
+            future: _fetchUserName(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Text(
+                  'Hi...',
+                  style: TextStyle(fontSize: 17, color: Colors.grey),
+                );
+              } else if (snapshot.hasError || !snapshot.hasData) {
+                return Text(
+                  'Hi, User',
+                  style: TextStyle(fontSize: 17, color: Colors.grey),
+                );
+              }
               return Text(
-                'Hi...',
-                style: TextStyle(fontSize: 17, color: Colors.grey),
+                'Hai, ${snapshot.data} 👋',
+                style: TextStyle(fontSize: 20, color: Colors.grey),
               );
-            } else if (snapshot.hasError || !snapshot.hasData) {
-              return Text(
-                'Hi, User',
-                style: TextStyle(fontSize: 17, color: Colors.grey),
-              );
-            }
-            return Text(
-              'Hai, ${snapshot.data}',
-              style: TextStyle(fontSize: 17, color: Colors.grey),
-            );
-          },
+            },
+          ),
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          titleSpacing: 0,
         ),
         backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-      ),
-      backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
+        body: Column(
           children: [
             Expanded(
               child: SingleChildScrollView(
@@ -68,30 +70,35 @@ class HomePage extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            BasedText(
-                              text: 'Followed Artist',
-                              fontWeight: FontWeight.bold,
-                            ),
+                            // BasedText(
+                            //   text: 'Followed Artist',
+                            //   fontWeight: FontWeight.bold,
+                            // ),
                             SizedBox(
-                              height: 130,
+                              height: 100,
                               child: ListView(
                                 scrollDirection: Axis.horizontal,
                                 children: <Widget>[
                                   _buildArtistCard(
                                       image: Image.asset(
                                           "assets/images/Artist.jpg")),
+                                  Gap(5),
                                   _buildArtistCard(
                                       image:
                                           Image.asset("assets/images/YnB.jpg")),
+                                  Gap(5),
                                   _buildArtistCard(
                                       image: Image.asset(
                                           "assets/images/SongCover.jpg")),
+                                  Gap(5),
                                   _buildArtistCard(
                                       image: Image.asset(
                                           "assets/images/Artist.jpg")),
+                                  Gap(5),
                                   _buildArtistCard(
                                       image:
                                           Image.asset("assets/images/YnB.jpg")),
+                                  Gap(5),
                                   _buildArtistCard(
                                       image: Image.asset(
                                           "assets/images/SongCover.jpg")),
@@ -104,18 +111,19 @@ class HomePage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             BasedText(
-                              text: 'Recent',
+                              text: 'Artist Album',
                               fontWeight: FontWeight.bold,
                             ),
+                            Gap(10),
                             SizedBox(
-                              height: 170,
+                              height: 190,
                               child: ListView(
                                 scrollDirection: Axis.horizontal,
                                 children: <Widget>[
-                                  _buildRecentCard(),
-                                  _buildRecentCard(),
-                                  _buildRecentCard(),
-                                  _buildRecentCard(),
+                                  _buildAlbumCard(),
+                                  _buildAlbumCard(),
+                                  _buildAlbumCard(),
+                                  _buildAlbumCard(),
                                 ],
                               ),
                             ),
@@ -194,14 +202,15 @@ class HomePage extends StatelessWidget {
       ),
       onPressed: () {},
       child: Container(
-        width: 100,
-        height: 100,
+        width: 70,
+        height: 70,
         decoration: BoxDecoration(
           color: Colors.white,
           image: DecorationImage(
             image: image.image,
             fit: BoxFit.cover,
           ),
+          shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
@@ -214,16 +223,29 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildRecentCard() {
+  Widget _buildAlbumCard() {
     return TextButton(
       style: TextButton.styleFrom(
         padding: EdgeInsets.symmetric(horizontal: 5),
       ),
       onPressed: () {},
-      child: SizedBox(
-        width: 250,
-        height: 140,
-        child: Image.asset('assets/images/Artist.jpg'),
+      child: Column(
+        children: [
+          SizedBox(
+            width: 250,
+            height: 140,
+            child: Image.asset('assets/images/Artist.jpg'),
+          ),
+          BasedText(
+            text: '[Album Name]',
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+          BasedText(
+            text: '[Artist Name]',
+            fontSize: 12,
+          )
+        ],
       ),
     );
   }
