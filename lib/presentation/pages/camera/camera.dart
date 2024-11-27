@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:image/image.dart' as img;
+
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:gap/gap.dart';
@@ -37,7 +41,7 @@ class CameraScreenState extends State<CameraScreen> {
       // Initialize the camera controller with the selected camera.
       _controller = CameraController(
         _cameras[_selectedCameraIndex],
-        ResolutionPreset.medium,
+        ResolutionPreset.high,
       );
 
       // Initialize the controller and store it in a Future.
@@ -67,13 +71,41 @@ class CameraScreenState extends State<CameraScreen> {
       final image = await _controller.takePicture();
       if (!mounted) return;
 
-      await Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => DisplayPictureScreen(
-            imagePath: image.path,
+      // Save mirror pic if front camera
+      if (_cameras[_selectedCameraIndex].lensDirection ==
+          CameraLensDirection.front) {
+        // Read image as bytes
+        final imageBytes = await image.readAsBytes();
+        final imageDecode = img.decodeImage(Uint8List.fromList(imageBytes));
+
+        if (imageDecode != null) {
+          // Flip image horizontally (mirror effect)
+          final flippedImage = img.flipHorizontal(imageDecode);
+
+          // Save flipped image to file
+          final flippedFilePath = '${image.path}.jpg';
+          final flippedFile = File(flippedFilePath)
+            ..writeAsBytesSync(img.encodeJpg(flippedImage));
+
+          // Push to next screen with the flipped image
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => DisplayPictureScreen(
+                imagePath: flippedFile.path,
+              ),
+            ),
+          );
+        }
+      } else {
+        // For back camera, use the original image path
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => DisplayPictureScreen(
+              imagePath: image.path,
+            ),
           ),
-        ),
-      );
+        );
+      }
     } catch (e) {
       print(e);
     }
@@ -114,9 +146,44 @@ class CameraScreenState extends State<CameraScreen> {
                 future: _initializeControllerFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
-                    return SizedBox(
-                        height: screenHeight * 0.68,
-                        child: CameraPreview(_controller));
+                    bool isFrontCamera =
+                        _cameras[_selectedCameraIndex].lensDirection ==
+                            CameraLensDirection.front;
+
+                    double aspectRatio = _controller
+                        .value.aspectRatio; // Aspect ratio from the controller
+
+                    return Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        SizedBox(
+                          height: screenHeight * 0.68,
+                          child: Transform(
+                            alignment: Alignment.center,
+                            transform: isFrontCamera
+                                ? Matrix4.rotationY(
+                                    3.14159) // Flip horizontally for front camera
+                                : Matrix4
+                                    .identity(), // No transform for back camera
+                            child: AspectRatio(
+                              aspectRatio:
+                                  aspectRatio, // Ensures the correct aspect ratio
+                              child: CameraPreview(_controller),
+                            ),
+                          ),
+                        ),
+                        Positioned.fill(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Image.asset(
+                              'assets/images/face_overlay.png',
+                              width: MediaQuery.of(context).size.width,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
                   } else {
                     return const Center(child: CircularProgressIndicator());
                   }

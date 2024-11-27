@@ -1,4 +1,6 @@
 import 'package:camera/camera.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:soundfit/core/configs/theme/app_theme.dart';
@@ -6,6 +8,7 @@ import 'package:soundfit/firebase_options.dart';
 import 'package:soundfit/presentation/pages/auth/login.dart';
 import 'package:soundfit/presentation/pages/auth/register.dart';
 import 'package:soundfit/presentation/pages/auth/welcomePage.dart';
+import 'package:soundfit/presentation/pages/camera/camera.dart';
 import 'package:soundfit/presentation/pages/splashPage.dart';
 import 'package:soundfit/presentation/widgets/navBar.dart';
 import 'package:soundfit/service_locator.dart';
@@ -27,6 +30,12 @@ Future<void> main() async {
 
   await initializeDependencies();
 
+  await FirebaseAppCheck.instance.activate(
+    webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+    androidProvider: AndroidProvider.debug,
+    appleProvider: AppleProvider.appAttest,
+  );
+
   runApp(MyApp(firstCamera: firstCamera));
 }
 
@@ -34,7 +43,7 @@ class MyApp extends StatelessWidget {
   final CameraDescription firstCamera;
 
   MyApp({Key? key, required this.firstCamera}) : super(key: key);
-  // User? user = FirebaseAuth.instance.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +51,7 @@ class MyApp extends StatelessWidget {
       title: 'SoundFit',
       theme: AppTheme.lightTheme,
       home: SplashPage(),
-      // initialRoute: user != null ? '/home' : '/',
+      initialRoute: user != null ? '/home' : '/',
       routes: {
         // '/': (context) => SplashPage(),
         '/welcome': (context) => WelcomePage(),
@@ -53,7 +62,9 @@ class MyApp extends StatelessWidget {
         '/explore/search': (context) => Search(),
         '/profile/edit': (context) => EditProfile(),
         '/playMusic': (context) => PlayMusic(),
-        '/recommendation': (context) => CustomNavBar(camera: firstCamera, selectedIndex: 4),
+        '/camera': (context) => CameraScreen(camera: firstCamera),
+        '/recommendation': (context) =>
+            CustomNavBar(camera: firstCamera, selectedIndex: 4),
       },
     );
   }
