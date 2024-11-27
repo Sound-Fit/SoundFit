@@ -33,7 +33,10 @@ class RecommendationPage extends StatelessWidget {
     } catch (e) {
       print('Error getting user data: $e');
     }
-    return {'recognitionPath': null, 'age': null}; // Fallback jika data tidak ditemukan
+    return {
+      'recognitionPath': null,
+      'age': null
+    }; // Fallback jika data tidak ditemukan
   }
 
   // Method to determine age range based on the age value
@@ -43,28 +46,42 @@ class RecommendationPage extends StatelessWidget {
     final age = int.tryParse(ageStr);
     if (age == null) return '[Invalid Age]';
 
-    if (age >= 0 && age <= 5) {
-      return '0-5 Years';
-    } else if (age >= 6 && age <= 10) {
-      return '6-10 Years';
-    } else if (age >= 11 && age <= 15) {
-      return '11-15 Years';
-    } else if (age >= 16 && age <= 20) {
-      return '16-20 Years';
-    } else if (age >= 21 && age <= 30) {
-      return '21-30 Years';
-    } else if (age >= 31 && age <= 40) {
-      return '31-40 Years';
-    } else if (age >= 41 && age <= 50) {
-      return '41-50 Years';
-    } else if (age >= 51 && age <= 60) {
-      return '51-60 Years';
-    } else if (age >= 61 && age <= 70) {
-      return '61-70 Years';
-    } else if (age >= 71) {
-      return '71+ Years';
-    } else {
-      return '[Invalid Age]';
+    switch (age) {
+      case 0:
+        return '0-5 Years';
+
+      case 1:
+        return '6-10 Years';
+
+      case 2:
+        return '11-15 Years';
+
+      case 3:
+        return '16-20 Years';
+
+      case 4:
+        return '21-30 Years';
+
+      case 5:
+        return '31-40 Years';
+
+      case 6:
+        return '41-50 Years';
+
+      case 7:
+        return '51-60 Years';
+
+      case 8:
+        return '61-70 Years';
+
+      case 9:
+        return '71-80 Years';
+
+      case 10:
+        return '81+ Years';
+
+      default:
+        return 'Can' 't determine age range';
     }
   }
 
@@ -91,7 +108,8 @@ class RecommendationPage extends StatelessWidget {
             return Center(
               child: Text('Failed to load data: ${snapshot.error}'),
             );
-          } else if (!snapshot.hasData || snapshot.data?['recognitionPath'] == null) {
+          } else if (!snapshot.hasData ||
+              snapshot.data?['recognitionPath'] == null) {
             // No data state
             return const Center(
               child: Text('No recognition path found.'),
@@ -128,8 +146,7 @@ class RecommendationPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            BasedText(
-                                text: "$ageRange") // Show the age range
+                            BasedText(text: "$ageRange") // Show the age range
                           ],
                         ),
                         Gap(30),

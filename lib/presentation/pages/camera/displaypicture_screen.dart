@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:soundfit/common/widgets/notif/error_notification.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'dart:io';
 import 'package:soundfit/common/widgets/text/title_text.dart';
@@ -36,7 +37,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
         return userDoc.data()?['name'] ?? user.uid; // Gunakan nama atau UID
       }
     } catch (e) {
-      print('Error getting user name: $e');
+      showErrorDialog(context, 'Error getting user name: $e');
     }
     return null; // Fallback jika terjadi error
   }
@@ -46,7 +47,8 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
       final userNameOrUid = await _getUserNameOrUid();
 
       if (userNameOrUid == null) {
-        throw Exception('Failed to retrieve user information.');
+        showErrorDialog(context, 'Failed to retrieve user information.');
+        return null;
       }
 
       final ref = _storage.ref().child(
@@ -55,9 +57,9 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
       final uploadTask = await ref.putFile(imageFile);
       return await uploadTask.ref.getDownloadURL();
     } catch (e) {
-      throw FirebaseException(
-          plugin: 'firebase_storage',
-          message: 'Failed to upload to Firebase Storage: $e');
+      showErrorDialog(
+          context, 'Failed to upload image to Firebase Storage: $e');
+      return null;
     }
   }
 
@@ -72,73 +74,9 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
             .update({'recognition_path': imageUrl});
       }
     } catch (e) {
-      print('Error saving path to Firestore: $e');
-      throw Exception('Failed to save image path to Firestore.');
+      showErrorDialog(context, 'Error saving path to Firestore: $e');
     }
   }
-
-  // Future<void> _processAndUploadImage(BuildContext context) async {
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-
-  //   try {
-  //     // Check if the user is authenticated
-  //     FirebaseAuth auth = FirebaseAuth.instance;
-  //     User? user = auth.currentUser;
-
-  //     if (user == null) {
-  //       // Show error dialog if not authenticated
-  //       showDialog(
-  //         context: context,
-  //         builder: (_) => AlertDialog(
-  //           title: Text('Error'),
-  //           content: Text('Please log in to upload images.'),
-  //           actions: [
-  //             TextButton(
-  //               onPressed: () => Navigator.pop(context),
-  //               child: Text('OK'),
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //       return; // Return early as the user is not authenticated
-  //     }
-
-  //     // User is authenticated, proceed with the image upload
-  //     final imageFile = File(widget.imagePath);
-
-  //     // Upload to Firebase Storage
-  //     final firebaseUrl = await _uploadToFirebaseStorage(imageFile);
-
-  //     if (firebaseUrl != null) {
-  //       // Save URL to Firestore
-  //       await _savePathToFirestore(firebaseUrl);
-
-  //       // Navigate to the recommendation screen
-  //       Navigator.pushNamed(context, '/recommendation');
-  //     }
-  //   } catch (e) {
-  //     // Handle errors appropriately
-  //     showDialog(
-  //       context: context,
-  //       builder: (_) => AlertDialog(
-  //         title: Text('Error'),
-  //         content: Text('Failed to process image: $e'),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () => Navigator.pop(context),
-  //             child: Text('OK'),
-  //           ),
-  //         ],
-  //       ),
-  //     );
-  //   } finally {
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   }
-  // }
 
   Future<void> _processAndUploadImage(BuildContext context) async {
     setState(() {
@@ -170,7 +108,8 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
             context: context,
             builder: (_) => AlertDialog(
               title: Text('Age Prediction'),
-              content: Text('Predicted Age: $agePrediction'),
+              content: Text(
+                  'Successfully determined age range: $agePrediction. Please click OK to see your playlist.'),
               actions: [
                 TextButton(
                   onPressed: () => // Close the dialog
@@ -183,7 +122,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
         }
       }
     } catch (e) {
-      print('Error: $e');
+      showErrorDialog(context, 'Error: $e');
     } finally {
       setState(() {
         _isLoading = false;
@@ -195,7 +134,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
     try {
       final response = await http.post(
         Uri.parse(
-            'http://192.168.1.3:5000/age_detection'), // Ganti dengan URL Flask Anda
+            'http://192.168.1.9:5000/age_detection'), // Ganti dengan URL Flask Anda
         body: {'recognition_path': imageUrl},
       );
 
@@ -204,13 +143,16 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
         if (data['predicted_age'] != null) {
           return data['predicted_age'].toString();
         } else {
-          throw Exception(data['error'] ?? 'Prediction error');
+          showErrorDialog(context,
+              'Age prediction error: ${data['error'] ?? 'Unknown error'}');
+          return null;
         }
       } else {
-        throw Exception('Failed to fetch prediction');
+        showErrorDialog(context, 'Failed to fetch age prediction.');
+        return null;
       }
     } catch (e) {
-      print('Error fetching age prediction: $e');
+      showErrorDialog(context, 'Error fetching age prediction: $e');
       return null;
     }
   }
