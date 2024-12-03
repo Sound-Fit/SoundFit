@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:soundfit/common/widgets/button/basic_button.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
 import 'package:soundfit/core/configs/theme/app_colors.dart';
+import 'package:soundfit/presentation/pages/auth/register.dart';
 import 'package:soundfit/presentation/pages/forgetPassword/forgetPassword.dart';
 
 class Login extends StatefulWidget {
@@ -39,7 +40,7 @@ class _LoginState extends State<Login> {
           break;
         case 'invalid-credential':
           message =
-              'The supplied auth credential is incorrect, malformed, or expired. Please check your email and password and try again.';
+              'Invalid email or password. Please check your email and password and try again.';
           break;
         case 'invalid-email':
           message =
@@ -60,22 +61,8 @@ class _LoginState extends State<Login> {
   }
 
   void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Login Error'),
-          content: Text(message),
-          actions: [
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
     );
   }
 
@@ -83,12 +70,14 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        leading: Navigator.canPop(context)
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context); // Kembali ke rute sebelumnya
+                },
+              )
+            : null,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
@@ -179,7 +168,7 @@ class _LoginState extends State<Login> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   const Text(
-                                    'Lupa password?',
+                                    'Don' 't have an account?',
                                     style: TextStyle(color: Colors.grey),
                                   ),
                                   TextButton(
@@ -187,11 +176,11 @@ class _LoginState extends State<Login> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                            ForgetPassword(),
+                                            Register(),
                                       ),
                                     ),
                                     child: const Text(
-                                      'Reset Password',
+                                      'Sign Up',
                                       style: TextStyle(color: Colors.black),
                                     ),
                                   ),

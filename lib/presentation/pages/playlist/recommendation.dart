@@ -48,37 +48,22 @@ class RecommendationPage extends StatelessWidget {
 
     switch (age) {
       case 0:
-        return '0-5 Years';
+        return 'Children';
 
       case 1:
-        return '6-10 Years';
+        return 'Teenagers';
 
       case 2:
-        return '11-15 Years';
+        return 'Young Adults';
 
       case 3:
-        return '16-20 Years';
+        return 'Adults';
 
       case 4:
-        return '21-30 Years';
+        return 'Middle-Aged Adults';
 
       case 5:
-        return '31-40 Years';
-
-      case 6:
-        return '41-50 Years';
-
-      case 7:
-        return '51-60 Years';
-
-      case 8:
-        return '61-70 Years';
-
-      case 9:
-        return '71-80 Years';
-
-      case 10:
-        return '81+ Years';
+        return 'Elderly Adults';
 
       default:
         return 'Can' 't determine age range';
@@ -140,6 +125,15 @@ class RecommendationPage extends StatelessWidget {
                               width: 150,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey
+                                        .withOpacity(0.5), // Shadow color
+                                    spreadRadius: 2,
+                                    blurRadius: 10,
+                                    offset: Offset(0, 5), // Position of shadow
+                                  ),
+                                ],
                                 image: DecorationImage(
                                   image: NetworkImage(recognitionPath!),
                                   fit: BoxFit.cover,

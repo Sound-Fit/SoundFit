@@ -4,28 +4,66 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:soundfit/common/widgets/card/song_card.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
-import 'package:soundfit/core/configs/theme/app_colors.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<String?> _fetchUserName() async {
+  Future<Map<String, String?>> _getUserData() async {
     try {
-      final User? user = _auth.currentUser;
+      final user = FirebaseAuth.instance.currentUser;
+
       if (user != null) {
-        final DocumentSnapshot userDoc = await FirebaseFirestore.instance
+        // Ambil data pengguna dari Firestore
+        final userDoc = await FirebaseFirestore.instance
             .collection('users')
             .doc(user.uid)
             .get();
 
-        return userDoc['username'] as String?;
+        // Ambil recognition_path dan age
+        final recognitionPath = userDoc.data()?['recognition_path'];
+        final age = userDoc.data()?['age'];
+        final username = userDoc.data()?['username'];
+
+        return {
+          'recognitionPath': recognitionPath,
+          'age': age?.toString(),
+          'username': username?.toString()
+        };
       }
     } catch (e) {
-      print("Error fetching user name: $e");
+      print('Error getting user data: $e');
     }
-    return null;
+    return {
+      'recognitionPath': null,
+      'age': null,
+      'username': null
+    }; // Fallback jika data tidak ditemukan
+  }
+
+  String getAgeRange(String? ageStr) {
+    if (ageStr == null) return '[Unknown Age]';
+
+    final age = int.tryParse(ageStr);
+    if (age == null) return '[Invalid Age]';
+
+    switch (age) {
+      case 0:
+        return 'Children';
+      case 1:
+        return 'Teenagers';
+      case 2:
+        return 'Young Adults';
+      case 3:
+        return 'Adults';
+      case 4:
+        return 'Middle-Aged Adults';
+      case 5:
+        return 'Elderly Adults';
+      default:
+        return 'Can\'t determine age range';
+    }
   }
 
   @override
@@ -34,8 +72,8 @@ class HomePage extends StatelessWidget {
       padding: const EdgeInsets.all(20.0),
       child: Scaffold(
         appBar: AppBar(
-          title: FutureBuilder<String?>(
-            future: _fetchUserName(),
+          title: FutureBuilder<Map<String, String?>>(
+            future: _getUserData(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Text(
@@ -48,8 +86,11 @@ class HomePage extends StatelessWidget {
                   style: TextStyle(fontSize: 17, color: Colors.grey),
                 );
               }
+
+              // Safely get the username
+              final username = snapshot.data?['username'] ?? 'User';
               return Text(
-                'Hai, ${snapshot.data} 👋',
+                'Hi, $username 👋',
                 style: TextStyle(fontSize: 20, color: Colors.grey),
               );
             },
@@ -59,10 +100,28 @@ class HomePage extends StatelessWidget {
           titleSpacing: 0,
         ),
         backgroundColor: Colors.white,
-        body: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
+        body: FutureBuilder<Map<String, String?>>(
+          future: _getUserData(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('Failed to load data: ${snapshot.error}'),
+              );
+            } else if (!snapshot.hasData ||
+                snapshot.data?['recognitionPath'] == null) {
+              return const Center(
+                child: Text('No recognition path found.'),
+              );
+            } else {
+              final recognitionPath = snapshot.data?['recognitionPath'];
+              final age = snapshot.data?['age'];
+              final ageRange = getAgeRange(age);
+
+              return SingleChildScrollView(
                 child: Column(
                   children: [
                     Column(
@@ -70,10 +129,6 @@ class HomePage extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // BasedText(
-                            //   text: 'Followed Artist',
-                            //   fontWeight: FontWeight.bold,
-                            // ),
                             SizedBox(
                               height: 100,
                               child: ListView(
@@ -111,25 +166,66 @@ class HomePage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             BasedText(
-                              text: 'Artist Album',
+                              text: 'Recent Recognition',
                               fontWeight: FontWeight.bold,
                             ),
                             Gap(10),
-                            SizedBox(
-                              height: 190,
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: <Widget>[
-                                  _buildAlbumCard(),
-                                  _buildAlbumCard(),
-                                  _buildAlbumCard(),
-                                  _buildAlbumCard(),
-                                ],
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // Display the image from recognitionPath
+                                Container(
+                                  height: 150,
+                                  width: 150,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey
+                                            .withOpacity(0.5), // Shadow color
+                                        spreadRadius: 2,
+                                        blurRadius: 10,
+                                        offset:
+                                            Offset(0, 5), // Position of shadow
+                                      ),
+                                    ],
+                                    image: DecorationImage(
+                                      image: NetworkImage(recognitionPath!),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                BasedText(
+                                    text: "$ageRange") // Show the age range
+                              ],
                             ),
                           ],
                         ),
                         Gap(20),
+                        // Column(
+                        //   crossAxisAlignment: CrossAxisAlignment.start,
+                        //   children: [
+                        //     BasedText(
+                        //       text: 'Artist Album',
+                        //       fontWeight: FontWeight.bold,
+                        //     ),
+                        //     Gap(20),
+                        //     SizedBox(
+                        //       height: 190,
+                        //       child: ListView(
+                        //         scrollDirection: Axis.horizontal,
+                        //         children: <Widget>[
+                        //           _buildAlbumCard(),
+                        //           _buildAlbumCard(),
+                        //           _buildAlbumCard(),
+                        //           _buildAlbumCard(),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        // Gap(20),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -187,9 +283,9 @@ class HomePage extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
-            ),
-          ],
+              );
+            }
+          },
         ),
       ),
     );
@@ -244,7 +340,7 @@ class HomePage extends StatelessWidget {
           BasedText(
             text: '[Artist Name]',
             fontSize: 12,
-          )
+          ),
         ],
       ),
     );

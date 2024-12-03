@@ -1,12 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:soundfit/common/widgets/button/basic_button.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'package:soundfit/common/widgets/text/poin_text.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
 import 'package:soundfit/core/configs/theme/app_colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class RemoveAccount extends StatelessWidget {
+class RemoveAccount extends StatefulWidget {
   const RemoveAccount({Key? key}) : super(key: key);
+
+  @override
+  _RemoveAccountState createState() => _RemoveAccountState();
+}
+
+class _RemoveAccountState extends State<RemoveAccount> {
+  final TextEditingController _passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+
+  // Function to delete account
+  Future<void> _deleteAccount() async {
+    if (!_formKey.currentState!.validate()) {
+      return; // Don't proceed if validation fails
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        // Reauthenticate the user using the password
+        final credential = EmailAuthProvider.credential(
+          email: user.email!,
+          password: _passwordController.text.trim(),
+        );
+
+        await user.reauthenticateWithCredential(credential);
+
+        // Delete the user account
+        await user.delete();
+
+        // Show success message and navigate to login page
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Account deleted successfully')),
+        );
+        Navigator.pushReplacementNamed(context,
+            '/login'); // Navigate to the login screen or wherever appropriate
+      }
+    } catch (e) {
+      print('Error deleting account: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,17 +101,56 @@ class RemoveAccount extends StatelessWidget {
                                 "If you’re not sure, you can go back and keep your account active."),
                       ],
                     ),
+
+                    // Password Input Field
+                    Gap(16),
+                    BasedText(
+                      text: "Confirm your password",
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Poppins",
+                      fontSize: 16,
+                    ),
+                    SizedBox(height: 8),
+                    Form(
+                      key: _formKey, // Attach the form key for validation
+                      child: TextFormField(
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          if (value.length < 6) {
+                            return 'Password must be at least 6 characters';
+                          }
+                          return null; // No error if validation passes
+                        },
+                        obscureText: true, // Hide password text
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
             // Button
             BasicButton(
-              onPressed: () {},
-              title: "Delete Account",
+              onPressed: _isLoading
+                  ? () {}
+                  : _deleteAccount, // Disable button while loading
+              title: _isLoading ? 'Deleting...' : "Delete Account",
               bgColor: AppColors.red,
               textColor: AppColors.white,
             ),
+
+            if (_isLoading)
+              Center(
+                child: CircularProgressIndicator(),
+              ),
           ],
         ),
       ),

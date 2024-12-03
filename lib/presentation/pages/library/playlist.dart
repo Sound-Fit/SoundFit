@@ -49,10 +49,11 @@ class Playlist extends StatelessWidget {
                                     Image.asset('assets/images/SongCover.jpg'),
                                 onPressed: () {}),
                             PlaylistCard(
-                                title: "Recomendations",
-                                image:
-                                    Image.asset('assets/images/SongCover.jpg'),
-                                onPressed: () {}),
+                              title: "Recomendations",
+                              image: Image.asset('assets/images/SongCover.jpg'),
+                              onPressed: () => Navigator.pushNamed(
+                                  context, '/recommendation'),
+                            ),
                           ],
                         ),
                       ),
