@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'package:soundfit/common/widgets/text/poin_text.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
@@ -11,7 +12,13 @@ class Information extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: TitleText(text: 'Information', textAlign: TextAlign.center),
+        title: Text(
+          'Information',
+          style: GoogleFonts.lexendGiga(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,

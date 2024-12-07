@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:soundfit/common/widgets/card/song_card.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
+import 'package:soundfit/presentation/pages/playMusic.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<Map<String, String?>> _getUserData() async {
     try {
@@ -162,6 +163,8 @@ class HomePage extends StatelessWidget {
                             ),
                           ],
                         ),
+
+                        // Recent Recognition
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -226,6 +229,7 @@ class HomePage extends StatelessWidget {
                         //   ],
                         // ),
                         // Gap(20),
+
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -243,37 +247,40 @@ class HomePage extends StatelessWidget {
                                       artistName: "Lana Del Ray",
                                       image:
                                           Image.asset("assets/images/YnB.jpg"),
-                                      onPressed: () {}),
+                                      onPressed: () => {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => PlayMusic(musicId: '2nMeu6UenVvwUktBCpLMK9?si=e290ea79276e4a7f',),
+                                              ),
+                                            )
+                                          }),
                                   SongCard(
                                       songTitle: "Paradise",
-                                      artistName: "Young Man",
+                                      artistName: "Coldplay",
                                       image: Image.asset(
                                           "assets/images/SongCover.jpg"),
-                                      onPressed: () {}),
+                                      onPressed: () => {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => PlayMusic(musicId: '6nek1Nin9q48AVZcWs9e9D?si=4687ba3436574743',),
+                                              ),
+                                            )
+                                          }),
                                   SongCard(
                                       songTitle: "Born To Die",
                                       artistName: "Lana Del Ray",
                                       image: Image.asset(
                                           "assets/images/Artist.jpg"),
-                                      onPressed: () {}),
-                                  SongCard(
-                                      songTitle: "Young and Beautiful",
-                                      artistName: "Lana Del Ray",
-                                      image:
-                                          Image.asset("assets/images/YnB.jpg"),
-                                      onPressed: () {}),
-                                  SongCard(
-                                      songTitle: "Paradise",
-                                      artistName: "Young Man",
-                                      image: Image.asset(
-                                          "assets/images/SongCover.jpg"),
-                                      onPressed: () {}),
-                                  SongCard(
-                                      songTitle: "Born To Die",
-                                      artistName: "Lana Del Ray",
-                                      image: Image.asset(
-                                          "assets/images/Artist.jpg"),
-                                      onPressed: () {}),
+                                      onPressed: () => {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => PlayMusic(musicId: '4Ouhoi2lAhrLJKFzUqEzwl?si=be9edfd9747743f6',),
+                                              ),
+                                            )
+                                          }),
                                 ],
                               ),
                             ),

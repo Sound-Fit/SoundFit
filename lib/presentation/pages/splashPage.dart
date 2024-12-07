@@ -33,25 +33,28 @@ class SplashPage extends StatelessWidget {
                   height: screenHeight * 0.20,
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          'SoundFit',
-                          style: TextStyle(
-                              fontSize: 24,
-                              fontFamily: GoogleFonts.lexendGiga().fontFamily,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const Gap(10),
-                        Text(
-                          'SoundFit is a smart app that uses facial analysis to detect a users age and suggest personalized music playlists.',
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: GoogleFonts.lexendGiga().fontFamily),
-                          textAlign: TextAlign.justify,
-                        )
-                      ],
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'SoundFit',
+                            style: TextStyle(
+                                fontSize: 24,
+                                fontFamily: GoogleFonts.lexendGiga().fontFamily,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const Gap(10),
+                          Text(
+                            'SoundFit is a smart app that uses facial analysis to detect a users age and suggest personalized music playlists.',
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontFamily:
+                                    GoogleFonts.lexendGiga().fontFamily),
+                            textAlign: TextAlign.justify,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 )),

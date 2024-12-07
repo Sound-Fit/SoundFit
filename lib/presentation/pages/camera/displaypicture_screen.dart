@@ -34,7 +34,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
             .doc(user.uid)
             .get();
 
-        return userDoc.data()?['name'] ?? user.uid; // Gunakan nama atau UID
+        return userDoc.data()?['username'] ?? user.uid; // Gunakan nama atau UID
       }
     } catch (e) {
       showErrorDialog(context, 'Error getting user name: $e');
@@ -133,7 +133,8 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   Future<String?> _getAgePredictionFromAPI(String imageUrl) async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.67.32:5000/age_detection'),
+        Uri.parse('http://192.168.76.226:5000/age_detection'),
+        // Uri.parse('https://5dlvmgl7-5000.asse.devtunnels.ms/age_detection'),
         // Ganti dengan URL Flask Anda
         body: {'recognition_path': imageUrl},
       );

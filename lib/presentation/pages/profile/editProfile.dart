@@ -176,7 +176,7 @@ class _EditProfileState extends State<EditProfile> {
           appBar: AppBar(
             title: Text(
               'Edit Profile',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.lexendGiga(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),

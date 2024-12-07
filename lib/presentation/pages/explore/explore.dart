@@ -27,29 +27,6 @@ class ExplorePage extends StatelessWidget {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              // Search bar
-              // TextField(
-              //   onTap: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //           builder: (BuildContext context) => Search()),
-              //     );
-              //   },
-              //   readOnly: true, // Prevent manual text input
-              //   decoration: InputDecoration(
-              //     prefixIcon: Icon(Icons.search, color: AppColors.grey),
-              //     hintText: 'Tap to Search',
-              //     border: OutlineInputBorder(
-              //       borderRadius: BorderRadius.circular(15),
-              //       borderSide: BorderSide.none,
-              //     ),
-              //     filled: true,
-              //     fillColor: Colors.grey[200],
-              //   ),
-              // ),
-              // Gap(20.0),
-
               // Recommend For You
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

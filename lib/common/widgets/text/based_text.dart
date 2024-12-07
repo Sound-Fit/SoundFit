@@ -21,6 +21,8 @@ class BasedText extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
+      softWrap: true,
+      overflow: TextOverflow.visible,
       style: TextStyle(
         fontSize: fontSize,
         fontWeight: fontWeight,

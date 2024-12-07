@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,7 +27,28 @@ class _LoginState extends State<Login> {
           .signInWithEmailAndPassword(
               email: email.trim(), password: password.trim());
       print('User logged in: ${userCredential.user?.email}');
-      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+
+      // Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+      // Ambil data pengguna dari Firestore
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user?.uid)
+          .get();
+
+      // Periksa apakah 'age' null
+      if (userDoc.exists && userDoc.data() != null) {
+        var userData = userDoc.data() as Map<String, dynamic>;
+        if (userData['age'] == null) {
+          // Arahkan ke /camera jika age null
+          Navigator.pushNamedAndRemoveUntil(
+              context, '/camera', (route) => false);
+        } else {
+          // Arahkan ke /home jika age tidak null
+          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+        }
+      } else {
+        _showErrorDialog('User data not found in Firestore');
+      }
     } on FirebaseAuthException catch (e) {
       print('Firebase Auth Exception: ${e.message}');
       String message = '';

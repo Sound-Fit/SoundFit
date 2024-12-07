@@ -73,7 +73,10 @@ class _CustomNavBarState extends State<CustomNavBar> {
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.search, size: 30),
+                  icon: Icon(
+                    Icons.music_note_rounded,
+                    size: 30,
+                  ),
                   onPressed: () {
                     _onItemTapped(1);
                   },
@@ -112,7 +115,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
                 ),
 
                 IconButton(
-                  icon: Icon(Icons.playlist_add, size: 30),
+                  icon: Icon(Icons.queue_music, size: 30),
                   onPressed: () {
                     _onItemTapped(2);
                   },

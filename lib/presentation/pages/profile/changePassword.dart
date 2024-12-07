@@ -24,18 +24,19 @@ class _ChangePasswordState extends State<ChangePassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: TitleText(text: 'Change Password', textAlign: TextAlign.center),
+        title: Text(
+          'Edit Profile',
+          style: GoogleFonts.lexendGiga(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
         actions: [
           TextButton(
-            onPressed: () async {
-              if (_formKey.currentState!.validate()) {
-                // Only proceed if form is valid
-                await _changePassword();
-              }
-            },
+            onPressed: _changePassword,
             child: Text(
               'Save',
               style: GoogleFonts.poppins(
@@ -47,6 +48,30 @@ class _ChangePasswordState extends State<ChangePassword> {
           ),
         ],
       ),
+      // AppBar(
+      //   title: TitleText(text: 'Change Password', textAlign: TextAlign.center),
+      //   backgroundColor: Colors.white,
+      //   elevation: 0,
+      //   centerTitle: true,
+      //   actions: [
+      //     TextButton(
+      //       onPressed: () async {
+      //         if (_formKey.currentState!.validate()) {
+      //           // Only proceed if form is valid
+      //           await _changePassword();
+      //         }
+      //       },
+      //       child: Text(
+      //         'Save',
+      //         style: GoogleFonts.poppins(
+      //           color: Colors.blue,
+      //           fontSize: 16,
+      //           fontWeight: FontWeight.w600,
+      //         ),
+      //       ),
+      //     ),
+      //   ],
+      // ),
       backgroundColor: Colors.white,
       body: Stack(
         children: [

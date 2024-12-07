@@ -14,17 +14,31 @@ class Register extends StatefulWidget {
   _RegisterState createState() => _RegisterState();
 }
 
-Future<void> registerUser(String email, String password) async {
+Future<void> registerUser(
+    String email, String password, BuildContext context) async {
   try {
     UserCredential userCredential = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
     print('User registered: ${userCredential.user?.email}');
   } on FirebaseAuthException catch (e) {
-    print('Firebase Auth Exception: ${e.message}');
-    throw e;
+    if (e.code == 'email-already-in-use') {
+      // Email is already registered, show SnackBar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(
+                'The email address is already in use. Please use a different email.')),
+      );
+    } else {
+      // Handle other FirebaseAuth exceptions
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Firebase Auth Exception: ${e.message}')),
+      );
+    }
   } catch (e) {
-    print('Unknown Exception: $e');
-    throw e;
+    // Catch any other unknown exceptions
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Unknown Exception: $e')),
+    );
   }
 }
 

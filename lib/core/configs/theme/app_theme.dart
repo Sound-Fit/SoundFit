@@ -9,14 +9,15 @@ class AppTheme {
     appBarTheme: AppBarTheme(
       color: AppColors.white,
       elevation: 0,
-      titleTextStyle: TextStyle(color: AppColors.black, fontSize: 25, fontWeight: FontWeight.bold),
+      titleTextStyle: TextStyle(
+          color: AppColors.black, fontSize: 25, fontWeight: FontWeight.bold),
       iconTheme: IconThemeData(
         color: AppColors.black,
       ),
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: AppColors.white,
-    ), 
+    ),
     colorScheme: ColorScheme.fromSwatch().copyWith(secondary: AppColors.black),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
