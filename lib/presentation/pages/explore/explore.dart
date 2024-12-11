@@ -7,6 +7,7 @@ import 'package:soundfit/common/widgets/text/title_text.dart';
 import 'package:soundfit/core/configs/theme/app_colors.dart';
 import 'package:soundfit/presentation/pages/explore/genre.dart';
 import 'package:soundfit/presentation/pages/explore/search.dart';
+import 'package:soundfit/presentation/widgets/song/songCardList.dart';
 
 class ExplorePage extends StatelessWidget {
   const ExplorePage({super.key});
@@ -31,50 +32,16 @@ class ExplorePage extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  BasedText(
-                    text: 'Recommend For You',
-                    fontWeight: FontWeight.bold,
-                  ),
-                  Gap(10.0),
-                  // SizedBox(
-                  //   height: 220,
-                  //   child: ListView(
-                  //     // This next line does the trick.
-                  //     scrollDirection: Axis.horizontal,
-                  //     children: <Widget>[
-                  //       SongCard(
-                  //           songTitle: "Young and Beautiful",
-                  //           artistName: "Lana Del Ray",
-                  //           image: Image.asset("assets/images/YnB.jpg"),
-                  //           onPressed: () {}),
-                  //       SongCard(
-                  //           songTitle: "Paradise",
-                  //           artistName: "Young Man",
-                  //           image: Image.asset("assets/images/SongCover.jpg"),
-                  //           onPressed: () {}),
-                  //       SongCard(
-                  //           songTitle: "Born To Die",
-                  //           artistName: "Lana Del Ray",
-                  //           image: Image.asset("assets/images/Artist.jpg"),
-                  //           onPressed: () {}),
-                  //       SongCard(
-                  //           songTitle: "Young and Beautiful",
-                  //           artistName: "Lana Del Ray",
-                  //           image: Image.asset("assets/images/YnB.jpg"),
-                  //           onPressed: () {}),
-                  //       SongCard(
-                  //           songTitle: "Paradise",
-                  //           artistName: "Young Man",
-                  //           image: Image.asset("assets/images/SongCover.jpg"),
-                  //           onPressed: () {}),
-                  //       SongCard(
-                  //           songTitle: "Born To Die",
-                  //           artistName: "Lana Del Ray",
-                  //           image: Image.asset("assets/images/Artist.jpg"),
-                  //           onPressed: () {}),
-                  //     ],
-                  //   ),
-                  // ),
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        BasedText(
+                          text: 'Recommend For You',
+                          fontWeight: FontWeight.bold,
+                        ),
+                        Gap(10.0),
+                        SongCardlist(),
+                      ]),
                 ],
               ),
               Gap(20),
