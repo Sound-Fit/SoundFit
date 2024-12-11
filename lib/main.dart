@@ -9,12 +9,11 @@ import 'package:soundfit/presentation/pages/auth/login.dart';
 import 'package:soundfit/presentation/pages/auth/register.dart';
 import 'package:soundfit/presentation/pages/auth/welcomePage.dart';
 import 'package:soundfit/presentation/pages/camera/camera.dart';
-import 'package:soundfit/presentation/pages/splashPage.dart';
-import 'package:soundfit/presentation/widgets/navBar.dart';
 import 'package:soundfit/presentation/pages/explore/genre.dart';
 import 'package:soundfit/presentation/pages/explore/search.dart';
 import 'package:soundfit/presentation/pages/profile/editProfile.dart';
-import 'package:soundfit/presentation/pages/playMusic.dart';
+import 'package:soundfit/presentation/pages/splashPage.dart';
+import 'package:soundfit/presentation/widgets/navBar.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

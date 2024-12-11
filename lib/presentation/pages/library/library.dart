@@ -65,49 +65,49 @@ class Library extends StatelessWidget {
                         BasedText(
                             text: 'Liked Song', fontWeight: FontWeight.bold),
                         Gap(10.0),
-                        SizedBox(
-                          height: 220,
-                          child: ListView(
-                            // This next line does the trick.
-                            scrollDirection: Axis.horizontal,
-                            children: <Widget>[
-                              SongCard(
-                                  songTitle: "Young and Beautiful",
-                                  artistName: "Lana Del Ray",
-                                  image: Image.asset("assets/images/YnB.jpg"),
-                                  onPressed: () {}),
-                              SongCard(
-                                  songTitle: "Paradise",
-                                  artistName: "Young Man",
-                                  image: Image.asset(
-                                      "assets/images/SongCover.jpg"),
-                                  onPressed: () {}),
-                              SongCard(
-                                  songTitle: "Born To Die",
-                                  artistName: "Lana Del Ray",
-                                  image:
-                                      Image.asset("assets/images/Artist.jpg"),
-                                  onPressed: () {}),
-                              SongCard(
-                                  songTitle: "Young and Beautiful",
-                                  artistName: "Lana Del Ray",
-                                  image: Image.asset("assets/images/YnB.jpg"),
-                                  onPressed: () {}),
-                              SongCard(
-                                  songTitle: "Paradise",
-                                  artistName: "Young Man",
-                                  image: Image.asset(
-                                      "assets/images/SongCover.jpg"),
-                                  onPressed: () {}),
-                              SongCard(
-                                  songTitle: "Born To Die",
-                                  artistName: "Lana Del Ray",
-                                  image:
-                                      Image.asset("assets/images/Artist.jpg"),
-                                  onPressed: () {}),
-                            ],
-                          ),
-                        ),
+                        // SizedBox(
+                        //   height: 220,
+                        //   child: ListView(
+                        //     // This next line does the trick.
+                        //     scrollDirection: Axis.horizontal,
+                        //     children: <Widget>[
+                        //       SongCard(
+                        //           songTitle: "Young and Beautiful",
+                        //           artistName: "Lana Del Ray",
+                        //           image: Image.asset("assets/images/YnB.jpg"),
+                        //           onPressed: () {}),
+                        //       SongCard(
+                        //           songTitle: "Paradise",
+                        //           artistName: "Young Man",
+                        //           image: Image.asset(
+                        //               "assets/images/SongCover.jpg"),
+                        //           onPressed: () {}),
+                        //       SongCard(
+                        //           songTitle: "Born To Die",
+                        //           artistName: "Lana Del Ray",
+                        //           image:
+                        //               Image.asset("assets/images/Artist.jpg"),
+                        //           onPressed: () {}),
+                        //       SongCard(
+                        //           songTitle: "Young and Beautiful",
+                        //           artistName: "Lana Del Ray",
+                        //           image: Image.asset("assets/images/YnB.jpg"),
+                        //           onPressed: () {}),
+                        //       SongCard(
+                        //           songTitle: "Paradise",
+                        //           artistName: "Young Man",
+                        //           image: Image.asset(
+                        //               "assets/images/SongCover.jpg"),
+                        //           onPressed: () {}),
+                        //       SongCard(
+                        //           songTitle: "Born To Die",
+                        //           artistName: "Lana Del Ray",
+                        //           image:
+                        //               Image.asset("assets/images/Artist.jpg"),
+                        //           onPressed: () {}),
+                        //     ],
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -121,32 +121,32 @@ class Library extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                         Gap(10.0),
-                        SizedBox(
-                          height: 220,
-                          child: ListView(
-                            // This next line does the trick.
-                            scrollDirection: Axis.horizontal,
-                            children: <Widget>[
-                              SongCard(
-                                  songTitle: "Paradise",
-                                  artistName: "Young Man",
-                                  image: Image.asset(
-                                      "assets/images/SongCover.jpg"),
-                                  onPressed: () {}),
-                              SongCard(
-                                  songTitle: "Young and Beautiful",
-                                  artistName: "Lana Del Ray",
-                                  image: Image.asset("assets/images/YnB.jpg"),
-                                  onPressed: () {}),
-                              SongCard(
-                                  songTitle: "Born To Die",
-                                  artistName: "Lana Del Ray",
-                                  image:
-                                      Image.asset("assets/images/Artist.jpg"),
-                                  onPressed: () {}),
-                            ],
-                          ),
-                        ),
+                        // SizedBox(
+                        //   height: 220,
+                        //   child: ListView(
+                        //     // This next line does the trick.
+                        //     scrollDirection: Axis.horizontal,
+                        //     children: <Widget>[
+                        //       SongCard(
+                        //           songTitle: "Paradise",
+                        //           artistName: "Young Man",
+                        //           image: Image.asset(
+                        //               "assets/images/SongCover.jpg"),
+                        //           onPressed: () {}),
+                        //       SongCard(
+                        //           songTitle: "Young and Beautiful",
+                        //           artistName: "Lana Del Ray",
+                        //           image: Image.asset("assets/images/YnB.jpg"),
+                        //           onPressed: () {}),
+                        //       SongCard(
+                        //           songTitle: "Born To Die",
+                        //           artistName: "Lana Del Ray",
+                        //           image:
+                        //               Image.asset("assets/images/Artist.jpg"),
+                        //           onPressed: () {}),
+                        //     ],
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

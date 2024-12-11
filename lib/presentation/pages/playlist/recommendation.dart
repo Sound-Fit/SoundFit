@@ -5,6 +5,7 @@ import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:soundfit/presentation/widgets/recognition/recognition_result.dart';
 
 class RecommendationPage extends StatelessWidget {
   const RecommendationPage({Key? key}) : super(key: key);
@@ -39,37 +40,6 @@ class RecommendationPage extends StatelessWidget {
     }; // Fallback jika data tidak ditemukan
   }
 
-  // Method to determine age range based on the age value
-  String getAgeRange(String? ageStr) {
-    if (ageStr == null) return '[Unknown Age]';
-
-    final age = int.tryParse(ageStr);
-    if (age == null) return '[Invalid Age]';
-
-    switch (age) {
-      case 0:
-        return 'Children';
-
-      case 1:
-        return 'Teenagers';
-
-      case 2:
-        return 'Young Adults';
-
-      case 3:
-        return 'Adults';
-
-      case 4:
-        return 'Middle-Aged Adults';
-
-      case 5:
-        return 'Elderly Adults';
-
-      default:
-        return 'Can' 't determine age range';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,8 +72,7 @@ class RecommendationPage extends StatelessWidget {
           } else {
             // Success state
             final recognitionPath = snapshot.data?['recognitionPath'];
-            final age = snapshot.data?['age'];
-            final ageRange = getAgeRange(age);
+            final ageRange = snapshot.data?['age'] ?? 'Unknown';
 
             return Padding(
               padding: const EdgeInsets.all(30.0),
@@ -115,34 +84,7 @@ class RecommendationPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Result Classification
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // Display the image from recognitionPath
-                            Container(
-                              height: 150,
-                              width: 150,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey
-                                        .withOpacity(0.5), // Shadow color
-                                    spreadRadius: 2,
-                                    blurRadius: 10,
-                                    offset: Offset(0, 5), // Position of shadow
-                                  ),
-                                ],
-                                image: DecorationImage(
-                                  image: NetworkImage(recognitionPath!),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            BasedText(text: "$ageRange") // Show the age range
-                          ],
-                        ),
+                        RecognitionResult(recognitionPath: recognitionPath, ageRange: ageRange),
                         Gap(30),
 
                         // Recommended Playlist

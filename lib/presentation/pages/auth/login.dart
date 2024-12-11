@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:soundfit/common/widgets/button/basic_button.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
 import 'package:soundfit/core/configs/theme/app_colors.dart';
 import 'package:soundfit/presentation/pages/auth/register.dart';
-import 'package:soundfit/presentation/pages/forgetPassword/forgetPassword.dart';
 
 class Login extends StatefulWidget {
   Login({super.key});

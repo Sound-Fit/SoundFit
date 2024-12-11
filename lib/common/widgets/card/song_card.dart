@@ -4,14 +4,14 @@ import 'package:soundfit/core/configs/theme/app_colors.dart';
 class SongCard extends StatelessWidget {
   final String songTitle;
   final String artistName;
-  final Image image;
+  final String coverImage;
   final VoidCallback onPressed;
 
   const SongCard(
       {Key? key,
       required this.songTitle,
       required this.artistName,
-      required this.image,
+      required this.coverImage,
       required this.onPressed})
       : super(key: key);
 
@@ -32,7 +32,9 @@ class SongCard extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
               image: DecorationImage(
-                image: image.image,
+                image: coverImage != null
+                          ? NetworkImage(coverImage!)
+                          : AssetImage('assets/images/nullSongCover.jpg'),
                 fit: BoxFit.cover,
               ),
             ),

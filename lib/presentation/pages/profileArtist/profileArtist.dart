@@ -98,87 +98,87 @@ class ProfileArtist extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                     Gap(10),
-                    SizedBox(
-                      height: 220,
-                      child: ListView(
-                        // This next line does the trick.
-                        scrollDirection: Axis.horizontal,
-                        children: <Widget>[
-                          SongCard(
-                            songTitle: "Young and Beautiful",
-                            artistName: "Lana Del Ray",
-                            image: Image.asset("assets/images/YnB.jpg"),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) => Album()),
-                              );
-                            },
-                          ),
-                          SongCard(
-                            songTitle: "Paradise",
-                            artistName: "Young Man",
-                            image: Image.asset("assets/images/SongCover.jpg"),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) => Album()),
-                              );
-                            },
-                          ),
-                          SongCard(
-                            songTitle: "Born To Die",
-                            artistName: "Lana Del Ray",
-                            image: Image.asset("assets/images/Artist.jpg"),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) => Album()),
-                              );
-                            },
-                          ),
-                          SongCard(
-                            songTitle: "Young and Beautiful",
-                            artistName: "Lana Del Ray",
-                            image: Image.asset("assets/images/YnB.jpg"),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) => Album()),
-                              );
-                            },
-                          ),
-                          SongCard(
-                            songTitle: "Paradise",
-                            artistName: "Young Man",
-                            image: Image.asset("assets/images/SongCover.jpg"),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) => Album()),
-                              );
-                            },
-                          ),
-                          SongCard(
-                            songTitle: "Born To Die",
-                            artistName: "Lana Del Ray",
-                            image: Image.asset("assets/images/Artist.jpg"),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) => Album()),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
+                    // SizedBox(
+                    //   height: 220,
+                    //   child: ListView(
+                    //     // This next line does the trick.
+                    //     scrollDirection: Axis.horizontal,
+                    //     children: <Widget>[
+                    //       SongCard(
+                    //         songTitle: "Young and Beautiful",
+                    //         artistName: "Lana Del Ray",
+                    //         image: Image.asset("assets/images/YnB.jpg"),
+                    //         onPressed: () {
+                    //           Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (BuildContext context) => Album()),
+                    //           );
+                    //         },
+                    //       ),
+                    //       SongCard(
+                    //         songTitle: "Paradise",
+                    //         artistName: "Young Man",
+                    //         image: Image.asset("assets/images/SongCover.jpg"),
+                    //         onPressed: () {
+                    //           Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (BuildContext context) => Album()),
+                    //           );
+                    //         },
+                    //       ),
+                    //       SongCard(
+                    //         songTitle: "Born To Die",
+                    //         artistName: "Lana Del Ray",
+                    //         image: Image.asset("assets/images/Artist.jpg"),
+                    //         onPressed: () {
+                    //           Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (BuildContext context) => Album()),
+                    //           );
+                    //         },
+                    //       ),
+                    //       SongCard(
+                    //         songTitle: "Young and Beautiful",
+                    //         artistName: "Lana Del Ray",
+                    //         image: Image.asset("assets/images/YnB.jpg"),
+                    //         onPressed: () {
+                    //           Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (BuildContext context) => Album()),
+                    //           );
+                    //         },
+                    //       ),
+                    //       SongCard(
+                    //         songTitle: "Paradise",
+                    //         artistName: "Young Man",
+                    //         image: Image.asset("assets/images/SongCover.jpg"),
+                    //         onPressed: () {
+                    //           Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (BuildContext context) => Album()),
+                    //           );
+                    //         },
+                    //       ),
+                    //       SongCard(
+                    //         songTitle: "Born To Die",
+                    //         artistName: "Lana Del Ray",
+                    //         image: Image.asset("assets/images/Artist.jpg"),
+                    //         onPressed: () {
+                    //           Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (BuildContext context) => Album()),
+                    //           );
+                    //         },
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:soundfit/common/widgets/card/song_card.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
-import 'package:soundfit/presentation/pages/playMusic.dart';
+import 'package:soundfit/presentation/widgets/artist/artistsCardList.dart';
+import 'package:soundfit/presentation/widgets/recognition/recognition_result.dart';
+import 'package:soundfit/presentation/widgets/song/songCardList.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -41,30 +42,6 @@ class HomePage extends StatelessWidget {
       'age': null,
       'username': null
     }; // Fallback jika data tidak ditemukan
-  }
-
-  String getAgeRange(String? ageStr) {
-    if (ageStr == null) return '[Unknown Age]';
-
-    final age = int.tryParse(ageStr);
-    if (age == null) return '[Invalid Age]';
-
-    switch (age) {
-      case 0:
-        return 'Children';
-      case 1:
-        return 'Teenagers';
-      case 2:
-        return 'Young Adults';
-      case 3:
-        return 'Adults';
-      case 4:
-        return 'Middle-Aged Adults';
-      case 5:
-        return 'Elderly Adults';
-      default:
-        return 'Can\'t determine age range';
-    }
   }
 
   @override
@@ -119,48 +96,23 @@ class HomePage extends StatelessWidget {
               );
             } else {
               final recognitionPath = snapshot.data?['recognitionPath'];
-              final age = snapshot.data?['age'];
-              final ageRange = getAgeRange(age);
+              final ageRange = snapshot.data?['age'] ?? 'Unknown';
 
               return SingleChildScrollView(
                 child: Column(
                   children: [
                     Column(
                       children: [
+                        // Artist List
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              height: 100,
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: <Widget>[
-                                  _buildArtistCard(
-                                      image: Image.asset(
-                                          "assets/images/Artist.jpg")),
-                                  Gap(5),
-                                  _buildArtistCard(
-                                      image:
-                                          Image.asset("assets/images/YnB.jpg")),
-                                  Gap(5),
-                                  _buildArtistCard(
-                                      image: Image.asset(
-                                          "assets/images/SongCover.jpg")),
-                                  Gap(5),
-                                  _buildArtistCard(
-                                      image: Image.asset(
-                                          "assets/images/Artist.jpg")),
-                                  Gap(5),
-                                  _buildArtistCard(
-                                      image:
-                                          Image.asset("assets/images/YnB.jpg")),
-                                  Gap(5),
-                                  _buildArtistCard(
-                                      image: Image.asset(
-                                          "assets/images/SongCover.jpg")),
-                                ],
-                              ),
+                            BasedText(
+                              text: 'Artists',
+                              fontWeight: FontWeight.bold,
                             ),
+                            Gap(10),
+                            ArtistsCardList(),
                           ],
                         ),
 
@@ -173,119 +125,23 @@ class HomePage extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                             Gap(10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                // Display the image from recognitionPath
-                                Container(
-                                  height: 150,
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey
-                                            .withOpacity(0.5), // Shadow color
-                                        spreadRadius: 2,
-                                        blurRadius: 10,
-                                        offset:
-                                            Offset(0, 5), // Position of shadow
-                                      ),
-                                    ],
-                                    image: DecorationImage(
-                                      image: NetworkImage(recognitionPath!),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                BasedText(
-                                    text: "$ageRange") // Show the age range
-                              ],
-                            ),
+                            RecognitionResult(
+                                recognitionPath: recognitionPath,
+                                ageRange: ageRange),
                           ],
                         ),
                         Gap(20),
-                        // Column(
-                        //   crossAxisAlignment: CrossAxisAlignment.start,
-                        //   children: [
-                        //     BasedText(
-                        //       text: 'Artist Album',
-                        //       fontWeight: FontWeight.bold,
-                        //     ),
-                        //     Gap(20),
-                        //     SizedBox(
-                        //       height: 190,
-                        //       child: ListView(
-                        //         scrollDirection: Axis.horizontal,
-                        //         children: <Widget>[
-                        //           _buildAlbumCard(),
-                        //           _buildAlbumCard(),
-                        //           _buildAlbumCard(),
-                        //           _buildAlbumCard(),
-                        //         ],
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // Gap(20),
 
+                        // Song Card List From Firebase
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            BasedText(
-                              text: 'Recommend For You',
-                              fontWeight: FontWeight.bold,
-                            ),
-                            SizedBox(
-                              height: 220,
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: <Widget>[
-                                  SongCard(
-                                      songTitle: "Young and Beautiful",
-                                      artistName: "Lana Del Ray",
-                                      image:
-                                          Image.asset("assets/images/YnB.jpg"),
-                                      onPressed: () => {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => PlayMusic(musicId: '2nMeu6UenVvwUktBCpLMK9?si=e290ea79276e4a7f',),
-                                              ),
-                                            )
-                                          }),
-                                  SongCard(
-                                      songTitle: "Paradise",
-                                      artistName: "Coldplay",
-                                      image: Image.asset(
-                                          "assets/images/SongCover.jpg"),
-                                      onPressed: () => {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => PlayMusic(musicId: '6nek1Nin9q48AVZcWs9e9D?si=4687ba3436574743',),
-                                              ),
-                                            )
-                                          }),
-                                  SongCard(
-                                      songTitle: "Born To Die",
-                                      artistName: "Lana Del Ray",
-                                      image: Image.asset(
-                                          "assets/images/Artist.jpg"),
-                                      onPressed: () => {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => PlayMusic(musicId: '4Ouhoi2lAhrLJKFzUqEzwl?si=be9edfd9747743f6',),
-                                              ),
-                                            )
-                                          }),
-                                ],
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              BasedText(
+                                text: 'Songs',
+                                fontWeight: FontWeight.bold,
                               ),
-                            ),
-                          ],
-                        ),
+                              SongCardlist(),
+                            ]),
                       ],
                     ),
                   ],
@@ -294,61 +150,6 @@ class HomePage extends StatelessWidget {
             }
           },
         ),
-      ),
-    );
-  }
-
-  Widget _buildArtistCard({required Image image}) {
-    return TextButton(
-      style: TextButton.styleFrom(
-        padding: EdgeInsets.symmetric(horizontal: 1),
-      ),
-      onPressed: () {},
-      child: Container(
-        width: 70,
-        height: 70,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          image: DecorationImage(
-            image: image.image,
-            fit: BoxFit.cover,
-          ),
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              spreadRadius: 2,
-              blurRadius: 3,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAlbumCard() {
-    return TextButton(
-      style: TextButton.styleFrom(
-        padding: EdgeInsets.symmetric(horizontal: 5),
-      ),
-      onPressed: () {},
-      child: Column(
-        children: [
-          SizedBox(
-            width: 250,
-            height: 140,
-            child: Image.asset('assets/images/Artist.jpg'),
-          ),
-          BasedText(
-            text: '[Album Name]',
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-          ),
-          BasedText(
-            text: '[Artist Name]',
-            fontSize: 12,
-          ),
-        ],
       ),
     );
   }

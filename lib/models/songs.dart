@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Songs {
   Duration? duration;
   String trackId;
@@ -7,7 +5,7 @@ class Songs {
   String? songTitle;
   String? coverImage;
   String? artistImage;
-  Color? songColor;
+  List<String>? songGenre;
 
   Songs(
       {this.duration,
@@ -16,5 +14,5 @@ class Songs {
       this.songTitle,
       this.coverImage,
       this.artistImage,
-      this.songColor});
+      this.songGenre});
 }
