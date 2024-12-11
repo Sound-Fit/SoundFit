@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:soundfit/common/widgets/card/genre_card.dart';
-import 'package:soundfit/common/widgets/card/song_card.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
-import 'package:soundfit/core/configs/theme/app_colors.dart';
 import 'package:soundfit/presentation/pages/explore/genre.dart';
-import 'package:soundfit/presentation/pages/explore/search.dart';
 import 'package:soundfit/presentation/widgets/song/songCardList.dart';
 
 class ExplorePage extends StatelessWidget {

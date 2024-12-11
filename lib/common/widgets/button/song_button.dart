@@ -5,7 +5,7 @@ import 'package:soundfit/common/widgets/text/based_text.dart';
 class SongButton extends StatelessWidget {
   final String songTitle;
   final String artistName;
-  final Image image;
+  final String coverImage;
   final year;
   final VoidCallback onPressed;
 
@@ -13,7 +13,7 @@ class SongButton extends StatelessWidget {
       {Key? key,
       required this.songTitle,
       required this.artistName,
-      required this.image,
+      required this.coverImage,
       required this.year,
       required this.onPressed})
       : super(key: key);
@@ -21,7 +21,7 @@ class SongButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {},
+      onPressed: onPressed,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -34,7 +34,9 @@ class SongButton extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     image: DecorationImage(
-                      image: image.image,
+                      image: coverImage != null
+                          ? NetworkImage(coverImage!)
+                          : AssetImage('assets/images/nullSongCover.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -43,10 +45,15 @@ class SongButton extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    BasedText(
-                      text: songTitle,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
+                    SizedBox(
+                      width: 210,
+                      child: Text(
+                        songTitle,
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w900),
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     BasedText(
                       text: artistName,

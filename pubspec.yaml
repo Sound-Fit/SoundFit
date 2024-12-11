@@ -51,6 +51,7 @@ dependencies:
   spotify: ^0.13.7
   youtube_explode_dart: ^2.3.6
   audioplayers: ^6.1.0
+  flutter_launcher_icons: ^0.14.2
   
 dev_dependencies:
   flutter_test:

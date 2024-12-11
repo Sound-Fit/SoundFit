@@ -5,7 +5,7 @@ import 'package:soundfit/core/configs/theme/app_colors.dart';
 
 class ArtistCard extends StatelessWidget {
   final String title;
-  final Image image;
+  final String image;
   final VoidCallback onPressed;
 
   const ArtistCard(
@@ -19,28 +19,32 @@ class ArtistCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onPressed,
-      child: Row(children: [
+      child: Row(
+      children: [
         Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-              color: Colors.white, // Warna latar belakang untuk kontras
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.black.withOpacity(0.1), // Warna bayangan
-                  spreadRadius: 2, // Seberapa jauh bayangan menyebar
-                  blurRadius: 3, // Ketajaman bayangan
-                ),
-              ],
-              borderRadius: BorderRadius.circular(25.0)),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(25.0),
-            child: Image.asset('assets/images/Artist.jpg'),
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+          BoxShadow(
+            color: AppColors.black.withOpacity(0.1),
+            spreadRadius: 2,
+            blurRadius: 3,
           ),
+          ],
+          borderRadius: BorderRadius.circular(25.0),
         ),
-        Gap(15),
+        child: CircleAvatar(
+          backgroundColor: Colors.white,
+          backgroundImage: NetworkImage(image),
+          radius: 25,
+        ),
+        ),
+        const Gap(15),
         BasedText(text: title),
-      ]),
+      ],
+      ),
     );
   }
 }

@@ -36,7 +36,10 @@ class _SongCardlistState extends State<SongCardlist> {
           return const Center(child: Text("No songs found."));
         }
 
+        // Get the list of songs and shuffle it
         final songs = snapshot.data!;
+        songs.shuffle(); // Randomize the order of the songs
+
         return SizedBox(
           height: 220,
           child: ListView.builder(

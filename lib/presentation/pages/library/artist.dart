@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:soundfit/common/widgets/card/artist_card.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
-import 'package:soundfit/presentation/pages/profileArtist/profileArtist.dart';
+import 'package:soundfit/presentation/widgets/artist/artistsLists.dart';
 
 class Artist extends StatelessWidget {
   const Artist({super.key});
@@ -38,46 +37,7 @@ class Artist extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          children: [
-                            ArtistCard(
-                              title: "Lana Del Rey",
-                              image: Image.asset("assets/images/Artist.jpg"),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          ProfileArtist()),
-                                );
-                              },
-                            ),
-                            ArtistCard(
-                              title: "Lana Del Rey",
-                              image: Image.asset("assets/images/Artist.jpg"),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          ProfileArtist()),
-                                );
-                              },
-                            ),
-                            ArtistCard(
-                              title: "Lana Del Rey",
-                              image: Image.asset("assets/images/Artist.jpg"),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          ProfileArtist()),
-                                );
-                              },
-                            )
-                          ],
-                        ),
+                        child: ArtistsLists(),
                       ),
                     ],
                   ),

@@ -33,6 +33,14 @@ class SongService {
           song.songTitle = track.name;
           song.artistName = track.artists?.first.name;
           song.coverImage = track.album?.images?.first.url;
+          // Safely extract year from releaseDate
+          if (track.album?.releaseDate != null) {
+            final releaseDate = track.album!.releaseDate!;
+            final year = releaseDate.split('-').first; // Extract year part
+            song.year = year; // Assign year as string
+          } else {
+            song.year = null; // Handle null case
+          }
         } catch (error) {
           print("Error fetching data from Spotify: $error");
         }

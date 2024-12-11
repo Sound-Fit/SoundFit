@@ -5,6 +5,7 @@ class Songs {
   String? songTitle;
   String? coverImage;
   String? artistImage;
+  String? year;
   List<String>? songGenre;
 
   Songs(
@@ -14,5 +15,6 @@ class Songs {
       this.songTitle,
       this.coverImage,
       this.artistImage,
+      this.year,
       this.songGenre});
 }

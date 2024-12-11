@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:soundfit/common/widgets/button/song_button.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
+import 'package:soundfit/presentation/widgets/song/songLists.dart';
 
 class Album extends StatelessWidget {
   Album({super.key});
@@ -51,111 +51,7 @@ class Album extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        // Wrap Row inside Expanded to take full available width
-                        Expanded(
-                            child: Column(
-                          children: [
-                            SongButton(
-                                songTitle: "Young and Beautiful",
-                                artistName: "Lana Del Rey",
-                                image: Image.asset("assets/images/YnB.jpg"),
-                                year: 2019,
-                                onPressed: () {}),
-                            SongButton(
-                                songTitle: "Paradise",
-                                artistName: "Young Man",
-                                image:
-                                    Image.asset("assets/images/SongCover.jpg"),
-                                year: 2019,
-                                onPressed: () {}),
-                            SongButton(
-                                songTitle: "Born To Die",
-                                artistName: "Lana Del Ray",
-                                image: Image.asset("assets/images/Artist.jpg"),
-                                year: 2019,
-                                onPressed: () {}),
-                            SongButton(
-                                songTitle: "Young and Beautiful",
-                                artistName: "Lana Del Rey",
-                                image: Image.asset("assets/images/YnB.jpg"),
-                                year: 2019,
-                                onPressed: () {}),
-                            SongButton(
-                                songTitle: "Paradise",
-                                artistName: "Young Man",
-                                image:
-                                    Image.asset("assets/images/SongCover.jpg"),
-                                year: 2019,
-                                onPressed: () {}),
-                            SongButton(
-                                songTitle: "Born To Die",
-                                artistName: "Lana Del Ray",
-                                image: Image.asset("assets/images/Artist.jpg"),
-                                year: 2019,
-                                onPressed: () {}),
-                            SongButton(
-                                songTitle: "Young and Beautiful",
-                                artistName: "Lana Del Rey",
-                                image: Image.asset("assets/images/YnB.jpg"),
-                                year: 2019,
-                                onPressed: () {}),
-                            SongButton(
-                                songTitle: "Paradise",
-                                artistName: "Young Man",
-                                image:
-                                    Image.asset("assets/images/SongCover.jpg"),
-                                year: 2019,
-                                onPressed: () {}),
-                            SongButton(
-                                songTitle: "Born To Die",
-                                artistName: "Lana Del Ray",
-                                image: Image.asset("assets/images/Artist.jpg"),
-                                year: 2019,
-                                onPressed: () {}),
-                            SongButton(
-                                songTitle: "Young and Beautiful",
-                                artistName: "Lana Del Rey",
-                                image: Image.asset("assets/images/YnB.jpg"),
-                                year: 2019,
-                                onPressed: () {}),
-                            SongButton(
-                                songTitle: "Paradise",
-                                artistName: "Young Man",
-                                image:
-                                    Image.asset("assets/images/SongCover.jpg"),
-                                year: 2019,
-                                onPressed: () {}),
-                            SongButton(
-                                songTitle: "Born To Die",
-                                artistName: "Lana Del Ray",
-                                image: Image.asset("assets/images/Artist.jpg"),
-                                year: 2019,
-                                onPressed: () {}),
-                            SongButton(
-                                songTitle: "Young and Beautiful",
-                                artistName: "Lana Del Rey",
-                                image: Image.asset("assets/images/YnB.jpg"),
-                                year: 2019,
-                                onPressed: () {}),
-                            SongButton(
-                                songTitle: "Paradise",
-                                artistName: "Young Man",
-                                image:
-                                    Image.asset("assets/images/SongCover.jpg"),
-                                year: 2019,
-                                onPressed: () {}),
-                            SongButton(
-                                songTitle: "Born To Die",
-                                artistName: "Lana Del Ray",
-                                image: Image.asset("assets/images/Artist.jpg"),
-                                year: 2019,
-                                onPressed: () {}),
-                          ],
-                        )),
-                      ],
-                    ),
+                    SongLists(),
                   ],
                 ),
               ),
