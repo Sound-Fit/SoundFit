@@ -72,7 +72,7 @@ class Library extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           BasedText(
-                            text: 'Recommended For You',
+                            text: 'Songs',
                             fontWeight: FontWeight.bold,
                           ),
                           Gap(10.0),

@@ -49,18 +49,23 @@ class SongCard extends StatelessWidget {
           ),
           SizedBox(
             width: 140,
-            child: Text(
-              songTitle,
-              style: TextStyle(
-                  color: AppColors.black, fontWeight: FontWeight.w900),
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
+            child: Column(
+              children: [
+                Text(
+                  songTitle,
+                  style: TextStyle(
+                      color: AppColors.black, fontWeight: FontWeight.w900),
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  artistName,
+                  style: TextStyle(color: AppColors.black, fontSize: 12),
+                  overflow: TextOverflow.ellipsis,
+                )
+              ],
             ),
           ),
-          Text(
-            artistName,
-            style: TextStyle(color: AppColors.black, fontSize: 12),
-          )
         ],
       ),
     );

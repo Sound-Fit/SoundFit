@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:soundfit/common/widgets/card/genre_card.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
 import 'package:soundfit/presentation/pages/explore/genre.dart';
@@ -29,16 +28,12 @@ class ExplorePage extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        BasedText(
-                          text: 'Recommend For You',
-                          fontWeight: FontWeight.bold,
-                        ),
-                        Gap(10.0),
-                        SongCardlist(),
-                      ]),
+                  BasedText(
+                    text: 'Songs',
+                    fontWeight: FontWeight.bold,
+                  ),
+                  Gap(10.0),
+                  SongCardlist(),
                 ],
               ),
               Gap(20),
@@ -48,10 +43,10 @@ class ExplorePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   BasedText(
-                    text: 'Explore by Genre',
+                    text: 'Popular Genres',
                     fontWeight: FontWeight.bold,
                   ),
-                  Gap(20.0),
+                  Gap(10.0),
                   SizedBox(
                     height: 300,
                     child: GridView.builder(
@@ -63,17 +58,11 @@ class ExplorePage extends StatelessWidget {
                         mainAxisSpacing: 3.0,
                         childAspectRatio: 1,
                       ),
-                      itemCount: 8,
+                      itemCount: genres.length,
                       itemBuilder: (context, index) {
                         return GenreCard(
-                          image: Image.asset('assets/images/genre.jpg'),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) => Genre()),
-                            );
-                          },
+                          imagePath: genres[index].imagePath,
+                          genreName: genres[index].genreName,
                         );
                       },
                     ),
@@ -84,6 +73,47 @@ class ExplorePage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class Genre {
+  final String imagePath;
+  final String genreName;
+
+  Genre({required this.imagePath, required this.genreName});
+}
+
+final List<Genre> genres = [
+  Genre(imagePath: 'assets/genre/pop.png', genreName: 'Pop'),
+  Genre(imagePath: 'assets/genre/rock.png', genreName: 'Rock'),
+  Genre(imagePath: 'assets/genre/jazz.png', genreName: 'Jazz'),
+  Genre(imagePath: 'assets/genre/classical.png', genreName: 'Classical'),
+  Genre(imagePath: 'assets/genre/rap.png', genreName: 'HipHop'),
+  Genre(imagePath: 'assets/genre/country.png', genreName: 'Country'),
+  Genre(imagePath: 'assets/genre/indie.png', genreName: 'Indie'),
+  Genre(imagePath: 'assets/genre/acoustic.png', genreName: 'Acoustic'),
+];
+
+class GenreCard extends StatelessWidget {
+  final String imagePath;
+  final String genreName;
+
+  const GenreCard(
+      {super.key, required this.imagePath, required this.genreName});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  GenrePage(imagePath: imagePath, genreName: genreName)),
+        );
+      },
+      child: Image.asset(imagePath),
     );
   }
 }

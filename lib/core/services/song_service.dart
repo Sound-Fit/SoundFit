@@ -234,4 +234,29 @@ class SongService {
       return null;
     }
   }
+
+  // Get Song Playlist by genre
+  Future<List<String>> getSongIdsByGenre(String genre) async {
+    try {
+      // Query Firestore collection 'songs' untuk menemukan dokumen dengan songGenre yang mengandung genre tertentu
+      final QuerySnapshot snapshot = await _firestore
+          .collection('songs')
+          .where('songGenre',
+              arrayContains: genre.toLowerCase().replaceAll(' ', ''))
+          .get();
+
+      // Jika tidak ada dokumen ditemukan, cetak pesan dan kembalikan array kosong
+      if (snapshot.docs.isEmpty) {
+        print("No songs found for the genre: $genre.");
+        return [];
+      }
+
+      // Map dokumen menjadi list songId (Firestore document ID)
+      return snapshot.docs.map((doc) => doc.id).toList();
+    } catch (e) {
+      // Tangani error dan cetak pesan kesalahan
+      print("Error fetching songIds for genre $genre: $e");
+      return [];
+    }
+  }
 }

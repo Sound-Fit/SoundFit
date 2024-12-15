@@ -9,7 +9,6 @@ import 'package:soundfit/presentation/pages/auth/login.dart';
 import 'package:soundfit/presentation/pages/auth/register.dart';
 import 'package:soundfit/presentation/pages/auth/welcomePage.dart';
 import 'package:soundfit/presentation/pages/camera/camera.dart';
-import 'package:soundfit/presentation/pages/explore/genre.dart';
 import 'package:soundfit/presentation/pages/explore/search.dart';
 import 'package:soundfit/presentation/pages/profile/editProfile.dart';
 import 'package:soundfit/presentation/pages/splashPage.dart';
@@ -55,7 +54,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => Login(),
         '/register': (context) => Register(),
         '/home': (context) => CustomNavBar(camera: firstCamera),
-        '/explore/genre': (context) => Genre(),
+        // '/explore/genre': (context) => Genre(),
         '/explore/search': (context) => Search(),
         '/profile': (context) =>
             CustomNavBar(camera: firstCamera, selectedIndex: 3),

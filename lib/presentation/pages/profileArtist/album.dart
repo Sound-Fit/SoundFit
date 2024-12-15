@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
-import 'package:soundfit/presentation/widgets/song/songLists.dart';
 
 class Album extends StatelessWidget {
   Album({super.key});
