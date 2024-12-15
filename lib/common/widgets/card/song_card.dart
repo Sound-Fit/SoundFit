@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:soundfit/core/configs/theme/app_colors.dart';
+import 'package:soundfit/presentation/pages/playMusic.dart';
 
 class SongCard extends StatelessWidget {
   final String songTitle;
   final String artistName;
   final String coverImage;
-  final VoidCallback onPressed;
+  final String musicId;
 
   const SongCard(
       {Key? key,
       required this.songTitle,
       required this.artistName,
       required this.coverImage,
-      required this.onPressed})
+      required this.musicId})
       : super(key: key);
 
   @override
@@ -21,20 +22,27 @@ class SongCard extends StatelessWidget {
       style: TextButton.styleFrom(
         padding: EdgeInsets.all(8),
       ),
-      onPressed: onPressed,
+      onPressed: () => {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PlayMusic(
+              musicId: musicId,
+            ),
+          ),
+        )
+      },
       child: Column(
         children: [
           Container(
-            // color: AppColors.grey,
             width: 140,
             height: 160,
-            // child: image,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
               image: DecorationImage(
                 image: coverImage != null
-                          ? NetworkImage(coverImage!)
-                          : AssetImage('assets/images/nullSongCover.jpg'),
+                    ? NetworkImage(coverImage!)
+                    : AssetImage('assets/images/nullSongCover.jpg'),
                 fit: BoxFit.cover,
               ),
             ),

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
+import 'package:soundfit/presentation/pages/playMusic.dart';
 
 class SongButton extends StatelessWidget {
   final String songTitle;
   final String artistName;
   final String coverImage;
-  final year;
-  final VoidCallback onPressed;
+  final String year;
+  final String musicId;
 
   const SongButton(
       {Key? key,
@@ -15,13 +16,22 @@ class SongButton extends StatelessWidget {
       required this.artistName,
       required this.coverImage,
       required this.year,
-      required this.onPressed})
+      required this.musicId})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: onPressed,
+      onPressed: () => {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PlayMusic(
+              musicId: musicId,
+            ),
+          ),
+        )
+      },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -65,7 +75,7 @@ class SongButton extends StatelessWidget {
             ),
           ),
           BasedText(
-            text: year.toString(),
+            text: year,
             fontSize: 10,
           ),
         ],

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:soundfit/common/widgets/card/song_card.dart';
 import 'package:soundfit/core/services/song_service.dart';
 import 'package:soundfit/models/songs.dart';
-import 'package:soundfit/presentation/pages/playMusic.dart';
 
 class SongCardlist extends StatefulWidget {
   const SongCardlist({super.key});
@@ -51,16 +50,7 @@ class _SongCardlistState extends State<SongCardlist> {
                   songTitle: song.songTitle ?? 'Unknown Title',
                   artistName: song.artistName ?? 'Unknown Artist',
                   coverImage: song.coverImage ?? '',
-                  onPressed: () => {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PlayMusic(
-                              musicId: song.trackId,
-                            ),
-                          ),
-                        )
-                      });
+                  musicId: song.trackId);
             },
           ),
         );

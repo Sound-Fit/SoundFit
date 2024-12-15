@@ -18,28 +18,23 @@ class Genre extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            // Album Art Section
-            Image.asset(
-              'assets/images/genre.jpg',
-              width: 300,
-              height: 300,
-              fit: BoxFit.cover,
-            ),
-            Gap(20),
-            // Playlist Title
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SongLists(),
-                  ],
+        child: Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                // Album Art Section
+                Image.asset(
+                  'assets/images/genre.jpg',
+                  width: 300,
+                  height: 300,
+                  fit: BoxFit.cover,
                 ),
-              ),
+                Gap(20),
+                // Playlist Title
+                // SongLists(),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

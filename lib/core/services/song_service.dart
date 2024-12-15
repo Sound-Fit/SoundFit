@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:soundfit/core/configs/constants/app_urls.dart';
 import 'package:soundfit/models/songs.dart';
@@ -5,6 +7,25 @@ import 'package:spotify/spotify.dart';
 
 class SongService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<String?> getRandomMusicId() async {
+    try {
+      // Fetch the list of songs
+      List<Songs> songs = await fetchSongsInformation();
+
+      if (songs.isEmpty) {
+        print("No songs found.");
+        return null; // Return null if no songs are available
+      }
+
+      // Randomly select a song and return its trackId
+      final randomIndex = Random().nextInt(songs.length);
+      return songs[randomIndex].trackId;
+    } catch (e) {
+      print("Error fetching random music ID: $e");
+      return null;
+    }
+  }
 
   Future<List<Songs>> fetchSongsInformation() async {
     final credentials =
@@ -112,6 +133,105 @@ class SongService {
     } catch (e) {
       print("Error fetching artists: $e");
       throw Exception("Failed to load top artists");
+    }
+  }
+
+  // Get TrackID
+  Future<String?> getTrackIdFromSongId(String songId) async {
+    try {
+      // Fetch the song data from Firestore using the songId
+      songId = songId.toString().replaceAll(' ', '');
+      final songDoc = await _firestore.collection('songs').doc(songId).get();
+
+      if (!songDoc.exists) {
+        print("Song not found.");
+        return null; // Return null if song is not found
+      }
+
+      final songData = songDoc.data() as Map<String, dynamic>;
+      final trackId = songData['trackId'] as String?;
+
+      if (trackId == null) {
+        print("Track ID not found for this song.");
+        return null; // Return null if trackId is not available
+      }
+
+      return trackId; // Return the trackId
+    } catch (e) {
+      print("Error fetching trackId from songId: $e");
+      return null;
+    }
+  }
+
+  // Song Information from TrackId
+  Future<List<Songs?>> getSongsInfoFromTrackIds(List<String> trackIds) async {
+    final credentials =
+        SpotifyApiCredentials(AppUrls.clientId, AppUrls.clientSecret);
+    final spotify = SpotifyApi(credentials);
+
+    try {
+      // Fetch details for all trackIds
+      List<Songs?> songs = await Future.wait(trackIds.map((trackId) async {
+        try {
+          // Fetch track data from Spotify API using the trackId
+          final track = await spotify.tracks.get(trackId);
+
+          // Initialize a new Songs object with track data
+          Songs song = Songs(trackId: trackId, songGenre: []);
+
+          // Set song details from the track data
+          song.songTitle = track.name;
+          song.artistName = track.artists?.first.name;
+          song.coverImage = track.album?.images?.first.url;
+
+          // Safely extract year from releaseDate
+          if (track.album?.releaseDate != null) {
+            final releaseDate = track.album!.releaseDate!;
+            final year = releaseDate.split('-').first; // Extract year part
+            song.year = year; // Assign year as string
+          } else {
+            song.year = null; // Handle null case
+          }
+
+          return song; // Return the populated song object
+        } catch (error) {
+          print(
+              "Error fetching track data from Spotify for trackId $trackId: $error");
+          return null; // Return null if an error occurs
+        }
+      }).toList());
+
+      return songs
+          .whereType<Songs>()
+          .toList(); // Filter out null values and return the list of Songs
+    } catch (e) {
+      print("Error fetching track data for list of trackIds: $e");
+      return [];
+    }
+  }
+
+  // Get SongId from TrackId
+  Future<String?> getSongIdFromTrackId(String trackId) async {
+    try {
+      // Fetch the song data from Firestore using the trackId
+      final snapshot = await _firestore
+          .collection('songs')
+          .where('trackId', isEqualTo: trackId)
+          .get();
+
+      if (snapshot.docs.isEmpty) {
+        print("Song not found for the given trackId.");
+        return null; // Return null if no song is found
+      }
+
+      // Extract the songId from the first document found
+      final songDoc = snapshot.docs.first;
+      final songId = songDoc.id; // The Firestore document ID is the songId
+
+      return songId; // Return the songId
+    } catch (e) {
+      print("Error fetching songId from trackId: $e");
+      return null;
     }
   }
 }

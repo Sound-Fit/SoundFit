@@ -43,8 +43,8 @@ class _ArtistsListsState extends State<ArtistsLists> {
           return nameA.compareTo(nameB);
         });
 
-        return SizedBox(
-          height: MediaQuery.of(context).size.height * 0.6, // Adjust height
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.85, // Adjust height
           child: ListView.builder(
             itemCount: artists.length,
             itemBuilder: (context, index) {

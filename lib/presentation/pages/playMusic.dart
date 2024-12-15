@@ -1,32 +1,42 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:soundfit/common/widgets/notif/loading_notification.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
 import 'package:soundfit/core/configs/constants/app_urls.dart';
+import 'package:soundfit/core/services/playlist_service.dart';
+import 'package:soundfit/core/services/song_service.dart';
 import 'package:soundfit/models/songs.dart';
 import 'package:spotify/spotify.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class PlayMusic extends StatefulWidget {
   final String musicId;
-  const PlayMusic({super.key, required this.musicId});
+  final String beforeId;
+  const PlayMusic({super.key, required this.musicId, this.beforeId = ''});
 
   @override
   State<PlayMusic> createState() => _PlayMusicState();
 }
 
 class _PlayMusicState extends State<PlayMusic> {
-  screenHeight(BuildContext context) => MediaQuery.of(context).size.height;
-  screenWidth(BuildContext context) => MediaQuery.of(context).size.width;
+  final user = FirebaseAuth.instance.currentUser;
   final player = AudioPlayer();
+  final SongService _songService = SongService();
+  late Future<String> _nextId;
+  late Future<String> _songId;
   late Songs songs;
 
   @override
   void initState() {
     super.initState();
+    _nextId = _songService.getRandomMusicId().then((value) => value ?? '');
+    _songId = _songService
+        .getSongIdFromTrackId(widget.musicId)
+        .then((value) => value ?? '');
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showLoadingNotification(context);
     });
@@ -72,10 +82,18 @@ class _PlayMusicState extends State<PlayMusic> {
     return WillPopScope(
       onWillPop: () async {
         await player.stop();
-        return true;
+        Navigator.pop(context, widget.beforeId);
+        return false;
       },
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () async {
+              await player.stop();
+              Navigator.pop(context, widget.beforeId);
+            },
+          ),
           title: TitleText(
             text: 'Play Music',
             textAlign: TextAlign.center,
@@ -92,8 +110,8 @@ class _PlayMusicState extends State<PlayMusic> {
               children: [
                 // Cover Image
                 Container(
-                  height: screenHeight(context) * 0.4,
-                  width: screenWidth(context) * 0.8,
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  width: MediaQuery.of(context).size.width * 0.8,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
                     image: DecorationImage(
@@ -143,7 +161,20 @@ class _PlayMusicState extends State<PlayMusic> {
                           Icons.favorite,
                           color: Colors.red,
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          final playlistService = PlaylistService();
+                          final userId =
+                              user?.uid; // Replace with actual user ID
+                          final songId = await _songId;
+                          final songTitle = songs.songTitle ?? '-';
+                          await playlistService.addLikedSong(userId!, songId);
+                          // Optionally, show a success message
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content:
+                                    Text('$songTitle added to liked songs!')),
+                          );
+                        },
                       ),
                     ),
                     Container(
@@ -206,12 +237,26 @@ class _PlayMusicState extends State<PlayMusic> {
                   children: [
                     // Skip to Previous Song
                     IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.skip_previous,
                         size: 40,
-                        color: Colors.grey,
+                        color: widget.beforeId.isEmpty
+                            ? Colors.grey
+                            : Colors.black,
                       ),
-                      onPressed: () {},
+                      onPressed: widget.beforeId.isEmpty
+                          ? null
+                          : () async {
+                              await player.stop(); // Stop the current song
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PlayMusic(
+                                    musicId: widget.beforeId,
+                                  ),
+                                ),
+                              );
+                            },
                     ),
 
                     // Skip Backward 10 seconds
@@ -289,9 +334,21 @@ class _PlayMusicState extends State<PlayMusic> {
                       icon: const Icon(
                         Icons.skip_next,
                         size: 40,
-                        color: Colors.grey,
+                        color: Colors.black,
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        await player.stop(); // Stop the current song
+                        final nextId = await _nextId;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PlayMusic(
+                              musicId: nextId,
+                              beforeId: widget.musicId,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),

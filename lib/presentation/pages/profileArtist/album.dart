@@ -51,7 +51,7 @@ class Album extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SongLists(),
+                    // SongLists(),
                   ],
                 ),
               ),

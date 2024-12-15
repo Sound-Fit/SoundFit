@@ -59,7 +59,7 @@ class ProfileArtist extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                     Gap(10),
-                    SongLists(),
+                    // SongLists(),
                     Gap(20),
 
                     // Album
