@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:soundfit/presentation/pages/home.dart';
+import 'package:soundfit/presentation/pages/home/home.dart';
 import 'package:soundfit/presentation/pages/explore/explore.dart';
 import 'package:soundfit/presentation/pages/camera/camera.dart';
 import 'package:soundfit/presentation/pages/library/library.dart';
@@ -73,7 +73,10 @@ class _CustomNavBarState extends State<CustomNavBar> {
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.search, size: 30),
+                  icon: Icon(
+                    Icons.music_note_rounded,
+                    size: 30,
+                  ),
                   onPressed: () {
                     _onItemTapped(1);
                   },
@@ -112,7 +115,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
                 ),
 
                 IconButton(
-                  icon: Icon(Icons.playlist_add, size: 30),
+                  icon: Icon(Icons.queue_music, size: 30),
                   onPressed: () {
                     _onItemTapped(2);
                   },

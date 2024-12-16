@@ -3,14 +3,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> sendRecognitionPath(String recognitionPath) async {
+  // Add a new playlist to Firestore
+  Future<void> addSongToPlaylist(
+      String playlistId, Map<String, dynamic> songData) async {
     try {
-      await _firestore.collection('requests').add({
-        'recognition_path': recognitionPath,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
+      await _firestore
+          .collection('playlists')
+          .doc(playlistId)
+          .collection('songs')
+          .add(songData);
+      print('Song added to playlist successfully');
     } catch (e) {
-      throw Exception('Failed to send recognition path to Firestore: $e');
+      print('Failed to add song to playlist: $e');
     }
   }
 }

@@ -47,6 +47,11 @@ dependencies:
   firebase_app_check: ^0.3.1+6
   cloud_firestore: ^5.5.0
   image: ^4.3.0
+  audio_video_progress_bar: ^2.0.3
+  spotify: ^0.13.7
+  youtube_explode_dart: ^2.3.6
+  audioplayers: ^6.1.0
+  flutter_launcher_icons: ^0.14.2
   
 dev_dependencies:
   flutter_test:
@@ -73,6 +78,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/genre/
     # - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

@@ -1,14 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:soundfit/common/widgets/notif/error_notification.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
-import 'dart:io';
 import 'package:soundfit/common/widgets/text/title_text.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:http/http.dart' as http;
+import 'package:soundfit/core/services/playlist_service.dart';
 
 class DisplayPictureScreen extends StatefulWidget {
   final String imagePath;
@@ -21,6 +22,8 @@ class DisplayPictureScreen extends StatefulWidget {
 
 class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  final PlaylistService _playlistService = PlaylistService();
+  late Future<List<Map<String, dynamic>>> _playlistsFuture;
   bool _isLoading = false;
 
   Future<String?> _getUserNameOrUid() async {
@@ -34,7 +37,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
             .doc(user.uid)
             .get();
 
-        return userDoc.data()?['name'] ?? user.uid; // Gunakan nama atau UID
+        return userDoc.data()?['username'] ?? user.uid; // Gunakan nama atau UID
       }
     } catch (e) {
       showErrorDialog(context, 'Error getting user name: $e');
@@ -78,6 +81,25 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
     }
   }
 
+  String getAgeRange(String age) {
+    switch (age) {
+      case "0":
+        return 'Children (0-12 years)';
+      case "1":
+        return 'Teenagers (13-20 years)';
+      case "2":
+        return 'Young Adults (21-30 years)';
+      case "3":
+        return 'Adults (31-40 years)';
+      case "4":
+        return 'Middle-Aged Adults (41-50 years)';
+      case "5":
+        return 'Elderly Adults (51+ years)';
+      default:
+        return 'Unknown Age Range';
+    }
+  }
+
   Future<void> _processAndUploadImage(BuildContext context) async {
     setState(() {
       _isLoading = true;
@@ -101,7 +123,13 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                 .collection('users')
                 .doc(user.uid)
                 .update({'age': agePrediction});
+
+            // salin playlist
+            await _playlistService.createRecommendationsPlaylist(
+                user.uid, agePrediction);
           }
+
+          final ageRange = getAgeRange(agePrediction);
 
           // Tampilkan hasil prediksi
           showDialog(
@@ -109,7 +137,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
             builder: (_) => AlertDialog(
               title: Text('Age Prediction'),
               content: Text(
-                  'Successfully determined age range: $agePrediction. Please click OK to see your playlist.'),
+                  'Successfully determined age: $ageRange. Please click OK to see your playlist.'),
               actions: [
                 TextButton(
                   onPressed: () => // Close the dialog
@@ -133,14 +161,18 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   Future<String?> _getAgePredictionFromAPI(String imageUrl) async {
     try {
       final response = await http.post(
-        Uri.parse(
-            'http://192.168.1.9:5000/age_detection'), // Ganti dengan URL Flask Anda
+        Uri.parse('https://soundfit-ml.et.r.appspot.com/age_detection'),  
+        // Uri.parse('http://192.168.229.237:5000/age_detection'),
+        // Ganti dengan URL Flask Anda
         body: {'recognition_path': imageUrl},
       );
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        if (data['predicted_age'] != null) {
+        if (data['predicted_age'] == 6) {
+          showErrorDialog(context, 'Face not detected.');
+          return null;
+        } else if (data['predicted_age'] != null) {
           return data['predicted_age'].toString();
         } else {
           showErrorDialog(context,

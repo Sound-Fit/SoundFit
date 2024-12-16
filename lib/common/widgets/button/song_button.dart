@@ -1,27 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
+import 'package:soundfit/presentation/pages/music/playMusic.dart';
 
 class SongButton extends StatelessWidget {
   final String songTitle;
   final String artistName;
-  final Image image;
-  final year;
-  final VoidCallback onPressed;
+  final String coverImage;
+  final String year;
+  final String musicId;
 
   const SongButton(
       {Key? key,
       required this.songTitle,
       required this.artistName,
-      required this.image,
+      required this.coverImage,
       required this.year,
-      required this.onPressed})
+      required this.musicId})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {},
+      onPressed: () => {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PlayMusic(
+              musicId: musicId,
+            ),
+          ),
+        )
+      },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -34,7 +44,9 @@ class SongButton extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     image: DecorationImage(
-                      image: image.image,
+                      image: coverImage != null
+                          ? NetworkImage(coverImage!)
+                          : AssetImage('assets/images/nullSongCover.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -43,10 +55,15 @@ class SongButton extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    BasedText(
-                      text: songTitle,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
+                    SizedBox(
+                      width: 210,
+                      child: Text(
+                        songTitle,
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w900),
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     BasedText(
                       text: artistName,
@@ -58,7 +75,7 @@ class SongButton extends StatelessWidget {
             ),
           ),
           BasedText(
-            text: year.toString(),
+            text: year,
             fontSize: 10,
           ),
         ],

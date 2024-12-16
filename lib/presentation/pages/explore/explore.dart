@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:soundfit/common/widgets/card/genre_card.dart';
-import 'package:soundfit/common/widgets/card/song_card.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
-import 'package:soundfit/core/configs/theme/app_colors.dart';
 import 'package:soundfit/presentation/pages/explore/genre.dart';
-import 'package:soundfit/presentation/pages/explore/search.dart';
+import 'package:soundfit/presentation/widgets/song/songCardList.dart';
 
 class ExplorePage extends StatelessWidget {
   const ExplorePage({super.key});
@@ -27,77 +24,16 @@ class ExplorePage extends StatelessWidget {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              // Search bar
-              TextField(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => Search()),
-                  );
-                },
-                readOnly: true, // Prevent manual text input
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search, color: AppColors.grey),
-                  hintText: 'Tap to Search',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey[200],
-                ),
-              ),
-              Gap(20.0),
-
               // Recommend For You
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   BasedText(
-                    text: 'Recommend For You',
+                    text: 'Songs',
                     fontWeight: FontWeight.bold,
                   ),
                   Gap(10.0),
-                  SizedBox(
-                    height: 220,
-                    child: ListView(
-                      // This next line does the trick.
-                      scrollDirection: Axis.horizontal,
-                      children: <Widget>[
-                        SongCard(
-                            songTitle: "Young and Beautiful",
-                            artistName: "Lana Del Ray",
-                            image: Image.asset("assets/images/YnB.jpg"),
-                            onPressed: () {}),
-                        SongCard(
-                            songTitle: "Paradise",
-                            artistName: "Young Man",
-                            image: Image.asset("assets/images/SongCover.jpg"),
-                            onPressed: () {}),
-                        SongCard(
-                            songTitle: "Born To Die",
-                            artistName: "Lana Del Ray",
-                            image: Image.asset("assets/images/Artist.jpg"),
-                            onPressed: () {}),
-                        SongCard(
-                            songTitle: "Young and Beautiful",
-                            artistName: "Lana Del Ray",
-                            image: Image.asset("assets/images/YnB.jpg"),
-                            onPressed: () {}),
-                        SongCard(
-                            songTitle: "Paradise",
-                            artistName: "Young Man",
-                            image: Image.asset("assets/images/SongCover.jpg"),
-                            onPressed: () {}),
-                        SongCard(
-                            songTitle: "Born To Die",
-                            artistName: "Lana Del Ray",
-                            image: Image.asset("assets/images/Artist.jpg"),
-                            onPressed: () {}),
-                      ],
-                    ),
-                  ),
+                  SongCardlist(),
                 ],
               ),
               Gap(20),
@@ -107,10 +43,10 @@ class ExplorePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   BasedText(
-                    text: 'Explore by Genre',
+                    text: 'Popular Genres',
                     fontWeight: FontWeight.bold,
                   ),
-                  Gap(20.0),
+                  Gap(10.0),
                   SizedBox(
                     height: 300,
                     child: GridView.builder(
@@ -122,17 +58,11 @@ class ExplorePage extends StatelessWidget {
                         mainAxisSpacing: 3.0,
                         childAspectRatio: 1,
                       ),
-                      itemCount: 8,
+                      itemCount: genres.length,
                       itemBuilder: (context, index) {
                         return GenreCard(
-                          image: Image.asset('assets/images/genre.jpg'),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) => Genre()),
-                            );
-                          },
+                          imagePath: genres[index].imagePath,
+                          genreName: genres[index].genreName,
                         );
                       },
                     ),
@@ -143,6 +73,47 @@ class ExplorePage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class Genre {
+  final String imagePath;
+  final String genreName;
+
+  Genre({required this.imagePath, required this.genreName});
+}
+
+final List<Genre> genres = [
+  Genre(imagePath: 'assets/genre/pop.png', genreName: 'Pop'),
+  Genre(imagePath: 'assets/genre/rock.png', genreName: 'Rock'),
+  Genre(imagePath: 'assets/genre/jazz.png', genreName: 'Jazz'),
+  Genre(imagePath: 'assets/genre/classical.png', genreName: 'Classical'),
+  Genre(imagePath: 'assets/genre/rap.png', genreName: 'HipHop'),
+  Genre(imagePath: 'assets/genre/country.png', genreName: 'Country'),
+  Genre(imagePath: 'assets/genre/indie.png', genreName: 'Indie'),
+  Genre(imagePath: 'assets/genre/acoustic.png', genreName: 'Acoustic'),
+];
+
+class GenreCard extends StatelessWidget {
+  final String imagePath;
+  final String genreName;
+
+  const GenreCard(
+      {super.key, required this.imagePath, required this.genreName});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  GenrePage(imagePath: imagePath, genreName: genreName)),
+        );
+      },
+      child: Image.asset(imagePath),
     );
   }
 }
