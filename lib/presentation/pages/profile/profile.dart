@@ -1,53 +1,32 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:soundfit/common/widgets/button/menu_button.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
 import 'package:soundfit/core/configs/theme/app_colors.dart';
+import 'package:soundfit/core/services/user_service.dart';
 import 'package:soundfit/presentation/pages/auth/login.dart';
 import 'package:soundfit/presentation/pages/profile/changePassword.dart';
 import 'package:soundfit/presentation/pages/profile/editProfile.dart';
 import 'package:soundfit/presentation/pages/profile/information.dart';
 import 'package:soundfit/presentation/pages/profile/removeAccount.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({super.key});
 
-  Future<Map<String, String?>> _getUserData() async {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
+  @override
+  State<Profile> createState() => _ProfileState();
+}
 
-      if (user != null) {
-        // Ambil data pengguna dari Firestore
-        final userDoc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .get();
+class _ProfileState extends State<Profile> {
+  final UserService _userService = UserService();
+  Future<Map<String, String?>>? _userData;
 
-        late final profilePath;
-
-        // Ambil username dan profile_path
-        if (userDoc.data()?['profile_path'] == null) {
-          profilePath = null;
-        } else {
-          profilePath = userDoc.data()?['profile_path'];
-        }
-        final username = userDoc.data()?['username'];
-
-        return {
-          'profilePath': profilePath,
-          'username': username,
-        };
-      }
-    } catch (e) {
-      print('Error getting user data: $e');
-    }
-    return {
-      'profilePath': null,
-      'username': null
-    }; // Fallback jika data tidak ditemukan
+  @override
+  void initState() {
+    super.initState();
+    _userData = _userService.getUserData();
   }
 
   @override
@@ -62,7 +41,7 @@ class Profile extends StatelessWidget {
       ),
       backgroundColor: AppColors.white,
       body: FutureBuilder<Map<String, String?>>(
-        future: _getUserData(),
+        future: _userData,
         builder: (context, snapshot) {
           final profilePath = snapshot.data?['profilePath'];
           final username = snapshot.data?['username'];
@@ -248,13 +227,15 @@ class Profile extends StatelessWidget {
                                                   onPressed: () {
                                                     FirebaseAuth.instance
                                                         .signOut();
-                                                    Navigator.pushAndRemoveUntil(
+                                                    Navigator
+                                                        .pushAndRemoveUntil(
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (BuildContext
                                                                   context) =>
                                                               Login()),
-                                                      (Route<dynamic> route) => false,
+                                                      (Route<dynamic> route) =>
+                                                          false,
                                                     );
                                                   },
                                                   child: Text('Logout'),

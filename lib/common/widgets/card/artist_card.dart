@@ -20,30 +20,33 @@ class ArtistCard extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       child: Row(
-      children: [
-        Container(
-        width: 60,
-        height: 60,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-          BoxShadow(
-            color: AppColors.black.withOpacity(0.1),
-            spreadRadius: 2,
-            blurRadius: 3,
+        children: [
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.black.withOpacity(0.1),
+                  spreadRadius: 2,
+                  blurRadius: 3,
+                ),
+              ],
+              borderRadius: BorderRadius.circular(25.0),
+            ),
+            child: CircleAvatar(
+              backgroundColor: Colors.white,
+              backgroundImage: NetworkImage(image),
+              radius: 25,
+            ),
           ),
-          ],
-          borderRadius: BorderRadius.circular(25.0),
-        ),
-        child: CircleAvatar(
-          backgroundColor: Colors.white,
-          backgroundImage: NetworkImage(image),
-          radius: 25,
-        ),
-        ),
-        const Gap(15),
-        BasedText(text: title),
-      ],
+          const Gap(15),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.7,
+            child: BasedText(text: title),
+          )
+        ],
       ),
     );
   }

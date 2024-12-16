@@ -4,14 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:soundfit/core/configs/theme/app_theme.dart';
-import 'package:soundfit/firebase_options.dart';
+import 'package:soundfit/core/configs/constants/firebase_options.dart';
 import 'package:soundfit/presentation/pages/auth/login.dart';
 import 'package:soundfit/presentation/pages/auth/register.dart';
 import 'package:soundfit/presentation/pages/auth/welcomePage.dart';
 import 'package:soundfit/presentation/pages/camera/camera.dart';
 import 'package:soundfit/presentation/pages/explore/search.dart';
 import 'package:soundfit/presentation/pages/profile/editProfile.dart';
-import 'package:soundfit/presentation/pages/splashPage.dart';
+import 'package:soundfit/presentation/pages/auth/splashPage.dart';
 import 'package:soundfit/presentation/widgets/navBar.dart';
 
 Future<void> main() async {
@@ -54,12 +54,10 @@ class MyApp extends StatelessWidget {
         '/login': (context) => Login(),
         '/register': (context) => Register(),
         '/home': (context) => CustomNavBar(camera: firstCamera),
-        // '/explore/genre': (context) => Genre(),
         '/explore/search': (context) => Search(),
         '/profile': (context) =>
             CustomNavBar(camera: firstCamera, selectedIndex: 3),
         '/profile/edit': (context) => EditProfile(),
-        // '/playMusic': (context) => PlayMusic(),
         '/camera': (context) => CameraScreen(camera: firstCamera),
         '/recommendation': (context) =>
             CustomNavBar(camera: firstCamera, selectedIndex: 4),

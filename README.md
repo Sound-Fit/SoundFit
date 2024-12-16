@@ -1,6 +1,6 @@
 ![alt](assets/images/logo.png)
 
-`SoundFit` is a mobile music app that uses `facial recognition` to detect the user's age and automatically generate playlists based on age-related preferences. The app `provides personalized playlists`, helping users enjoy a better music experience with the perfect soundtrack.
+`SoundFit` is a mobile music app that uses `facial recognition` to detect the user's age and automatically generate playlists based on age-related preferences. The app `provides personalized pla`ylists`, helping users enjoy a better music experience with the perfect soundtrack.
 
 ## Age Recognition and Playlist Suggestion
 
@@ -73,7 +73,7 @@ To install and run SoundFit locally, follow these steps:
     ```
     Responsible for coordinating tasks, Firebase integration, machine learning model development, and end-to-end system implementation.
     ```
-    
+
 
 - **Amanda Vanika Putri `ML Engineer & UI/UX Designer`**
     ```

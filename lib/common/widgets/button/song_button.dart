@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
-import 'package:soundfit/presentation/pages/playMusic.dart';
+import 'package:soundfit/presentation/pages/music/playMusic.dart';
 
 class SongButton extends StatelessWidget {
   final String songTitle;

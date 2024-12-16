@@ -161,8 +161,8 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   Future<String?> _getAgePredictionFromAPI(String imageUrl) async {
     try {
       final response = await http.post(
-        // Uri.parse('https://soundfit-ml.et.r.appspot.com/age_detection'),
-        Uri.parse('http://192.168.229.237:5000/age_detection'),
+        Uri.parse('https://soundfit-ml.et.r.appspot.com/age_detection'),  
+        // Uri.parse('http://192.168.229.237:5000/age_detection'),
         // Ganti dengan URL Flask Anda
         body: {'recognition_path': imageUrl},
       );

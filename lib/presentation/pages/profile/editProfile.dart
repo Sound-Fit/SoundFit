@@ -8,6 +8,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'dart:io';
 
+import 'package:soundfit/core/services/user_service.dart';
+
 class EditProfile extends StatefulWidget {
   @override
   _EditProfileState createState() => _EditProfileState();
@@ -15,6 +17,8 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   bool _isLoading = false;
+  final UserService _userService = UserService();
+  Future<Map<String, String?>>? _userData;
 
   String? profilePath;
   final TextEditingController _nameController = TextEditingController();
@@ -23,32 +27,15 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
-    _loadUserData();
-  }
+    _userData = _userService.getUserData();
 
-  /// Fungsi untuk mengambil data pengguna dari Firestore
-  Future<void> _loadUserData() async {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-
-      if (user != null) {
-        final userDoc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .get();
-
-        if (userDoc.exists) {
-          final data = userDoc.data();
-          setState(() {
-            profilePath = data?['profile_path'];
-            _nameController.text = data?['username'] ?? '';
-            _emailController.text = data?['email'] ?? '';
-          });
-        }
-      }
-    } catch (e) {
-      print('Error loading user data: $e');
-    }
+    _userData?.then((data) {
+      setState(() {
+        profilePath = data['profilePath'];
+        _nameController.text = data['username'] ?? '';
+        _emailController.text = data['email'] ?? '';
+      });
+    });
   }
 
   /// Fungsi untuk menyimpan perubahan ke Firestore dan kembali ke halaman Profile
@@ -237,7 +224,6 @@ class _EditProfileState extends State<EditProfile> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 30),
 
                       // Name field
                       BasedText(

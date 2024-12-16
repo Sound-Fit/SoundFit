@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundfit/core/configs/theme/app_colors.dart';
-import 'package:soundfit/presentation/pages/playMusic.dart';
+import 'package:soundfit/presentation/pages/music/playMusic.dart';
 
 class SongCard extends StatelessWidget {
   final String songTitle;

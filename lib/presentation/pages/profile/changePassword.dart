@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
+import 'package:soundfit/core/services/user_service.dart';
 
 class ChangePassword extends StatefulWidget {
   @override
@@ -47,30 +48,6 @@ class _ChangePasswordState extends State<ChangePassword> {
           ),
         ],
       ),
-      // AppBar(
-      //   title: TitleText(text: 'Change Password', textAlign: TextAlign.center),
-      //   backgroundColor: Colors.white,
-      //   elevation: 0,
-      //   centerTitle: true,
-      //   actions: [
-      //     TextButton(
-      //       onPressed: () async {
-      //         if (_formKey.currentState!.validate()) {
-      //           // Only proceed if form is valid
-      //           await _changePassword();
-      //         }
-      //       },
-      //       child: Text(
-      //         'Save',
-      //         style: GoogleFonts.poppins(
-      //           color: Colors.blue,
-      //           fontSize: 16,
-      //           fontWeight: FontWeight.w600,
-      //         ),
-      //       ),
-      //     ),
-      //   ],
-      // ),
       backgroundColor: Colors.white,
       body: Stack(
         children: [
@@ -194,17 +171,17 @@ class _ChangePasswordState extends State<ChangePassword> {
       _isLoading = true;
     });
 
+    final userService = UserService();
+
     try {
       final user = FirebaseAuth.instance.currentUser;
-      final cred = EmailAuthProvider.credential(
-        email: user!.email!,
-        password: _oldPassword.text,
-      );
 
-      // Verifikasi password lama
-      await user.reauthenticateWithCredential(cred);
+      if (user == null) throw Exception('User not logged in');
 
-      // Cek apakah password baru dan konfirmasi password cocok
+      // Validasi form
+      if (!_formKey.currentState!.validate()) return;
+
+      // Pastikan password baru cocok
       if (_newPassword.text != _newPasswordConfirm.text) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('New passwords do not match')),
@@ -212,30 +189,28 @@ class _ChangePasswordState extends State<ChangePassword> {
         return;
       }
 
-      // Update password baru
-      await user.updatePassword(_newPassword.text);
+      // Proses perubahan password
+      await userService.changeUserPassword(
+        email: user.email!,
+        oldPassword: _oldPassword.text,
+        newPassword: _newPassword.text,
+      );
 
-      // Informasikan pengguna dan navigasi ke halaman profil
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Password changed successfully')),
       );
       Navigator.pushReplacementNamed(context, '/profile');
     } on FirebaseAuthException catch (e) {
-      // Menangani error jika password lama salah
-      if (e.code == 'invalid-credential') {
+      if (e.code == 'wrong-password') {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(
-                  'The old password you entered is incorrect. Please try again.')),
+          SnackBar(content: Text('The old password is incorrect.')),
         );
       } else {
-        // Menangani error lainnya
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to change password: ${e.message}')),
         );
       }
     } catch (e) {
-      // Menangani error umum lainnya
       print('Error changing password: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to change password: $e')),
