@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:soundfit/presentation/pages/home.dart';
+import 'package:soundfit/presentation/pages/home/home.dart';
 import 'package:soundfit/presentation/pages/explore/explore.dart';
 import 'package:soundfit/presentation/pages/camera/camera.dart';
 import 'package:soundfit/presentation/pages/library/library.dart';
