@@ -22,8 +22,8 @@ class ArtistCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 60,
-            height: 60,
+            width: MediaQuery.of(context).size.width * 0.125,
+            height: MediaQuery.of(context).size.width * 0.125,
             decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: [
@@ -43,7 +43,7 @@ class ArtistCard extends StatelessWidget {
           ),
           const Gap(15),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.7,
+            width: MediaQuery.of(context).size.width * 0.65,
             child: BasedText(text: title),
           )
         ],
