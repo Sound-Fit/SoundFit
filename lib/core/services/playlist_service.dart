@@ -52,6 +52,7 @@ class PlaylistService {
       String userId, String sourcePlaylistId) async {
     try {
       // Get source playlist data
+      sourcePlaylistId = sourcePlaylistId.trim();
       final sourcePlaylistRef =
           _firestore.collection('playlists').doc(sourcePlaylistId);
       final sourcePlaylistSnapshot = await sourcePlaylistRef.get();
