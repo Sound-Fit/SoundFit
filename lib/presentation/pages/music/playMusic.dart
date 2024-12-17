@@ -3,13 +3,14 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:soundfit/common/widgets/notif/add_songPlaylist.dart';
 import 'package:soundfit/common/widgets/notif/loading_notification.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
 import 'package:soundfit/core/configs/constants/app_urls.dart';
 import 'package:soundfit/core/services/playlist_service.dart';
 import 'package:soundfit/core/services/song_service.dart';
-import 'package:soundfit/models/songs.dart';
+import 'package:soundfit/data/models/songs.dart';
 import 'package:spotify/spotify.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
@@ -195,7 +196,26 @@ class _PlayMusicState extends State<PlayMusic> {
                           Icons.add,
                           color: Colors.grey,
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          final userId =
+                              user?.uid; // Replace with actual user ID
+                          final songId = await _songId;
+                          final songTitle = songs.songTitle ?? '-';
+                          await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AddSongPlaylist(
+                                songId: songId,
+                                userId: userId!,
+                              );
+                            },
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content:
+                                    Text('$songTitle added to playlist!')),
+                          );
+                        },
                       ),
                     ),
                   ],

@@ -52,6 +52,8 @@ dependencies:
   youtube_explode_dart: ^2.3.6
   audioplayers: ^6.1.0
   flutter_launcher_icons: ^0.14.2
+  equatable: ^2.0.7
+  flutter_bloc: ^8.1.6
   
 dev_dependencies:
   flutter_test:
