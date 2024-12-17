@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:soundfit/common/widgets/card/artist_card.dart';
 import 'package:soundfit/core/services/song_service.dart';
-import 'package:soundfit/models/songs.dart';
+import 'package:soundfit/data/models/songs.dart';
 
 class ArtistsLists extends StatefulWidget {
   const ArtistsLists({super.key});

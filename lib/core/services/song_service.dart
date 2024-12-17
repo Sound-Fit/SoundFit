@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:soundfit/core/configs/constants/app_urls.dart';
-import 'package:soundfit/models/songs.dart';
+import 'package:soundfit/data/models/songs.dart';
 import 'package:spotify/spotify.dart';
 
 class SongService {

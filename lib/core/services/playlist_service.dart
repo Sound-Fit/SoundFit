@@ -33,6 +33,21 @@ class PlaylistService {
     }
   }
 
+  // Get user playlists
+  Future<List<Map<String, dynamic>>> getUserPlaylists(String userId) async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('playlists')
+          .where('userId', isEqualTo: userId)
+          .get();
+
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    } catch (e) {
+      print('Error fetching playlists: $e');
+      return [];
+    }
+  }
+
   // Add Song to playlist
   Future<void> addSongToPlaylist(String playlistId, String songId) async {
     try {
@@ -168,6 +183,37 @@ class PlaylistService {
       }
     } catch (e) {
       print("Error adding liked song: $e");
+    }
+  }
+
+  // Get PlaylistId from PlaylistName
+  Future<String?> getPlaylistIdFromName(
+      String playlistName, String userId) async {
+    try {
+      // Fetch the playlist data from Firestore using the playlist name and userId
+      final snapshot = await FirebaseFirestore.instance
+          .collection('playlists')
+          .where('name',
+              isEqualTo:
+                  playlistName) // Replace with any field that identifies the playlist
+          .where('userId',
+              isEqualTo: userId) // Assuming playlists are user-specific
+          .get();
+
+      if (snapshot.docs.isEmpty) {
+        print("Playlist not found for the given name and userId.");
+        return null; // Return null if no playlist is found
+      }
+
+      // Extract the playlistId from the first document found
+      final playlistDoc = snapshot.docs.first;
+      final playlistId =
+          playlistDoc.id; // The Firestore document ID is the playlistId
+
+      return playlistId; // Return the playlistId
+    } catch (e) {
+      print("Error fetching playlistId from playlistName: $e");
+      return null;
     }
   }
 }

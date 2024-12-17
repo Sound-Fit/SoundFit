@@ -5,7 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
 import 'package:soundfit/core/services/playlist_service.dart';
-import 'package:soundfit/models/songs.dart';
+import 'package:soundfit/data/models/songs.dart';
 import 'package:soundfit/presentation/widgets/recognition/recognition_result.dart';
 import 'package:soundfit/presentation/widgets/song/songLists.dart';
 
