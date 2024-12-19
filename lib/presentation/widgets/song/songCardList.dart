@@ -4,7 +4,8 @@ import 'package:soundfit/core/services/song_service.dart';
 import 'package:soundfit/data/models/songs.dart';
 
 class SongCardlist extends StatefulWidget {
-  const SongCardlist({super.key});
+  final List<String> songIds; // Menerima list songIds
+  const SongCardlist({super.key, required this.songIds});
 
   @override
   State<SongCardlist> createState() => _SongCardlistState();
@@ -12,18 +13,25 @@ class SongCardlist extends StatefulWidget {
 
 class _SongCardlistState extends State<SongCardlist> {
   final SongService _songService = SongService();
-  late Future<List<Songs>> _songsFuture;
 
-  @override
-  void initState() {
-    super.initState();
-    _songsFuture = _songService.fetchSongsInformation();
+  // Fungsi untuk mendapatkan informasi lengkap lagu berdasarkan songIds
+  Future<List<Songs>> _getFullSongInfoFromIds(List<String> songIds) async {
+    // Ambil trackIds dari songIds
+    List<String?> trackIds = await Future.wait(
+        songIds.map((songId) async => await _songService.getTrackIdFromSongId(songId)));
+
+    // Hapus nilai null dan ambil hanya trackIds yang valid
+    trackIds = trackIds.whereType<String>().toList();
+
+    // Ambil informasi lagu berdasarkan trackIds
+    final songs = await _songService.getSongsInfoFromTrackIds(trackIds.whereType<String>().toList());
+    return songs.whereType<Songs>().toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Songs>>(
-      future: _songsFuture,
+      future: _getFullSongInfoFromIds(widget.songIds),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
