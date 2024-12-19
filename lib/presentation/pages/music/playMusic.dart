@@ -200,8 +200,7 @@ class _PlayMusicState extends State<PlayMusic> {
                           final userId =
                               user?.uid; // Replace with actual user ID
                           final songId = await _songId;
-                          final songTitle = songs.songTitle ?? '-';
-                          await showDialog(
+                          showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return AddSongPlaylist(
@@ -209,11 +208,6 @@ class _PlayMusicState extends State<PlayMusic> {
                                 userId: userId!,
                               );
                             },
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content:
-                                    Text('$songTitle added to playlist!')),
                           );
                         },
                       ),
@@ -268,7 +262,7 @@ class _PlayMusicState extends State<PlayMusic> {
                           ? null
                           : () async {
                               await player.stop(); // Stop the current song
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => PlayMusic(
@@ -359,7 +353,7 @@ class _PlayMusicState extends State<PlayMusic> {
                       onPressed: () async {
                         await player.stop(); // Stop the current song
                         final nextId = await _nextId;
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => PlayMusic(

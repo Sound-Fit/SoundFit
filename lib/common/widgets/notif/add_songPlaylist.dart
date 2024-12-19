@@ -71,6 +71,10 @@ class _AddSongPlaylistState extends State<AddSongPlaylist> {
                             // Lakukan sesuatu dengan playlistId (misalnya, tambahkan lagu ke playlist)
                             await _playlistService.addSongToPlaylist(
                                 playlistId, widget.songId);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text('song added to playlist!')),
+                            );
                             Navigator.pop(context);
                           } else {
                             // Handle case when playlist is not found
