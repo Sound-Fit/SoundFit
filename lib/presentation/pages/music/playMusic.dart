@@ -7,17 +7,16 @@ import 'package:soundfit/common/widgets/notif/add_songPlaylist.dart';
 import 'package:soundfit/common/widgets/notif/loading_notification.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
-import 'package:soundfit/core/configs/constants/app_urls.dart';
 import 'package:soundfit/core/services/playlist_service.dart';
 import 'package:soundfit/core/services/song_service.dart';
 import 'package:soundfit/data/models/songs.dart';
-import 'package:spotify/spotify.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class PlayMusic extends StatefulWidget {
-  final String musicId;
-  final String beforeId;
-  const PlayMusic({super.key, required this.musicId, this.beforeId = ''});
+  final List<Songs> songs;
+  final int index;
+
+  const PlayMusic({super.key, required this.songs, required this.index});
 
   @override
   State<PlayMusic> createState() => _PlayMusicState();
@@ -27,37 +26,28 @@ class _PlayMusicState extends State<PlayMusic> {
   final user = FirebaseAuth.instance.currentUser;
   final player = AudioPlayer();
   final SongService _songService = SongService();
-  late Future<String> _nextId;
-  late Future<String> _songId;
   late Songs songs;
+  late Future<String> _songId;
 
   @override
   void initState() {
     super.initState();
-    _nextId = _songService.getRandomMusicId().then((value) => value ?? '');
+    songs = widget.songs[widget.index];
     _songId = _songService
-        .getSongIdFromTrackId(widget.musicId)
+        .getSongIdFromTrackId(songs.trackId)
         .then((value) => value ?? '');
+
+    _initializePlayer();
+  }
+
+  Future<void> _initializePlayer() async {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showLoadingNotification(context);
     });
 
-    final credentials =
-        SpotifyApiCredentials(AppUrls.clientId, AppUrls.clientSecret);
-    final spotify = SpotifyApi(credentials);
-    songs = Songs(trackId: widget.musicId);
-
-    spotify.tracks.get(songs.trackId).then((track) async {
-      String? tempSongTitle = track.name;
-
+    try {
+      final String? tempSongTitle = songs.songTitle;
       if (tempSongTitle != null) {
-        songs.songTitle = tempSongTitle;
-        songs.artistName = track.artists?.first.name ?? "";
-        String? image = track.album?.images?.first.url;
-        if (image != null) {
-          songs.coverImage = image;
-        }
-
         final yt = YoutubeExplode();
         final video =
             (await yt.search.search("$tempSongTitle ${songs.artistName ?? ""}"))
@@ -65,17 +55,19 @@ class _PlayMusicState extends State<PlayMusic> {
         final videoId = video.id.value;
         songs.duration = video.duration;
         setState(() {});
+
         var manifest = await yt.videos.streamsClient.getManifest(videoId);
         var audioUrl = manifest.audioOnly.first.url;
 
         await player.play(UrlSource(audioUrl.toString()));
       }
-      dismissLoadingNotification(context);
-    }).catchError((error) {
-      dismissLoadingNotification(context);
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to load the song: $error')));
-    });
+        SnackBar(content: Text('Failed to load the song: $e')),
+      );
+    } finally {
+      dismissLoadingNotification(context);
+    }
   }
 
   @override
@@ -83,19 +75,19 @@ class _PlayMusicState extends State<PlayMusic> {
     return WillPopScope(
       onWillPop: () async {
         await player.stop();
-        Navigator.pop(context, widget.beforeId);
+        Navigator.pop(context);
         return false;
       },
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () async {
               await player.stop();
-              Navigator.pop(context, widget.beforeId);
+              Navigator.pop(context);
             },
           ),
-          title: TitleText(
+          title: const TitleText(
             text: 'Play Music',
             textAlign: TextAlign.center,
           ),
@@ -118,12 +110,13 @@ class _PlayMusicState extends State<PlayMusic> {
                     image: DecorationImage(
                       image: songs.coverImage != null
                           ? NetworkImage(songs.coverImage!)
-                          : AssetImage('assets/images/nullSongCover.jpg'),
+                          : const AssetImage('assets/images/nullSongCover.jpg')
+                              as ImageProvider,
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                Gap(20),
+                const Gap(20),
 
                 // Title and Artist
                 BasedText(
@@ -132,7 +125,7 @@ class _PlayMusicState extends State<PlayMusic> {
                   textAlign: TextAlign.center,
                   fontSize: 24,
                 ),
-                Gap(5),
+                const Gap(5),
                 BasedText(
                   text: songs.artistName ?? '-',
                   fontWeight: FontWeight.w300,
@@ -140,7 +133,7 @@ class _PlayMusicState extends State<PlayMusic> {
                 ),
 
                 // Button Like and Add Playlist
-                Gap(20),
+                const Gap(20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -153,28 +146,29 @@ class _PlayMusicState extends State<PlayMusic> {
                             color: Colors.grey.withOpacity(0.5),
                             spreadRadius: 1,
                             blurRadius: 7,
-                            // offset: Offset(0, 3),
                           ),
                         ],
                       ),
                       child: IconButton(
-                        icon: const Icon(
-                          Icons.favorite,
-                          color: Colors.red,
-                        ),
+                        icon: const Icon(Icons.favorite, color: Colors.red),
                         onPressed: () async {
-                          final playlistService = PlaylistService();
-                          final userId =
-                              user?.uid; // Replace with actual user ID
-                          final songId = await _songId;
-                          final songTitle = songs.songTitle ?? '-';
-                          await playlistService.addLikedSong(userId!, songId);
-                          // Optionally, show a success message
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content:
-                                    Text('$songTitle added to liked songs!')),
-                          );
+                          try {
+                            final playlistService = PlaylistService();
+                            final userId = user?.uid;
+                            final songId = await _songId;
+                            await playlistService.addLikedSong(userId!, songId);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(
+                                      '${songs.songTitle} added to liked songs!')),
+                            );
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(
+                                      'Failed to add song to liked songs: $e')),
+                            );
+                          }
                         },
                       ),
                     ),
@@ -187,53 +181,54 @@ class _PlayMusicState extends State<PlayMusic> {
                             color: Colors.grey.withOpacity(0.5),
                             spreadRadius: 1,
                             blurRadius: 7,
-                            // offset: Offset(0, 3),
                           ),
                         ],
                       ),
                       child: IconButton(
-                        icon: const Icon(
-                          Icons.add,
-                          color: Colors.grey,
-                        ),
+                        icon: const Icon(Icons.add, color: Colors.grey),
                         onPressed: () async {
-                          final userId =
-                              user?.uid; // Replace with actual user ID
+                          final userId = user?.uid;
                           final songId = await _songId;
-                          final songTitle = songs.songTitle ?? '-';
-                          await showDialog(
+                          showDialog(
                             context: context,
-                            builder: (BuildContext context) {
-                              return AddSongPlaylist(
-                                songId: songId,
-                                userId: userId!,
-                              );
-                            },
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content:
-                                    Text('$songTitle added to playlist!')),
+                            builder: (context) => AddSongPlaylist(
+                              songId: songId,
+                              userId: userId!,
+                            ),
                           );
                         },
                       ),
                     ),
                   ],
                 ),
-                Gap(20),
+                const Gap(20),
 
                 // Track Duration
                 StreamBuilder<Duration>(
                   stream: player.onPositionChanged,
                   builder: (context, snapshot) {
-                    final progress = snapshot.data ?? Duration(seconds: 0);
-                    final total = songs.duration ?? Duration(minutes: 4);
+                    final progress = snapshot.data ?? Duration.zero;
+                    final total = songs.duration ?? const Duration(minutes: 4);
 
-                    // Jika progress hampir sama dengan durasi total
                     if (progress >= total - const Duration(seconds: 1)) {
-                      // Reset posisi ke awal dan pause player
-                      player.pause();
-                      player.seek(Duration.zero);
+                      if (widget.index < widget.songs.length - 1) {
+                        // Delay navigation to avoid calling setState during build phase
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          player.stop();
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PlayMusic(
+                                songs: widget.songs,
+                                index: widget.index + 1,
+                              ),
+                            ),
+                          );
+                        });
+                      } else {
+                        player.pause();
+                        player.seek(Duration.zero);
+                      }
                     }
 
                     return ProgressBar(
@@ -249,126 +244,100 @@ class _PlayMusicState extends State<PlayMusic> {
                     );
                   },
                 ),
-                Gap(20),
+                const Gap(20),
 
                 // Play and Pause Buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    // Skip to Previous Song
                     IconButton(
                       icon: Icon(
                         Icons.skip_previous,
                         size: 40,
-                        color: widget.beforeId.isEmpty
-                            ? Colors.grey
-                            : Colors.black,
+                        color: widget.index == 0 ? Colors.grey : Colors.black,
                       ),
-                      onPressed: widget.beforeId.isEmpty
+                      onPressed: widget.index == 0
                           ? null
                           : () async {
-                              await player.stop(); // Stop the current song
-                              Navigator.push(
+                              await player.stop();
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => PlayMusic(
-                                    musicId: widget.beforeId,
+                                    songs: widget.songs,
+                                    index: widget.index - 1,
                                   ),
                                 ),
                               );
                             },
                     ),
-
-                    // Skip Backward 10 seconds
                     IconButton(
-                      icon: const Icon(
-                        Icons.replay_10,
-                        size: 30,
-                        color: Colors.grey,
-                      ),
+                      icon: const Icon(Icons.replay_10,
+                          color: Color.fromARGB(255, 120, 120, 120), size: 30),
                       onPressed: () async {
                         final position = await player.getCurrentPosition();
-                        final newPosition = position! - Duration(seconds: 10);
-                        if (newPosition < Duration.zero) {
-                          await player.seek(Duration
-                              .zero); // Jangan biarkan posisi lebih kecil dari 0
-                        } else {
-                          await player.seek(newPosition);
+                        if (position != null) {
+                          await player
+                              .seek(position - const Duration(seconds: 10));
                         }
                       },
                     ),
-
-                    // Play/Pause
                     StreamBuilder<PlayerState>(
-                      stream: player
-                          .onPlayerStateChanged, // Menggunakan stream untuk mendengarkan perubahan state player
+                      stream: player.onPlayerStateChanged,
                       builder: (context, snapshot) {
-                        // Ambil state terbaru dari snapshot
-                        final playerState = snapshot.data ??
-                            PlayerState.paused; // Default ke paused jika null
-
+                        final state = snapshot.data ?? PlayerState.paused;
                         return IconButton(
                           icon: Icon(
-                            playerState == PlayerState.playing
+                            state == PlayerState.playing
                                 ? Icons.pause_circle_filled
                                 : Icons.play_circle_fill,
                             size: 60,
                           ),
                           onPressed: () async {
-                            if (playerState == PlayerState.playing) {
-                              await player.pause(); // Pause jika sedang bermain
+                            if (state == PlayerState.playing) {
+                              await player.pause();
                             } else {
-                              await player
-                                  .resume(); // Resume jika sedang berhenti
+                              await player.resume();
                             }
-                            setState(
-                                () {}); // Memanggil setState agar tampilan ter-update
                           },
                         );
                       },
                     ),
-
-                    // Skip Forward 10 seconds
                     IconButton(
-                      icon: const Icon(
-                        Icons.forward_10,
-                        size: 30,
-                        color: Colors.grey,
-                      ),
+                      icon: const Icon(Icons.forward_10,
+                          color: Color.fromARGB(255, 120, 120, 120), size: 30),
                       onPressed: () async {
                         final position = await player.getCurrentPosition();
-                        final newPosition = position! + Duration(seconds: 10);
-                        final totalDuration =
-                            songs.duration ?? Duration(minutes: 4);
-                        if (newPosition > totalDuration) {
-                          await player.seek(
-                              totalDuration); // Jangan biarkan posisi lebih besar dari durasi total
-                        } else {
-                          await player.seek(newPosition);
+                        final total = songs.duration ?? Duration.zero;
+                        if (position != null &&
+                            position + const Duration(seconds: 10) <= total) {
+                          await player
+                              .seek(position + const Duration(seconds: 10));
                         }
                       },
                     ),
-
-                    // Skip to Next Song
                     IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.skip_next,
                         size: 40,
-                        color: Colors.black,
+                        color: widget.index == widget.songs.length - 1
+                            ? Colors.grey
+                            : Colors.black,
                       ),
-                      onPressed: () async {
-                        await player.stop(); // Stop the current song
-                        final nextId = await _nextId;
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PlayMusic(
-                              musicId: nextId,
-                              beforeId: widget.musicId,
-                            ),
-                          ),
-                        );
-                      },
+                      onPressed: widget.index == widget.songs.length - 1
+                          ? null
+                          : () async {
+                              await player.stop();
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PlayMusic(
+                                    songs: widget.songs,
+                                    index: widget.index + 1,
+                                  ),
+                                ),
+                              );
+                            },
                     ),
                   ],
                 ),

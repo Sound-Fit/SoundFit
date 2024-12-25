@@ -4,7 +4,7 @@ import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'package:soundfit/core/services/user_service.dart';
 import 'package:soundfit/presentation/widgets/artist/artistsCardList.dart';
 import 'package:soundfit/presentation/widgets/recognition/recognition_result.dart';
-import 'package:soundfit/presentation/widgets/song/songCardList.dart';
+import 'package:soundfit/presentation/widgets/song/songCardTemplate.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -110,17 +110,8 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                         Gap(20),
-
-                        // Song Card List From Firebase
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              BasedText(
-                                text: 'Songs',
-                                fontWeight: FontWeight.bold,
-                              ),
-                              SongCardlist(),
-                            ]),
+                        SongCardTemplate(playlistName: 'Recommendations'),
+                        SongCardTemplate(playlistName: 'Songs'),
                       ],
                     ),
                   ],

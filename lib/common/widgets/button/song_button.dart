@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
+import 'package:soundfit/data/models/songs.dart';
 import 'package:soundfit/presentation/pages/music/playMusic.dart';
 
 class SongButton extends StatelessWidget {
-  final String songTitle;
-  final String artistName;
-  final String coverImage;
-  final String year;
-  final String musicId;
+  final Songs song;
+  final List<Songs> songs; // Tambahkan parameter daftar lagu
+  final int index;
 
-  const SongButton(
-      {Key? key,
-      required this.songTitle,
-      required this.artistName,
-      required this.coverImage,
-      required this.year,
-      required this.musicId})
-      : super(key: key);
+  const SongButton({
+    Key? key,
+    required this.song,
+    required this.songs,
+    required this.index,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +24,8 @@ class SongButton extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => PlayMusic(
-              musicId: musicId,
+              songs: songs, // Kirim daftar lagu
+              index: index, // Kirim indeks
             ),
           ),
         )
@@ -44,8 +42,8 @@ class SongButton extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     image: DecorationImage(
-                      image: coverImage != null
-                          ? NetworkImage(coverImage!)
+                      image: song.coverImage != null
+                          ? NetworkImage(song.coverImage!)
                           : AssetImage('assets/images/nullSongCover.jpg'),
                       fit: BoxFit.cover,
                     ),
@@ -58,7 +56,7 @@ class SongButton extends StatelessWidget {
                     SizedBox(
                       width: 210,
                       child: Text(
-                        songTitle,
+                        song.songTitle ?? 'Unknown Title',
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.w900),
                         textAlign: TextAlign.left,
@@ -66,7 +64,7 @@ class SongButton extends StatelessWidget {
                       ),
                     ),
                     BasedText(
-                      text: artistName,
+                      text: song.artistName ?? 'Unknown Artist',
                       fontSize: 10,
                     ),
                   ],
@@ -75,7 +73,7 @@ class SongButton extends StatelessWidget {
             ),
           ),
           BasedText(
-            text: year,
+            text: song.year ?? '-',
             fontSize: 10,
           ),
         ],

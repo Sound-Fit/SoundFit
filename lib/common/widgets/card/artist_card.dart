@@ -44,7 +44,10 @@ class ArtistCard extends StatelessWidget {
           const Gap(15),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.65,
-            child: BasedText(text: title),
+            child: BasedText(
+              text: title,
+              textAlign: TextAlign.left,
+            ),
           )
         ],
       ),

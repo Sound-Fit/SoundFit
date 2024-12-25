@@ -62,6 +62,38 @@ class PlaylistService {
     }
   }
 
+// Create Liked Playlist
+  Future<void> createLikedPlaylist(String userId) async {
+    try {
+      // Check if the 'Liked Songs' playlist already exists for the user
+      final recommendationsQuerySnapshot = await _firestore
+          .collection('playlists')
+          .where('userId', isEqualTo: userId)
+          .where('name', isEqualTo: 'Liked Songs')
+          .get();
+
+      if (recommendationsQuerySnapshot.docs.isEmpty) {
+        // If the playlist does not exist, create a new one
+        final targetPlaylistRef = _firestore.collection('playlists').doc();
+        final playlistId = targetPlaylistRef.id;
+        await targetPlaylistRef.set({
+          'name': "Liked Songs", // Name of the new playlist
+          'userId': userId, // User who created the new playlist
+          'songIds': [], // Copy songIds from the source playlist
+        });
+
+        // Save the new playlistId to the user's profile
+        await savePlaylistToUser(userId, playlistId);
+
+        print("Playlist 'Liked Songs' successfully created");
+      } else {
+        print("Playlist 'Liked Songs' already exists");
+      }
+    } catch (e) {
+      print("Error creating or updating 'Recommendations' playlist: $e");
+    }
+  }
+
 // Create Recommendation
   Future<void> createRecommendationsPlaylist(
       String userId, String sourcePlaylistId) async {
@@ -102,6 +134,8 @@ class PlaylistService {
 
         print(
             "Playlist 'Recommendations' successfully created with songs from the source playlist.");
+
+        createLikedPlaylist(userId);
       } else {
         // If the playlist exists, update the existing one
         final existingPlaylistRef =
@@ -214,6 +248,62 @@ class PlaylistService {
     } catch (e) {
       print("Error fetching playlistId from playlistName: $e");
       return null;
+    }
+  }
+
+  // Get PlaylistId from UserId and PlaylistName
+  Future<String?> getPlaylistIdByUserIdAndName(
+      String userId, String playlistName) async {
+    try {
+      // Query playlists collection using userId and playlistName
+      final querySnapshot = await _firestore
+          .collection('playlists')
+          .where('userId', isEqualTo: userId)
+          .where('name', isEqualTo: playlistName)
+          .get();
+
+      // Check if any matching document is found
+      if (querySnapshot.docs.isEmpty) {
+        print(
+            "No playlist found for userId: $userId and playlistName: $playlistName.");
+        return null; // Return null if no matching playlist is found
+      }
+
+      // Extract the playlist ID from the first matching document
+      final playlistId = querySnapshot.docs.first.id;
+      return playlistId;
+    } catch (e) {
+      print("Error fetching playlist ID by userId and playlistName: $e");
+      return null; // Return null in case of an error
+    }
+  }
+
+  // Get PlaylistName from PlaylistId
+  Future<List<String>> getSongIdsForPlaylist(
+      String userId, String playlistName) async {
+    // Fetch songIds from PlaylistService
+    final playlistService = PlaylistService();
+    final String? playlistId =
+        await playlistService.getPlaylistIdFromName(playlistName, userId);
+    if (playlistId == null) {
+      return []; // Return an empty list if playlistId is null
+    }
+    return playlistService.getSongIdsFromPlaylist(playlistId!);
+  }
+
+  // Get AllSongIds
+  Future<List<String>> getAllSongIds() async {
+    try {
+      // Query all documents in the "songs" collection
+      final querySnapshot = await _firestore.collection('songs').get();
+
+      // Extract song IDs from the documents
+      final allSongIds = querySnapshot.docs.map((doc) => doc.id).toList();
+
+      return allSongIds; // Return the list of all song IDs
+    } catch (e) {
+      print("Error fetching all song IDs: $e");
+      return [];
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:soundfit/common/widgets/image/playlist_image.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'package:soundfit/core/configs/theme/app_colors.dart';
 
@@ -13,7 +14,7 @@ class PlaylistCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 3.0),
+      padding: const EdgeInsets.only(top: 2.0),
       child: Column(
         children: [
           TextButton(
@@ -25,10 +26,10 @@ class PlaylistCard extends StatelessWidget {
                   SizedBox(
                     width: 45,
                     height: 45,
-                    child: Image.asset('assets/images/playlist.png'),
-                    // child: ClipRRect(
-                    //   borderRadius: BorderRadius.circular(8),
-                    // ),
+                    child: ClipRRect(
+                      child: PlaylistImage(title: title),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                   Gap(15),
                   BasedText(
@@ -44,9 +45,12 @@ class PlaylistCard extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            height: 1,
-            color: Colors.grey,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Container(
+              height: 1,
+              color: Colors.grey,
+            ),
           ),
         ],
       ),

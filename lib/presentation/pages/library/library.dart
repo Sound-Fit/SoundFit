@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:soundfit/common/widgets/button/menu_button.dart';
-import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
 import 'package:soundfit/presentation/pages/Library/artist.dart';
 import 'package:soundfit/presentation/pages/library/playlist.dart';
-import 'package:soundfit/presentation/widgets/song/songCardList.dart';
+import 'package:soundfit/presentation/widgets/song/songCardTemplate.dart';
 
-class Library extends StatelessWidget {
+class Library extends StatefulWidget {
   Library({super.key});
 
+  @override
+  State<Library> createState() => _LibraryState();
+}
+
+class _LibraryState extends State<Library> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,27 +61,8 @@ class Library extends StatelessWidget {
                       ],
                     ),
                     Gap(20),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          BasedText(
-                            text: 'Liked Song',
-                            fontWeight: FontWeight.bold,
-                          ),
-                          Gap(10.0),
-                          SongCardlist(),
-                        ]),
-                    Gap(20),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          BasedText(
-                            text: 'Songs',
-                            fontWeight: FontWeight.bold,
-                          ),
-                          Gap(10.0),
-                          SongCardlist(),
-                        ]),
+                    SongCardTemplate(playlistName: 'Recommendations'),
+                    SongCardTemplate(playlistName: 'Liked Songs'),
                   ],
                 ),
               ),

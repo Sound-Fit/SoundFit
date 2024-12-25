@@ -1,12 +1,30 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:soundfit/common/widgets/text/based_text.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
+import 'package:soundfit/core/services/playlist_service.dart';
 import 'package:soundfit/presentation/pages/explore/genre.dart';
-import 'package:soundfit/presentation/widgets/song/songCardList.dart';
+import 'package:soundfit/presentation/widgets/song/songCardTemplate.dart';
 
-class ExplorePage extends StatelessWidget {
+class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
+
+  @override
+  State<ExplorePage> createState() => _ExplorePageState();
+}
+
+class _ExplorePageState extends State<ExplorePage> {
+  final user = FirebaseAuth.instance.currentUser;
+  final PlaylistService _playlistService = PlaylistService();
+  Future<List<String>> _songRecommendationIds = Future.value([]);
+
+  @override
+  void initState() {
+    super.initState();
+    _songRecommendationIds =
+        _playlistService.getSongIdsForPlaylist(user!.uid, 'Recommendations');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,18 +43,7 @@ class ExplorePage extends StatelessWidget {
           child: Column(
             children: [
               // Recommend For You
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  BasedText(
-                    text: 'Songs',
-                    fontWeight: FontWeight.bold,
-                  ),
-                  Gap(10.0),
-                  SongCardlist(),
-                ],
-              ),
-              Gap(20),
+              SongCardTemplate(playlistName: 'Recommendations'),
 
               // Explore by Genre
               Column(
