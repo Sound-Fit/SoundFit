@@ -119,14 +119,14 @@ class _RecommendationPageState extends State<RecommendationPage> {
                           RecognitionResult(
                               recognitionPath: recognitionPath,
                               ageRange: ageRange),
-                          Gap(30),
+                          Gap(20),
 
                           // Recommended Playlist
                           BasedText(
                             text: "Recommended Songs",
                             fontWeight: FontWeight.bold,
                           ),
-                          Gap(30),
+                          Gap(10),
 
                           // Fetch songs for the recommended playlist
                           FutureBuilder<List<String>>(

@@ -74,6 +74,6 @@ To install and run SoundFit locally, follow these steps:
     Responsible for coordinating tasks, Firebase integration, machine learning model development, and end-to-end system implementation.
 - **Amanda Vanika Putri `ML Engineer & UI/UX Designer`**
     
-    Focused on developing and optimizing machine learning models, creating the app's interface, ensuring a user-friendly design, and integrating Flutter components.
+    Focused on developing and optimizing machine learning models, creating the app's interface, and ensuring a user-friendly design.
 
     `Another Responsibility on Mobile: Implement Profile and Explore Page`

@@ -22,7 +22,8 @@ class BasedText extends StatelessWidget {
       text,
       textAlign: textAlign,
       softWrap: true,
-      overflow: TextOverflow.visible,
+      overflow: TextOverflow.ellipsis,
+      maxLines: 2,
       style: TextStyle(
         fontSize: fontSize,
         fontWeight: fontWeight,

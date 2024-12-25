@@ -5,6 +5,7 @@ import 'package:soundfit/common/widgets/card/playlist_card.dart';
 import 'package:soundfit/common/widgets/text/title_text.dart';
 import 'package:soundfit/core/services/playlist_service.dart';
 import 'package:soundfit/presentation/pages/playlist/playlist_detail.dart';
+import 'package:soundfit/presentation/pages/playlist/recommendation.dart';
 
 class Playlist extends StatefulWidget {
   const Playlist({super.key});
@@ -150,8 +151,12 @@ class _PlaylistState extends State<Playlist> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PlaylistDetailPage(
-                                playlistId: playlist['id'])));
+                            builder: (context) =>
+                                playlist['name'] == 'Recommendations'
+                                    ? const RecommendationPage()
+                                    : PlaylistDetailPage(
+                                        playlistId: playlist['id'],
+                                        title: playlist['name'])));
                   },
                 );
               },
