@@ -17,14 +17,15 @@ class _SongCardlistState extends State<SongCardlist> {
   // Fungsi untuk mendapatkan informasi lengkap lagu berdasarkan songIds
   Future<List<Songs>> _getFullSongInfoFromIds(List<String> songIds) async {
     // Ambil trackIds dari songIds
-    List<String?> trackIds = await Future.wait(
-        songIds.map((songId) async => await _songService.getTrackIdFromSongId(songId)));
+    List<String?> trackIds = await Future.wait(songIds.map(
+        (songId) async => await _songService.getTrackIdFromSongId(songId)));
 
     // Hapus nilai null dan ambil hanya trackIds yang valid
     trackIds = trackIds.whereType<String>().toList();
 
     // Ambil informasi lagu berdasarkan trackIds
-    final songs = await _songService.getSongsInfoFromTrackIds(trackIds.whereType<String>().toList());
+    final songs = await _songService
+        .getSongsInfoFromTrackIds(trackIds.whereType<String>().toList());
     return songs.whereType<Songs>().toList();
   }
 
@@ -45,21 +46,21 @@ class _SongCardlistState extends State<SongCardlist> {
 
         // Get the list of songs and shuffle it
         final songs = snapshot.data!;
-        songs.shuffle(); // Randomize the order of the songs
+        // songs.shuffle(); // Randomize the order of the songs
 
         return SizedBox(
           height: 220,
-          child: ListView.builder(
+          child: ListView(
             scrollDirection: Axis.horizontal,
-            itemCount: songs.length,
-            itemBuilder: (context, index) {
-              final song = songs[index];
+            children: songs.asMap().entries.map((entry) {
+              final index = entry.key;
+              final song = entry.value;
               return SongCard(
-                  songTitle: song.songTitle ?? 'Unknown Title',
-                  artistName: song.artistName ?? 'Unknown Artist',
-                  coverImage: song.coverImage ?? '',
-                  musicId: song.trackId);
-            },
+                song: song, // Kirim informasi lagu
+                songs: songs, // Kirim daftar lagu
+                index: index, // Kirim indeks lagu
+              );
+            }).toList(),
           ),
         );
       },

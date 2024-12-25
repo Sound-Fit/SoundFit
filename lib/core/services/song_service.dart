@@ -104,12 +104,13 @@ class SongService {
             }
           } catch (error) {
             print("Error fetching data for track $trackId: $error");
+            continue;
           }
         }
       }
 
       // Fetch details for unique artist IDs
-      final topArtistIds = uniqueArtistIds.take(10).toList(); // Limit to top 10
+      final topArtistIds = uniqueArtistIds.toList();
 
       // Fetch artist details from Spotify
       return await Future.wait(topArtistIds.map((artistId) async {
