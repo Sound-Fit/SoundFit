@@ -70,6 +70,7 @@ class RecognitionResult extends StatelessWidget {
             fontSize: 16,
             fontWeight: FontWeight.bold,
             textAlign: TextAlign.center,
+            profile: true,
           ),
         )
       ],

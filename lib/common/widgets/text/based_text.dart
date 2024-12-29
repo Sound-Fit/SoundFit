@@ -6,6 +6,7 @@ class BasedText extends StatelessWidget {
   final double fontSize;
   final String fontFamily;
   final TextAlign textAlign;
+  final bool profile;
 
   const BasedText(
       {required this.text,
@@ -13,6 +14,7 @@ class BasedText extends StatelessWidget {
       this.fontWeight = FontWeight.normal,
       this.fontFamily = "LexendGiga",
       this.textAlign = TextAlign.justify,
+      this.profile = false,
       Key? key})
       : super(key: key);
 
@@ -22,8 +24,8 @@ class BasedText extends StatelessWidget {
       text,
       textAlign: textAlign,
       softWrap: true,
-      overflow: TextOverflow.ellipsis,
-      maxLines: 2,
+      overflow: profile ? TextOverflow.visible : TextOverflow.ellipsis,
+      maxLines: profile ? 10 : 2,
       style: TextStyle(
         fontSize: fontSize,
         fontWeight: fontWeight,

@@ -34,46 +34,54 @@ class _PlaylistDetailPageState extends State<PlaylistDetailPage> {
         elevation: 0,
         centerTitle: true,
       ),
-      body: Expanded(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 20.0), // Padding around the content
-            child: Column(
-              children: [
-                SizedBox(
-                  width: 300,
-                  height: 300,
-                  child: ClipRRect(
-                    child: PlaylistImage(title: widget.title),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0), // Padding around the content
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: 300,
+                      height: 300,
+                      child: ClipRRect(
+                        child: PlaylistImage(title: widget.title),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    Gap(20),
+                    FutureBuilder<List<String>>(
+                      future: _getSongIdsForPlaylist(
+                          widget.playlistId), // Fetch songIds
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text(
+                                  'Error loading songs: ${snapshot.error}'));
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
+                          return const Center(
+                              child:
+                                  Text('No songs available in this playlist.'));
+                        } else {
+                          final songIds = snapshot.data!;
+                          return SongLists(
+                              songIds: songIds); // Pass songIds to SongLists
+                        }
+                      },
+                    ),
+                  ],
                 ),
-                Gap(20),
-                FutureBuilder<List<String>>(
-                  future: _getSongIdsForPlaylist(
-                      widget.playlistId), // Fetch songIds
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(
-                          child:
-                              Text('Error loading songs: ${snapshot.error}'));
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(
-                          child: Text('No songs available in this playlist.'));
-                    } else {
-                      final songIds = snapshot.data!;
-                      return SongLists(
-                          songIds: songIds); // Pass songIds to SongLists
-                    }
-                  },
-                ),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

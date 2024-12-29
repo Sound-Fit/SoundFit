@@ -136,8 +136,9 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
             context: context,
             builder: (_) => AlertDialog(
               title: Text('Age Prediction'),
-              content: Text(
-                  'Successfully determined age: $ageRange. Please click OK to see your playlist.'),
+              content: Text('Successfully determined your age!\n'
+                  '$ageRange\n'
+                  'Please click OK to see your playlist.'),
               actions: [
                 TextButton(
                   onPressed: () => // Close the dialog
@@ -161,7 +162,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   Future<String?> _getAgePredictionFromAPI(String imageUrl) async {
     try {
       final response = await http.post(
-        Uri.parse('https://soundfit-ml.et.r.appspot.com/age_detection'),  
+        Uri.parse('https://soundfit-ml.et.r.appspot.com/age_detection'),
         // Uri.parse('http://192.168.229.237:5000/age_detection'),
         // Ganti dengan URL Flask Anda
         body: {'recognition_path': imageUrl},

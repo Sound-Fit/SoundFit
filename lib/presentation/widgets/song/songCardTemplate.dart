@@ -47,6 +47,11 @@ class _SongCardTemplateState extends State<SongCardTemplate> {
             return SizedBox.shrink();
           } else {
             final songIds = snapshot.data!;
+
+            if (widget.playlistName == 'Songs') {
+              songIds.shuffle();
+            }
+
             return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

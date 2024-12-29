@@ -24,7 +24,7 @@ class Information extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.all(30.0),
+        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
         child: Column(
           children: [
             Expanded(
@@ -32,14 +32,7 @@ class Information extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  BasedText(
-                      text: "Welcome to SoundFit",
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Poppins"),
-
                   // About Soundfit
-                  Gap(20),
                   BasedText(
                       text: "About Soundfit",
                       fontSize: 18,
@@ -51,10 +44,11 @@ class Information extends StatelessWidget {
                           "SoundFit is your personalized music companion, using cutting-edge face recognition technology to suggest music playlists tailored to your age and mood. Whether you’re looking to energize, relax, or explore new sounds, SoundFit adapts to fit your vibe.",
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
-                      fontFamily: "Poppins"),
+                      fontFamily: "Poppins",
+                      profile: true),
 
                   // Key Features
-                  Gap(20),
+                  Gap(10),
                   BasedText(
                       text: "Key Feature",
                       fontSize: 18,
@@ -70,9 +64,61 @@ class Information extends StatelessWidget {
                   PoinText(
                       text:
                           "Intuitive Design: Navigate effortlessly with a clean interface that makes finding music simple and fun."),
+                  Gap(10),
+
+                  // How to use
+                  BasedText(
+                    text: "How to Use SoundFit",
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Poppins",
+                  ),
+                  Gap(10),
+                  PoinText(
+                      point: '1.',
+                      text:
+                          'Download and install the SoundFit app on your device.'),
+                  PoinText(
+                      point: '2.',
+                      text: 'Open the app and grant access to your camera.'),
+                  PoinText(
+                      point: '3.',
+                      text:
+                          'Let SoundFit analyze your face to generate tailored playlist recommendations.'),
+                  PoinText(
+                      point: '4.',
+                      text:
+                          'Enjoy playlists curated specifically for your age.'),
+
+                  // Why choose
+                  Gap(10),
+                  BasedText(
+                    text: "Why Choose SoundFit",
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Poppins",
+                  ),
+                  Gap(10),
+                  BasedText(
+                    text:
+                        "SoundFit combines advanced technology and user-friendly design to bring you a music experience like no other. Here’s why you should choose us:",
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                    fontFamily: "Poppins",
+                    profile: true,
+                  ),
+                  PoinText(
+                      text:
+                          "Personalized Playlists: Music tailored to your unique preferences."),
+                  PoinText(
+                      text:
+                          "Privacy First: We securely process your data without storing sensitive information."),
+                  PoinText(
+                      text:
+                          "Easy to Use: Navigate the app with ease and find your perfect soundtrack instantly."),
 
                   // Privacy and Security
-                  Gap(20),
+                  Gap(10),
                   BasedText(
                       text: "Privacy and Security",
                       fontSize: 18,
@@ -84,7 +130,8 @@ class Information extends StatelessWidget {
                           "At SoundFit, we prioritize your privacy. Your face data is securely processed and not stored, ensuring that your personal information remains protected.",
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
-                      fontFamily: "Poppins"),
+                      fontFamily: "Poppins",
+                      profile: true),
                 ],
               ),
             ))

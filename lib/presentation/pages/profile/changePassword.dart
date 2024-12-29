@@ -25,7 +25,7 @@ class _ChangePasswordState extends State<ChangePassword> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Edit Profile',
+          'Change Password',
           style: GoogleFonts.lexendGiga(
             fontWeight: FontWeight.bold,
             fontSize: 18,
